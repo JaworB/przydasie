@@ -1,0 +1,18 @@
+version: "3"
+
+services: 
+  vh_plus: 
+    image: ghcr.io/lloesche/valheim-server
+    network_mode: bridge
+    cap_add:
+      - sys_nice
+    volumes: 
+      - ./config:/config
+      - ./data:/opt/valheim
+    ports: 
+      - "2456-2457:2456-2457/udp"
+      - "9001:9001/tcp"
+    env_file:
+      - ./valheim.env
+    restart: always
+    stop_grace_period: 2m

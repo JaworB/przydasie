@@ -1,0 +1,51 @@
+Playbook do przygotowania:
+ - Setup usera
+ - Paczki
+ - Setup usera
+ - Filesystemy
+ - Zbiorczy
+
+Setup usera:
+ - dodanie do grupy wheel
+ - modyfikacja sudoers
+ - dodanie alias srudo w bash.rc
+ - sudoers
+ - klucz ssh
+
+Paczki:
+ - ansible
+ - docker
+ - libvirt (@virtualization)
+ - vim, vim-default-editor
+ - neofetcho
+ - samba
+ - cockpit
+ - xrdp
+ - usunięcie nano, nano-default
+
+Filesystemy:
+ - lvm
+ - mountpoint
+ - fstab
+ - mount
+
+Zbiorczy:
+ - Paczki
+ - Setup usera (konto, hasło, klucz sshd, sudoers)
+ - Network setup
+ - Filesystemy (vmstorage, docker_services, samba)
+ - serwisy kluczowe (nginx, pihole, vaultwardeni, samba)
+ - dodatkowe serwisy (jellyfin, valheim)
+
+========== DONE =========
+
+Firewall
+ - --remove-port=1025-65535/tcp
+   --remove-port=1025-65535/upd
+ - dodanie 2229/tcp
+
+Network setup
+ - ustawienie static ip
+ - bridge sieci
+ - wyłączenie autoloadu domyślnej sieci
+ 

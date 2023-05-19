@@ -1,0 +1,43 @@
+---
+- name: Start pihole with docker
+  hosts: localhost
+  gather_facts: no
+  become: no
+  vars_prompt:
+    - name: ip_address
+      prompt: ip_address
+      private: false
+    - name: install_path
+      prompt: install_path
+      private: false
+
+  tasks:
+    - name: change hostname
+      replace:
+        path: ./hosts
+        regexp: '(\s+)old\.host\.name(\s+.*)?$'
+        replace: '\1new.host.name\2'
+    - name: change ip
+      replace:
+        path: ./hosts
+        regexp: (\s+)\'SERVICE_IP_ADDR\'(\s+.*)?$
+        replace: \1'{{ ip_address }}'\2
+    - name: add pihole install location to vars file
+      ansible.builtin.lineinfile:
+        path: ./vars
+        state: present
+        line: "pihole_install_path: {{install_path}}"
+    - name: debug vars
+      ansible.builtin.shell: "echo {{install_path}} {{ip_address}} >> ./testfile"
+
+- name: sprawdzenie vars
+  hosts: localhost
+  become: no
+  vars_files: 
+    - vars
+  tasks:
+    - name: testfil
+      lineinfile:
+        path: ./testfile
+        state: present
+        line: "added line with {{ pihole_install_path }} variable"

@@ -1,0 +1,24 @@
+# Sensory z Tuya Local
+
+- platform: template
+  sensors:
+    listwa_sypialnia_paler:
+      value_template: "{{ state_attr('switch.listwa_komputer','current_consumption') }}"
+      unit_of_measurement: "W"
+      friendly_name: "Listwa komp W"
+      device_class: power
+- platform: template
+  sensors:
+    listwa_sypialnia_prund:
+      value_template: "{{ state_attr('switch.listwa_komputer','current')|float * 0.001 }}"
+      unit_of_measurement: "A"
+      friendly_name: "Listwa komp A"
+      device_class: current
+#
+#- platform: template
+#  sensors:
+#    listwa_sypialnia_napiecie:
+#      value_template: "{{ state_attr('switch.listwa_komputer','voltage') }}"
+#      unit_of_measurement: "V"
+#      friendly_name: "Listwa komp V"
+#      device_class: voltage

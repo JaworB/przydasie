@@ -1,0 +1,55 @@
+- name: Start pihole container
+  hosts: localhost
+  gather_facts: no
+  become: no
+  vars_prompt:
+    - name: install_path
+      prompt: Provide path where all serices should be located (e.g /docker_services)
+      private: false
+  tasks:
+# Pihoe_setup
+    - name: Disable systemd-resolved service
+      service:
+        name: systemd-resolved
+        state: stopped
+        enabled: no
+
+    - name: Add temporary nameserver in /etc/resolv.conf
+      lineinfile:
+        path: /etc/resolv.conf
+        state: present
+        line: 'nameserver 1.1.1.1'
+
+    - name: Enable required services in firewalld (dhcp, dns)
+      firewalld:
+        service: "{{ item }}"
+        permanent: yes
+        state: enabled
+        immediate: yes
+      with_items:
+        - http
+        - dhcp
+        - dns
+# \Pihoe_setup
+# Docker compose up
+    - name: Confirm that install dir exist {{ install_path }}
+      file:
+        path: "{{ install_path }}"
+        state: directory
+
+    - name: Copy docker compose and env files
+      copy:
+        src: files/docker-compose.yaml
+        dest: "{{ install_path }}"
+        mode: 0641
+
+    - name: Start container
+      community.docker.docker_compose:
+        project_src: "{{ install_path }}"
+
+    - name: Remove temporary entry from /etc/resolv.conf
+      lineinfile:
+        path: /etc/resolv.conf
+        state: absent
+        line: 'nameserver 1.1.1.1'
+# \Docker compose up

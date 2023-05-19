@@ -1,0 +1,5 @@
+virt-install -n test --os-variant=fedora37 -r 4096 --vcpus 5 --disk path=/vmstorage/test.qcow2,size=20,bus=virtio --location /vmstorage/iso/fedora_server.iso --graphics none --extra-args 'console=ttyS0,115200n8 serial'
+
+
+virsh detach-interface test --config --live --type bridge --mac 52\:54\:00\:6a\:47\:eb
+virsh attach-interface --domain test --type bridge --source br01 --model virtio --config --live

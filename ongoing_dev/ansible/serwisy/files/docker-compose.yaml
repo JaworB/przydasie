@@ -1,0 +1,68 @@
+version: "3"
+
+services:
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    network_mode: host
+    dns:
+      - 1.1.1.1 #Primary pihole DNS
+    environment:
+      TZ: 'Europe/Warsaw'
+      WEBPASSWORD: 'PI_WEBPASSWORD'
+      VIRTUAL_HOST: 'docker.pihole'
+      SERVER_IP: 'PI_SERVER_IP' 
+      DNSMASQ_LISTENING: "local"
+      WEB_PORT: 'PI_WEB_PORT'
+    volumes:
+      - './pihole/etc-pihole:/etc/pihole'
+      - './pihole/etc-dnsmasq.d:/etc/dnsmasq.d'
+    cap_add:
+      - NET_ADMIN
+    restart: unless-stopped
+
+  jellyfin:
+    image: jellyfin/jellyfin
+    container_name: jellyfin
+    network_mode: bridge
+    ports:
+      - "JELLYFIN_WEB_PORT:8096"
+    volumes:
+      - ./jellyfin/config:/config
+      - ./jellyfin/cache:/cache
+      - ./jellyfin/filmy/:/filmy
+      - ./jellyfin/audiobook/:/audiobook
+      - ./jellyfin/media2:/media2:ro
+    restart: unless-stopped
+    
+  nginx:
+    container_name: nginx
+    image: 'jc21/nginx-proxy-manager:latest'
+    network_mode: bridge
+    ports:
+      - 'NGINX_HTTP:80' # HTTP Port
+      - 'NGINX_HTTPS:443' # HTTPS Port
+      - 'NGINX_ADMIN:81' # Admin Web Port
+    volumes:
+      - ./nginx/data:/data
+      - ./nginx/letsencrypt:/etc/letsencrypt
+    restart: unless-stopped
+
+  bitwarden:
+    container_name: vault
+    image: vaultwarden/server:latest
+    network_mode: bridge
+    volumes:
+       - './vault/vw-data:/data'
+    ports:
+    - "VAULT_WEB:80" #WebAccess
+    restart: unless-stopped
+
+  portainer:
+    image: portainer/portainer-ce:latest
+    ports:
+      - "PORTAINER_HTTPS:9443"
+    volumes:
+        - ./portainer/data:/data
+        - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped

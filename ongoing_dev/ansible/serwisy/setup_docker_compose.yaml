@@ -1,0 +1,29 @@
+- name: Setup docker compose file - pihole
+  hosts: localhost
+  gather_facts: no
+  become: no
+  vars_prompt:
+    - name: ip_address
+      prompt: Provide IP address that will be used for pihole (e.g 192.168.0.180)
+      private: false
+    - name: web_port
+      prompt: Provide desired port number for web gui (e.g 80)
+      private: false
+    - name: pi_pass
+      prompt: Provide password for pihole web admin
+  tasks:
+    - name: change ip address
+      replace:
+        path: files/docker-compose.yaml
+        regexp: (\s+)\'PI_SERVER_IP\'(\s+.*)?$
+        replace: \1'{{ ip_address }}'\2
+    - name: change web port
+      replace:
+        path: files/docker-compose.yaml
+        regexp: (\s+)\'PI_WEB_PORT\'(\s+.*)?$
+        replace: \1'{{ web_port }}'\2
+    - name: change password
+      replace:
+        path: files/docker-compose.yaml
+        regexp: (\s+)\'PI_WEBPASSWORD\'(\s+.*)?$
+        replace: \1'{{ pi_pass }}'\2
