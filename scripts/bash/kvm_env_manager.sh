@@ -11,7 +11,7 @@ Options
 
 option=$1
 param=$2
-virsh_list=$(virsh list --all |grep test |awk '{print $2}')
+virsh_list=$(virsh list --all |awk '{print $2}'|sed 's/Name//')
 
 
 vms () {
@@ -41,10 +41,10 @@ vms () {
 
 auto () {
 	if [ $param == "on" ];then
-		for i in $virsh_list; do virsh autostart $i 2> /dev/null ; done
+		for vm in $virsh_list; do virsh autostart $i 2> /dev/null ; done
 		echo "Enabled autostart for VMs"
 	elif [ $param == "off" ];then
-		for i in $virsh_list; do virsh autostart --disable $i 2> /dev/null ; done
+		for vm in $virsh_list; do virsh autostart --disable $i 2> /dev/null ; done
 		echo "Disabled autostart for VMs"
 	fi
 }
