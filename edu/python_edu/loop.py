@@ -11,11 +11,8 @@ while index < len(range_0_to_6):
     print(index)
     index += 1
 
-
 #Pętla for
 print("==== pętla for - 6 x twojastara ====")
 for i in range_0_to_6:
     print("twojastara")
 print("Thats all folks")
-
-
