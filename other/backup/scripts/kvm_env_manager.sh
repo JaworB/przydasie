@@ -2,10 +2,11 @@
 usage="
 Usage labenv.sh [options]
 Options
-	--vms start/stop		start or stop all kvm VMs on host (eg. ./labenv.sh --vms start)
-	--auto on/off			enable or disable VMs autostart (eg. ./labenv.sh --auto on)
-	--status				check current status of kvm VMs
-	--clone					
+	vms start/stop		start or stop all kvm VMs on host (eg. ./labenv.sh vms start)
+	auto on/off			enable or disable VMs autostart (eg. ./labenv.sh auto on)
+	status				check current status of kvm VMs
+	clone				clone defined host
+	remove				remove defined VM
 	"
 
 option=$1
@@ -15,11 +16,23 @@ virsh_list=$(virsh list --all |grep test |awk '{print $2}')
 
 vms () {
 	if [ $param == "start" ];then
-		for i in $virsh_list; do virsh start $i 2> /dev/null ; done
-		echo "VMs started successfully"
+		for vm in $virsh_list; do 
+			vmstate=$(virsh list --all |grep $vm |awk '{print $3}')
+			if [ $vmstate == "running" ];then
+				echo "$vm is alread running"
+			else
+				virsh start $vm
+			fi
+		done
 	elif [ $param == "stop" ];then
-		for i in $virsh_list; do (virsh shutdown $i 2> /dev/null); done 
-		echo "VMs stopped successfully"
+		for vm in $virsh_list; do 
+			vmstate=$(virsh list --all |grep $vm |awk '{print $3}')
+			if [ $vmstate == "shut" ];then
+				echo "$vm is not running"
+			else
+				virsh shutdown $vm
+			fi
+		done
 	else
 		echo "Unrecognized param"
 		echo "$usage"
@@ -72,8 +85,12 @@ clone () {
 	echo "You're about to clone $vm_to_clone, with name $clone_name on $file_path." 
 	read -p "== Press enter to continue =="
 	virt-clone --original $vm_to_clone --name $clone_name --file $file_path
-	virsh start  $clone_name --console
-	virsh start $vm_to_clone
+	if [ $vmstate != "running" ];then
+		virsh start  $clone_name --console
+	else
+		virsh start $vm_to_clone
+		virsh start $clone_name --console
+	fi
 }
 
 remove () {
@@ -122,19 +139,19 @@ remove () {
 }
 
 case $option in
-	--vms)
+	vms)
 		vms
 	;;
-	--status)
+	status)
 		virsh list --all
 	;;
-	--auto)
+	auto)
 		auto
 	;;
-	--clone)
+	clone)
 		clone
 	;;
-	--remove)
+	remove)
 		remove
 	;;
 	*)
