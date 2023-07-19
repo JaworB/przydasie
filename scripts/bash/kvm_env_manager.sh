@@ -12,10 +12,12 @@ Options
 option=$1
 param=$2
 virsh_list=$(virsh list --all |awk '{print $2}'|sed 's/Name//')
+VM_net="internal" ### name of connection used by Vms
 
 
 vms () {
 	if [ $param == "start" ];then
+		net_state
 		for vm in $virsh_list; do 
 			vmstate=$(virsh list --all |grep $vm |awk '{print $3}')
 			if [ $vmstate == "running" ];then
@@ -31,6 +33,7 @@ vms () {
 				echo "$vm is not running"
 			else
 				virsh shutdown $vm
+				nmcli connection down $VM_net 2> /dev/null
 			fi
 		done
 	else
@@ -59,7 +62,7 @@ clone () {
 		read answ
 		case $answ in
 		"y")
-			virsh shutdown $vm_to_clone >> /dev/null
+			virsh shutdown $vm_to_clone > /dev/null
 			echo "Shutting down $vm_to_clone, please wait"
 			sleep 10
 		;;
@@ -136,6 +139,16 @@ remove () {
 			"Please answer y/n!"
 		;;
 	esac
+}
+
+net_state () {
+	echo "=== Checking connection state ==="
+	nmcli connection show --active | awk '{print $1}' | grep $VM_net
+	rc=$?
+	if [ $rc -ne 0 ];then
+		echo "=== $VM_net connection is down. Activating... ==="
+		nmcli connection up $VM_net > /dev/null
+	fi
 }
 
 case $option in
