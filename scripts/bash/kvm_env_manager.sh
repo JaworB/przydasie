@@ -13,6 +13,7 @@ option=$1
 param=$2
 virsh_list=$(virsh list --all |awk '{print $2}'|sed 's/Name//')
 VM_net="internal" ### name of connection used by Vms
+post_clone="/share/git_repos/przydasie/scripts/bash/post_clone.sh"
 
 
 vms () {
@@ -89,10 +90,18 @@ clone () {
 	read -p "== Press enter to continue =="
 	virt-clone --original $vm_to_clone --name $clone_name --file $file_path
 	if [ $vmstate != "running" ];then
-		virsh start  $clone_name --console
+		virsh start  $clone_name
+		echo "Running post clone script"
+		sleep 60 
+		scp $post_clone fedora37:/root
+		ssh fedora37 "./post_clone.sh $clone_name"
 	else
+		virsh start $clone_name	
+		echo "Running post clone script"
+		sleep 50
+		scp $post_clone fedora37:/roott
+		ssh fedora37 "./post_clone.sh $clone_name"
 		virsh start $vm_to_clone
-		virsh start $clone_name --console
 	fi
 }
 
