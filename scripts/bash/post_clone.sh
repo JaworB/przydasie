@@ -5,7 +5,7 @@ def_con_name="enp1s0"
 disable_def_address=$(nmcli connection modify $def_con_name -ipv4.addresses $def_address)
 hostname=$1
 
-ssh -p 2229 sandbox "echo '$new_address    $hostname' >> /etc/hosts"
+ssh -o StrictHostKeyChecking=no -p 2229 sandbox "echo '$new_address    $hostname' >> /etc/hosts"
 echo "$hostname    $new_address"
 $disable_def_address
 hostnamectl set-hostname $1

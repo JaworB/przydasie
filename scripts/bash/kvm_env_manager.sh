@@ -78,8 +78,13 @@ clone () {
 	fi
 	echo -n "Please provide name for cloned VM: "
 	read clone_name
-	echo -n "Chose path for new clone disk (eg. /vmstorage/test3.qcow2): "	
-	read file_path
+	file_path="/vmstorage/$clone_name.qcow2"
+	echo -n "Chose path for new clone disk (by default it's $file_path ):  "
+	read answ
+	echo $answ
+	if [ ! -z $answ ];then
+		file_path=$answ
+	fi
 	test -f $file_path
 	if [ $(echo $?) -eq 0 ];then
 		echo "File exists, please remove it in second console"
@@ -93,14 +98,16 @@ clone () {
 		virsh start  $clone_name
 		echo "Running post clone script"
 		sleep 60 
-		scp $post_clone fedora37:/root
-		ssh fedora37 "./post_clone.sh $clone_name"
+		scp -o StrictHostKeyChecking=no $post_clone $vm_to_clone:/root 
+		ssh -o StrictHostKeyChecking=no $vm_to_clone "./post_clone.sh $clone_name"
+		echo "Server $vm_to_clone successfully cloned with name $clone_name"
+		echo "Wait until $clone_name will be up and running after reboot and connect via ssh $clone_name"
 	else
 		virsh start $clone_name	
 		echo "Running post clone script"
 		sleep 50
-		scp $post_clone fedora37:/roott
-		ssh fedora37 "./post_clone.sh $clone_name"
+		scp -o StrictHostKeyChecking=no $post_clone $vm_to_clone:/roott
+		ssh -o StrictHostKeyChecking=no $vm_to_clone "./post_clone.sh $clone_name"
 		virsh start $vm_to_clone
 	fi
 }
