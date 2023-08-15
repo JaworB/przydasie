@@ -1,0 +1,36 @@
+---
+- name: Setup env for update
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Ensure that vms are running
+      community.libvirt.virt:
+        name: "{{ item }}"
+        state: running
+      with_inventory_hostnames:
+        - infra
+
+- name: Upgrade all hosts
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Verify if hosts are up and running
+      wait_for_connection:
+        delay: 5
+        timeout: 300
+    - name: Upgrade all packages to latest version
+      dnf:
+        name: "*"
+        state: latest 
+      register: update
+
+    - name: Reboot updated hosts
+      reboot:
+      when: update.changed
+
+- name: Shutdown testhosts
+  hosts: testhosts
+  gather_facts: no
+  tasks:
+    - name: Shutdown
+      community.general.shutdown:
