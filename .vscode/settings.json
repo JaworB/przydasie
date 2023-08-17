@@ -1,0 +1,8 @@
+{
+  "yaml.schemas": {
+    "https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/ansible.json#/$defs/playbook": [
+      "file:///root/przydasie/scripts/ansible/test.yaml",
+      "file:///root/przydasie/scripts/ansible/update.yml"
+    ]
+  }
+}
