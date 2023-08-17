@@ -1,0 +1,36 @@
+- name: configure network
+  hosts: localhost
+  gather_facts: yes
+  become: yes
+  vars:
+
+  tasks:
+  - name: setup bridge
+    nmcli:
+      type: bridge
+      conn_name: bridge1
+      ifname: br01
+      ip4: "192.168.0.223/24"
+      method4: manual
+      method6: disabled
+      gw4: "192.168.0.1"
+      dns4: "192.168.0.170"
+      state: present
+      autoconnect: true
+
+  - name: create bridge slave
+    nmcli:
+      type: bridge-slave
+      conn_name: bridge-slave-dupa
+      ifname: enp1s0
+      master: br01
+      state: present
+      hairpin: false
+      autoconnect: yes
+
+  - name: disable previous connection
+    nmcli:
+      conn_name: enp1s0
+      state: present
+      autoconnect: no
+      
