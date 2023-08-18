@@ -28,11 +28,19 @@
 - name: Upgrade all hosts
   hosts: all
   gather_facts: no
+  vars:
+    sync_etc_hosts: true
   tasks:
     - name: Verify if hosts are up and running
       wait_for_connection:
         delay: 5
         timeout: 300
+          
+    - name: Sync /etc/hosts file on hosts
+      copy:
+        src: /etc/hosts
+        dest: /etc/hosts
+      when: sync_etc_hosts is true
 
     - name: Upgrade all packages to latest version
       dnf:

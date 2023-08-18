@@ -1,4 +1,12 @@
 #!/bin/bash
+
+option=$1
+param=$2
+virsh_list=$(virsh list --all |awk '{print $2}'|sed 's/Name//')
+VM_net="internal" ### name of connection used by Vms
+post_clone="/share/git_repos/przydasie/scripts/bash/post_clone.sh"
+update_yml_location="/share/git_repos/przydasie/scripts/ansible/update.yml"
+
 usage="
 Usage labenv.sh [options]
 Options
@@ -7,14 +15,8 @@ Options
 	status				check current status of kvm VMs
 	clone				clone defined host
 	remove				remove defined VM
+	update				runs update.yml file ${update_yml_location}
 	"
-
-option=$1
-param=$2
-virsh_list=$(virsh list --all |awk '{print $2}'|sed 's/Name//')
-VM_net="internal" ### name of connection used by Vms
-post_clone="/share/git_repos/przydasie/scripts/bash/post_clone.sh"
-
 
 vms () {
 	if [ $param == "start" ];then
@@ -166,7 +168,9 @@ net_state () {
 		nmcli connection up $VM_net > /dev/null
 	fi
 }
-
+update () {
+	/usr/bin/ansible-playbook $update_yml_location
+}
 case $option in
 	vms)
 		vms
@@ -182,6 +186,9 @@ case $option in
 	;;
 	remove)
 		remove
+	;;
+	update)
+		update
 	;;
 	*)
 		 echo "$usage"
