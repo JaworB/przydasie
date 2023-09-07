@@ -6,16 +6,18 @@ virsh_list=$(virsh list --all |awk '{print $2}'|sed 's/Name//')
 VM_net="internal" ### name of connection used by Vms
 post_clone="/share/git_repos/przydasie/scripts/bash/post_clone.sh"
 update_yml_location="/share/git_repos/przydasie/scripts/ansible/update.yml"
+backup_script_location="/share/git_repos/przydasie/scripts/bash/backup.sh"
 
 usage="
 Usage labenv.sh [options]
 Options
 	vms start/stop		start or stop all kvm VMs on host (eg. ./labenv.sh vms start)
-	auto on/off			enable or disable VMs autostart (eg. ./labenv.sh auto on)
-	status				check current status of kvm VMs
-	clone				clone defined host
-	remove				remove defined VM
-	update				runs update.yml file ${update_yml_location}
+	auto on/off		enable or disable VMs autostart (eg. ./labenv.sh auto on)
+	status		check current status of kvm VMs
+	clone		clone defined host
+	remove		remove defined VM
+	update		runs update.yml file ${update_yml_location}
+	backup		backup of vm xmls and FSs defined in ${backup_script_location}
 	"
 
 vms () {
@@ -171,6 +173,11 @@ net_state () {
 update () {
 	/usr/bin/ansible-playbook $update_yml_location
 }
+
+backup () {
+	${backup_script_location}
+}
+
 case $option in
 	vms)
 		vms
@@ -189,6 +196,9 @@ case $option in
 	;;
 	update)
 		update
+	;;
+	backup)
+		backup
 	;;
 	*)
 		 echo "$usage"
