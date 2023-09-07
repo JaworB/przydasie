@@ -1,0 +1,42 @@
+---
+- name: Enable internet services
+  hosts:
+    - ans2
+  become: true
+  tasks:
+    - name: install latest packages
+      dnf:
+        name:
+          - firewalld
+          - mariadb-server
+          - php
+          - httpd
+          - php-mysqlnd
+        state: latest
+    - name: ensure that firewalld service is enabled and running
+      service:
+        name: firewalld
+        state: started
+        enabled: yes
+    - name: enable httpd in firewall
+      firewalld:
+        service: http
+        state: enabled
+        permanent: true
+        immediate: true
+    - name: enable and start mariadb and httpd
+      service:
+        name: "{{ item }}"
+        state: started
+        enabled: true
+      with_items:
+        - httpd
+        - mariadb
+- name: test web serice on ans2 node
+  hosts: ans1
+  tasks:
+    - name: test http service on ans2 node
+      uri:
+        url: http://ans2
+        return_content: yes
+        status_code: 200

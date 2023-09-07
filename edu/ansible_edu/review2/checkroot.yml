@@ -1,0 +1,7 @@
+---
+- name: check free space
+  hosts: all
+  tasks:
+    - name: check free space
+      debug:
+        msg: Filesystem {{ ansible_mounts.mount }} of free space

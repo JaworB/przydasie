@@ -3,7 +3,7 @@
 (     (o___
  |      _ 7       Wilkommen
   \    (")
-  /     \ \   Docker test host
+  /     \ \   
  |    \ __/
  |        |
  (       /

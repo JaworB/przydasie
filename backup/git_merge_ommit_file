@@ -1,0 +1,4 @@
+git merge --no-ff --no-commit <merge-branch>
+git reset HEAD myfile.txt
+git checkout -- myfile.txt
+git commit -m "merged <merge-branch>"

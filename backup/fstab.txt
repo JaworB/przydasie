@@ -1,3 +1,0 @@
-/dev/mapper/share_vg-lv01	/share			btrfs	defaults	0 0
-/dev/mapper/docker_vg-lv01	/docker_services	btrfs	defaults	0 0
-/dev/mapper/vmstorage_vg-lv01	/vmstorage		btrfs	defaults	0 0 

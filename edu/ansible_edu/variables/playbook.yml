@@ -1,0 +1,51 @@
+---
+- name: Again install and enable httpd
+  hosts: dev
+  vars:
+    web_pkg: httpd
+    firewall_pkg: firewalld
+    web_service: httpd
+    firewall_service: firewalld
+    python_pkg: python3-PyMySQL
+    rule: http
+  tasks:
+    - name: required packages are intsalled and up to date
+      dnf:
+        name:
+          - "{{ web_pkg }}"
+          - "{{ firewall_pkg }}"
+          - "{{ python_pkg }}"
+        state: latest
+    - name: The {{ firewall_service }} service is started and enabled
+      service:
+        name: "{{ firewall_service }}"
+        state: started
+        enabled: true
+    - name: test html page is installed
+      copy:
+        src: files/index.html
+        dest: /var/www/html/index.html
+    - name: The {{ web_service }} service inst started and enabled
+      service:
+        name: "{{ web_service }}"
+        state: restarted
+        enabled: yes
+    - name: The {{ firewall_service }} rule for {{ web_service }} is applied
+      firewalld:
+        service: "{{ rule }}"
+        immediate: true
+        state: enabled
+        permanent: true
+- name: verify apache mariadb-server
+  hosts: localhost
+  become: false 
+  tasks:
+    - name: ensure web server is rechable
+      uri:
+        url: http://ans2
+        return_content: yes
+        status_code:
+          - 200
+
+
+  
