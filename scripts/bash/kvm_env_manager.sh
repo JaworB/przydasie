@@ -110,7 +110,7 @@ clone () {
 		virsh start $clone_name	
 		echo "Running post clone script"
 		sleep 50
-		scp -o StrictHostKeyChecking=no $post_clone $vm_to_clone:/roott
+		scp -o StrictHostKeyChecking=no $post_clone $vm_to_clone:/root
 		ssh -o StrictHostKeyChecking=no $vm_to_clone "./post_clone.sh $clone_name"
 		virsh start $vm_to_clone
 	fi
