@@ -1,0 +1,75 @@
+version: "3"
+
+services:
+  postgres:
+    container_name: awx_pg
+    image: docker.io/library/postgres:12
+    network_mode: bridge
+    ports:
+      - '5432:5432'
+    dns:
+      - 192.168.0.180
+    environment:
+      POSTGRES_USER: 'awx'
+      POSTGRES_PASSWORD: 'awxpass'
+      POSTGRES_DB: 'awx'
+    volumes:
+      - /srv/containers/postgresql/data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  redis:
+    image: docker.io/library/redis:latest
+    container_name: awx_redis
+    network_mode: bridge
+    depends_on:
+      - awx_pg
+    volumes:
+      - ./srv/containers/awx/redis/run:/var/run/redis:rw
+      - /srv/containers/awx/redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
+    command: /usr/local/etc/redis/redis.conf
+    restart: unless-stopped
+    
+  web:
+    container_name: awx_web
+    image:  docker.io/ansible/awx:17.1.0
+    network_mode: bridge
+    ports:
+      - '8052:8052'
+    volumes:
+      - supervisor-socket:/var/run/supervisor
+      - rsyslog-socket:/var/run/awx-rsyslog/
+      - rsyslog-config:/srv/containers/awx/rsyslog/
+      - /srv/containers/awx/web/SECRET_KEY:/etc/tower/SECRET_KEY
+      - /srv/containers/awx/web/environment.sh:/etc/tower/conf.d/environment.sh
+      - /srv/containers/awx/web/credentials.py:/etc/tower/conf.d/credentials.py
+      - /srv/containers/awx/web/nginx.conf:/etc/nginx/nginx.conf:ro
+      - /srv/containers/awx/redis/run:/var/run/redis/:rw
+      - /srv/containers/awx/projects:/var/lib/awx/projects:rw
+    command: /usr/bin/launch_awx.sh
+    restart: unless-stopped
+
+  task:
+    container_name: awx_task
+    image: vaultwarden/server:latest
+    network_mode: bridge
+    depends_on:
+      - awx_pg
+      - awx_redis
+    dns:
+      - 192.168.0.180
+    environment:
+      AWX_SKIP_MIGRATIONS: 1
+      SUPERVISOR_WEB_CONFIG_PATH: /etc/supervisord.conf
+    entrypoint:
+      - /usr/bin/tini
+    volumes:
+      - supervisor-socket:/var/run/supervisor
+      - rsyslog-socket:/var/run/awx-rsyslog/
+      - rsyslog-config:/srv/containers/awx/rsyslog/
+      - /srv/containers/awx/web/SECRET_KEY:/etc/tower/SECRET_KEY
+      - /srv/containers/awx/web/environment.sh:/etc/tower/conf.d/environment.sh
+      - /srv/containers/awx/web/credentials.py:/etc/tower/conf.d/credentials.py
+      - /srv/containers/awx/redis/run:/var/run/redis/:rw
+      - /srv/containers/awx/projects:/var/lib/awx/projects:rw
+    command: /usr/bin/launch_awx_task.sh
+    restart: unless-stopped
