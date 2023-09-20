@@ -1,0 +1,13 @@
+---
+packages:
+  - httpd
+  - firewalld
+services:
+  - firewalld
+  - httpd
+web_service: httpd
+fw_rule: 
+  - http
+  - https
+index_path: /var/www/html/index.html
+# defaults file for my_role

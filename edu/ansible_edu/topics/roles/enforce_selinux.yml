@@ -1,0 +1,40 @@
+---
+- name: Use selinux_role to set selinux to enforcing mode, and then change to permissive
+  hosts: servers
+  vars:
+    selinux_state: permissive
+    selinux_fscontext:
+      target: '/srv/www(/.*)?'
+      setype: 'httpd_sys_content_t'
+      state: present
+    selinux_restore_dirs:
+      - /srv/www
+  tasks:
+    - name: create dirs
+      file:
+        path: /srv/www
+        state: directory
+        mode: 0755
+    - name: dummy task
+      block:
+        - name: inculde selinux role
+          include_role:
+            name: linux-system-roles.selinux
+      rescue:
+        - name: Fail when role failed
+          fail:
+            msg: "Role failed"
+          when: not selinux_reboot_required
+
+        - name: Reaboot managed host
+          reboot:
+
+        - name: Wait for connection
+          wait_for_connection:
+            delay: 10
+            timeout: 300
+
+        - name: Reapply role
+          include_role:
+           name: linux-system-roles.selinux
+

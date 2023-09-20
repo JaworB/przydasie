@@ -1,0 +1,26 @@
+---
+- name: configure wev server
+  hosts: dev
+  tasks:
+    - name: Include env file and set vars
+      include_tasks: ./environment.yml
+      vars:
+        package: httpd
+        service: httpd
+    - name: impoert firewall task and set cars
+      import_tasks: firewall.yml
+      vars:
+        firewall_pkg: firewalld
+        firewall_svc: firewalld
+        rule:
+          - http
+          - https
+    - name: Import placeholder
+      import_tasks: placeholder.yml
+      vars:
+        file: /var/www/html/index.html
+
+- name: Import test play file and set var
+  import_playbook: test.yml
+  vars:
+    url: 'http://ans2'
