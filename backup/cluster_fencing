@@ -1,0 +1,35 @@
+Fencing
+
+Fencing xvm for kvm VMs
+V: Vhost
+N: cluser_node (vm)
+=============
+V: 
+#install fencing packages
+yum install fence-virt fence-virtd fence-virtd-libvirt fence-virtd-multicast fence-virtd-serial
+#Create fence key, and send to nodes
+mkdir -p /etc/cluster
+dd if=/dev/urandom of=/etc/cluster/fence_xvm.key bs=4k count=1
+scp /etc/cluster/fence_xvm.key <$nodename>:/etc/cluster/
+#init configuration (all options can be set to default)
+fence_virtd -c 
+#enable fence on VH
+systemctl enable fence_virtd --now
+firewall-cmd --add-port=1229/udp --permanent
+firewall-cmd --add-port=1229/tcp --permanent
+#verify fencing 
+fence_xvm -o list
+
+N:
+firewall-cmd --add-port=1229/udp --permanent
+firewall-cmd --add-port=1229/tcp --permanent
+dnf -y install fence-virt
+#verify cluster stonith property
+pcs -f stonith_cfg property
+#if !true
+pcs -f stonith_cfg property set stonith-enabled=true
+#create fence device for each node
+pcs stonith create fence-$node fence_xvm port=$node pcmk_host_list=$node
+#test fencing
+pcs cluster standby $node
+stonith_admin --reboot $node
