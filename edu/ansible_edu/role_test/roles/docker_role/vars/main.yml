@@ -1,3 +1,5 @@
+---
+# vars file for docker_role
 docker_packages:
   - docker-ce
   - docker-ce-cli

@@ -1,3 +1,5 @@
+---
+# tasks file for motd_role
 - name: Setup new motd on host
   template: 
     src: motd.j2
@@ -5,3 +7,4 @@
     owner: root
     group: root
     mode: 0444
+  tags: motd
