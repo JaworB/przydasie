@@ -17,6 +17,7 @@
     state: directory
     recurse: no
     mode: 0750
+  become: no
   loop:
     - "{{ vim_dir }}"
     - "{{ vim_dir }}/autoload"
@@ -25,6 +26,7 @@
   get_url:
     dest: "{{ vim_dir }}/autoload/pathogen.vim"
     url: https://tpo.pe/pathogen.vim
+  become: no
 - name: Deploy plugins
   git:
     dest: "{{ vim_dir }}/bundle/{{ item.name }}"
@@ -32,6 +34,7 @@
     clone: yes
     update: yes
     recursive: no
+  become: no
   loop:
   - name: vim-airline
     url: https://github.com/vim-airline/vim-airline
@@ -51,3 +54,4 @@
     dest: "{{ vimrc }}"
     backup: yes
     mode: 0640
+  become: no
