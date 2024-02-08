@@ -2,6 +2,7 @@
 - name: Init setup
   hosts: all
   become: yes
+  become_user: root
   tasks:
   - name: Load MOTD role
     include_role:
@@ -20,9 +21,9 @@
     tags:
       - always
 - name: Setup VIM
-  hosts: all
-  gather_facts: no
   become: no
+  hosts: all
+  gather_facts: true
   tasks:
   - name: Load VIM role
     include_role:
