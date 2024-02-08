@@ -1,0 +1,28 @@
+- name: debug os distro
+  debug:
+    var: ansible_facts['distribution']
+
+- name: add repo
+  yum_repository:
+    name: docker_repo
+    description: Repository for docker related packages
+    baseurl: https://download.docker.com/linux/fedora/docker-ce.repo
+  tags: docker
+  when: ansible_facts['distribution'] == "Fedora" 
+  
+- name: Install docker packages
+  dnf:
+    name: "{{ docker_packages }}"
+    state: latest
+  tags: docker
+
+- name: Update docker compose module
+  shell: ansible-galaxy collection install community.docker
+  tags: docker
+  
+- name: Enable docker service
+  service:
+    name: docker 
+    state: started
+    enabled: yes
+  tags: docker

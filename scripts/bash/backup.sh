@@ -27,9 +27,9 @@ remove_old_files (){
 #Remove old vm xml profiles. Create and backup new files.
 virsh_dump () {
     vm_list=$(virsh list --all |awk '{print $2}'|sed 's/Name//')
+    rm -f /vmstorage/xml/*
     for vm in $vm_list; do 
 			vmstate=$(virsh list --all |grep $vm |awk '{print $3}')
-      rm -f /vmstorage/xml/*
       virsh dumpxml $vm >> /vmstorage/xml/$vm.xml
 		done
     echo "=== VMs xmls backed up ==="

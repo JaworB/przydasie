@@ -1,0 +1,8 @@
+---
+- name: motd
+  ansible.builtin.include_tasks:
+    file: first.yml
+- name: Setup Docker serice
+  ansible.builtin.include_tasks:
+    file: docker_service.yaml
+  tags: docker
