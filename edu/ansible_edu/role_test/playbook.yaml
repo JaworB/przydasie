@@ -4,14 +4,30 @@
   become: yes
   become_user: root
   tasks:
+  - name: Load PACKAGES role
+    include_role:
+      name: packages_role
+      apply:
+        tags:
+          - packages
+    tags: always
+
   - name: Load MOTD role
     include_role:
       name: motd_role
       apply:
         tags:
         - motd
-    tags: always
+    tags: never
 
+  - name: Load NEOFETCH role
+    include_role:
+      name: neofetch_role
+      apply:
+        tags:
+        - neofetch
+    tags: always
+    
   - name: Load DOCKER role
     include_role:
       name: docker_role
@@ -20,11 +36,7 @@
         - docker
     tags:
       - always
-- name: Setup VIM
-  become: no
-  hosts: all
-  gather_facts: true
-  tasks:
+      
   - name: Load VIM role
     include_role:
       name: vim_role
