@@ -1,0 +1,25 @@
+---
+# tasks file for neofetch_role
+- name: install neofetch packages 
+  package: 
+    name:
+      - neofetch
+    state: installed
+  register: neofetch_install
+
+- name: Init neofetch
+  shell: /usr/bin/neofetch 
+  when: neofetch_install.changed
+
+- name: Copy neofetch config to affected host
+  copy: 
+    src: config.conf
+    dest: .config/neofetch/
+    mode: '0644'
+  when: neofetch_install.changed
+
+- name: Add entry in .bash_profile
+  lineinfile:
+    dest: ./.bash_profile
+    line: /usr/bin/neofetch --off
+  when: neofetch_install.changed
