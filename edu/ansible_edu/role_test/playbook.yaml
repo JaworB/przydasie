@@ -38,6 +38,7 @@
         - docker
     tags:
       - always
+
     when: ansible_facts['distribution'] == "Fedora" or 
           ansible_facts['distribution'] == "CentOS"
 
