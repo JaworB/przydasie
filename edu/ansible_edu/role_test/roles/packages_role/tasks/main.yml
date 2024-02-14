@@ -12,3 +12,4 @@
       - htop
       - bash-completion
       - bat.x86_64
+    state: latest
