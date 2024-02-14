@@ -1,2 +1,2 @@
 test        ansible_user=test_user
-dworzec     ansible_user=dworzec_user
+dworzec     ansible_user=dworzec_user ansible_port=2229
