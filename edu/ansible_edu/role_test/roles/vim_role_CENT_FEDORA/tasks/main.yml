@@ -6,7 +6,7 @@
       - vim-enhanced
       - git
       - powerline-fonts
-    state: installed
+    state: latest
   become: yes
   tags:
     - install_packages
