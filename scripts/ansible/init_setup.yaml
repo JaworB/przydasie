@@ -1,0 +1,26 @@
+---
+- name: Setup new host for next ansible playbooks
+  hosts: all
+  vars:
+    - ansible_user: root
+    - ansible_port: "22"
+    - remote_username: "{{ inventory_hostname + '_' + 'user'}}"
+  tasks:
+    - name: Load INIT role (Fedora/CentOS)
+      include_role:
+        name: FC_init_role
+        apply:
+          tags:
+            - init
+      tags: always
+      when: ansible_facts['distribution'] == "Fedora" or 
+            ansible_facts['distribution'] == "CentOS"
+
+    - name: Load INIT role (Ubuntu)
+      include_role:
+        name: U_init_role
+        apply:
+          tags:
+            - init
+      tags: always
+      when: ansible_facts['distribution'] == "Ubuntu"

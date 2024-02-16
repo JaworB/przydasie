@@ -4,5 +4,6 @@
       "file:///root/przydasie/scripts/ansible/test.yaml",
       "file:///root/przydasie/scripts/ansible/update.yml"
     ]
-  }
+  },
+  "ansible.python.interpreterPath": "/bin/python"
 }
