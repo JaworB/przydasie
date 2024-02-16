@@ -1,0 +1,64 @@
+---
+# tasks file for init_role_CENT_FEDORA
+
+  - name: Set hostname
+    hostname:
+      name: "{{ inventory_hostname }}"
+  
+  - name: "Create remote users accounts"
+    user:
+      name: "{{ remote_username }}"
+      groups: 'wheel'
+      home: /home/{{ remote_username }}
+      shell: /bin/bash
+
+  - name: "Create .ssh dir"
+    file:
+      path: /home/{{ remote_username }}/.ssh
+      state: directory
+      owner: "{{ remote_username }}"
+      group: "{{ remote_username }}"
+      mode: '0700'
+
+  - name: "Provide authorized_keys for ansible user"
+    copy:
+      src: files/authorized_keys
+      dest: /home/{{ remote_username }}/.ssh/authorized_keys
+      mode: '0700'
+      owner: "{{ remote_username }}"
+      group: "{{ remote_username }}"
+
+  - name: "Allow admin users to sudo without a password (Fedora/CentOS)"
+    lineinfile:
+      dest: "/etc/sudoers" # path: in version 2.3
+      state: "present"
+      regexp: "^#%wheel"
+      line: "%wheel ALL=(ALL) NOPASSWD: ALL"
+
+  - name: "Update host (Fedora/CentOS)"
+    package:
+      name: "*"
+      state: latest
+
+    tags: update
+  - name: Setup alternate SSH port
+    lineinfile:
+      dest: "/etc/ssh/sshd_config"
+      regexp: "^Port"
+      line: "Port 2229"
+    register: sshport_change
+
+  - name: Add new ssh port to firewall (Fedora/CentOS)
+    firewalld:
+      port: 2229/tcp
+      state: enabled
+      permanent: true
+
+  - name: Restart sshd service and firewall (Fedora/CentOS)
+    service:
+      name: "{{ item }}"
+      state: restarted
+    when: sshport_change.changed
+    with_items:
+      - sshd
+      - firewalld  
