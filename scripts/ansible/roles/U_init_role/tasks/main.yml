@@ -9,6 +9,7 @@
     groups: 'admin'
     home: /home/{{ remote_username }}
     shell: /bin/bash
+    password: "{{ usr_password | password_hash ('sha512') }}"
 
 - name: "Create .ssh dir"
   file:
