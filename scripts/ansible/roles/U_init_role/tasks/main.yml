@@ -3,6 +3,7 @@
 - name: Set hostname
   hostname:
     name: "{{ inventory_hostname }}"
+    
 - name: "Create remote users accounts"
   user:
     name: "{{ remote_username }}"
@@ -33,6 +34,11 @@
     state: "present"
     regexp: "^%admin"
     line: "%admin ALL=(ALL) NOPASSWD: ALL"
+
+- name: Setup prompt for remote 
+  lineinfile:
+    dest: /home/{{ remote_username }}/.profile
+    line: export PS1="\e[2;32m[\u@\h \W]\$ \e[0m"
 
 - name: "Update host (Ubuntu)"
   apt:
