@@ -1,0 +1,4 @@
+Hostname; ipv4_address; kernel; uptime
+{% for host in groups['all'] %}
+{{ hostvars[host]['ansible_hostname'] }}; {{ hostvars[host]['ansible_facts']['default_ipv4']['address'] }}; {{ hostvars[host]['ansible_kernel'] }}; {{ hostvars[host]['uptime_hours'] }}
+{% endfor %}
