@@ -1,0 +1,24 @@
+---
+# tasks file for u_wireguard_role
+- name: Install wireugard package
+  package:
+    name: wireguard
+    state: latest
+- name: Add UFW rule
+  ufw:
+    state: enabled
+    rule: allow
+    port: "{{ wg_listen_port }}"
+    proto: udp
+    comment: VPN
+- name: Copy wireguard config
+  copy:
+    src: vpn1.conf
+    dest: /etc/wireguard/
+    mode: 0640
+
+- name: Enable wireguard service
+  service:
+    name: wg-quick@vpn1
+    enabled: yes
+    state: started

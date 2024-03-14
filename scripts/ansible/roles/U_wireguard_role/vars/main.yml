@@ -1,0 +1,3 @@
+---
+# vars file for u_wireguard_role
+wg_listen_port: 51820
