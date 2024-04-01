@@ -1,69 +1,61 @@
 ---
 # tasks file for init_role_CENT_FEDORA
 
-  - name: Set hostname
-    hostname:
-      name: "{{ inventory_hostname }}"
-  
-  - name: "Create remote users accounts"
-    user:
-      name: "{{ remote_username }}"
-      groups: 'wheel'
-      home: /home/{{ remote_username }}
-      shell: /bin/bash
+- name: Set hostname
+  ansible.builtin.hostname:
+    name: "{{ inventory_hostname }}"
 
-  - name: "Create .ssh dir"
-    file:
-      path: /home/{{ remote_username }}/.ssh
-      state: directory
-      owner: "{{ remote_username }}"
-      group: "{{ remote_username }}"
-      mode: '0700'
+- name: "Create remote users accounts"
+  ansible.builtin.user:
+    name: "{{ remote_username }}"
+    groups: 'wheel'
+    home: /home/{{ remote_username }}
+    shell: /bin/bash
 
-  - name: "Provide authorized_keys for ansible user"
-    copy:
-      src: files/authorized_keys
-      dest: /home/{{ remote_username }}/.ssh/authorized_keys
-      mode: '0700'
-      owner: "{{ remote_username }}"
-      group: "{{ remote_username }}"
+- name: "Create .ssh dir"
+  ansible.builtin.file:
+    path: /home/{{ remote_username }}/.ssh
+    state: directory
+    owner: "{{ remote_username }}"
+    group: "{{ remote_username }}"
+    mode: '0700'
 
-  - name: "Allow admin users to sudo without a password (Fedora/CentOS)"
-    lineinfile:
-      dest: "/etc/sudoers" # path: in version 2.3
-      state: "present"
-      regexp: "^#%wheel"
-      line: "%wheel ALL=(ALL) NOPASSWD: ALL"
-      
-  - name: Setup prompt for remote 
-    lineinfile:
-      dest: /home/{{ remote_username }}/.bash_profile
-      line: export PS1="\e[2;34m[\u@\h \W]\$ \e[0m"
+- name: "Provide authorized_keys for ansible user"
+  ansible.builtin.copy:
+    src: files/authorized_keys
+    dest: /home/{{ remote_username }}/.ssh/authorized_keys
+    mode: '0700'
+    owner: "{{ remote_username }}"
+    group: "{{ remote_username }}"
 
-  - name: "Update host (Fedora/CentOS)"
-    package:
-      name: "*"
-      state: latest
+- name: "Allow admin users to sudo without a password (Fedora/CentOS)"
+  ansible.builtin.lineinfile:
+    dest: "/etc/sudoers" # path: in version 2.3
+    state: "present"
+    regexp: "^#%wheel"
+    line: "%wheel ALL=(ALL) NOPASSWD: ALL"
 
-    tags: update
-  - name: Setup alternate SSH port
-    lineinfile:
-      dest: "/etc/ssh/sshd_config"
-      regexp: "^Port"
-      line: "Port 2229"
-    register: sshport_change
+- name: Setup prompt for remote
+  ansible.builtin.lineinfile:
+    dest: /home/{{ remote_username }}/.bash_profile
+    line: export PS1="\e[2;34m[\u@\h \W]\$ \e[0m"
 
-  - name: Add new ssh port to firewall (Fedora/CentOS)
-    firewalld:
-      port: 2229/tcp
-      state: enabled
-      permanent: true
+- name: "Update host (Fedora/CentOS)"
+  ansible.builtin.package:
+    name: "*"
+    state: latest
+    update_only: true
+  tags: update
 
-  - name: Restart sshd service and firewall (Fedora/CentOS)
-    service:
-      name: "{{ item }}"
-      state: restarted
-    when: sshport_change.changed
-    with_items:
-      - sshd
-      - firewalld  
+- name: Setup alternate SSH port
+  ansible.builtin.lineinfile:
+    dest: "/etc/ssh/sshd_config"
+    regexp: "^Port"
+    line: "Port 2229"
+  notify: Restart sshd service and firewall (Fedora/CentOS)
+
+- name: Add new ssh port to firewall (Fedora/CentOS)
+  ansible.posix.firewalld:
+    port: 2229/tcp
+    state: enabled
+    permanent: true

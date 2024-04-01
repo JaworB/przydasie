@@ -1,34 +1,36 @@
 ---
 # tasks file for docker_role
 - name: Add docker repository Fedora
-  shell: dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+  ansible.builtin.command: dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
   when: ansible_facts['distribution'] == "Fedora"
+  changed_when: my_output.rc != 0
 
 - name: Install yum-utils package CentOS
-  package:
+  ansible.builtin.package:
     name: yum-utils
-    state: latest
+    state: present
   when: ansible_facts['distribution'] == "CentOS"
 
 - name: Add docker repository CentOS
-  shell: dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+  ansible.builtin.command: dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
   when: ansible_facts['distribution'] == "CentOS"
+  changed_when: my_output.rc != 0
 
 - name: Install docker packages
-  dnf:
+  ansible.builtin.dnf:
     name: "{{ docker_packages }}"
-    state: latest
+    state: present
   tags: docker
   register: install
 
 - name: Update docker compose module
-  shell: ansible-galaxy collection install community.docker
+  ansible.builtin.command: ansible-galaxy collection install community.docker
   tags: docker
-  when: install.changed
-  
+  changed_when: my_output.rc != 0
+
 - name: Enable docker service
-  service:
-    name: docker 
+  ansible.builtin.service:
+    name: docker
     state: started
-    enabled: yes
+    enabled: true
   tags: docker
