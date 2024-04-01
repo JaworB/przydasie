@@ -3,5 +3,5 @@
   hosts: all
   tasks:
     - name: Load INIT role (Fedora/CentOS)
-      include_role:
+      ansible.builtin.include_role:
         name: uptime_kernel_report_role
