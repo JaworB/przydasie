@@ -35,10 +35,10 @@
     regexp: "^#%wheel"
     line: "%wheel ALL=(ALL) NOPASSWD: ALL"
 
-- name: Setup prompt for remote
-  ansible.builtin.lineinfile:
-    dest: /home/{{ remote_username }}/.bash_profile
-    line: export PS1="\e[2;34m[\u@\h \W]\$ \e[0m"
+- name: "Disable Selinux on host"
+  ansible.posix.selinux:
+    state: disabled
+
 
 - name: "Update host (Fedora/CentOS)"
   ansible.builtin.package:
