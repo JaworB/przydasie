@@ -3,8 +3,9 @@
   hosts: all
   become: true
   vars:
-    ansible_user: ansible_usr
+    # ansible_user: ansible_usr
     ansible_port: "2229"
+    ansible_become_method: sudo
   vars_files:
     - secrets.yml
     - users.yml

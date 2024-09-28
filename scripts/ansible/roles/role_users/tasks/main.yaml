@@ -1,7 +1,49 @@
----
-- name: Create user on Centos
-  ansible.builtin.include_tasks: Centos.yml
-  when: ansible_distribution == "CentOS"
-- name: Create user on Ubuntu
-  ansible.builtin.include_tasks: Ubuntu.yml
-  when: ansible_distribution == "Ubuntu"
+- name: Create groups
+  ansible.builtin.group:
+    name: "{{ item.groups }}"
+    state: present
+  when: item.groups is defined
+  with_items: "{{ role_users_user_details }}"
+
+- name: Create users
+  ansible.builtin.user:
+    name: "{{ item.username }}"
+    groups: "{{ item.groups | default('') }}"
+    append: true
+    password: "{{ password | password_hash('sha512') }}"
+    state: present
+    comment: "Created with Ansible"
+  with_items: "{{ role_users_user_details }}"
+
+- name: Add user to sudoers
+  ansible.builtin.lineinfile:
+    dest: /etc/sudoers
+    insertafter: EOF
+    line: '{{ item.username }} ALL=(ALL) NOPASSWD: ALL'
+    regexp: '^{{ item.username }} .*'
+    state: present
+  when: item.sudoers is true
+  with_items: '{{ role_users_user_details }}'
+
+- name: Generate ssh_key pair for users
+  delegate_to: localhost
+  community.crypto.openssh_keypair:
+    path: ./files/{{ item.username }}
+  with_items: '{{ role_users_user_details }}'
+
+- name: Send ssh_key pair to remote hosts
+  ansible.builtin.copy:
+    src: ./files/{{ item.username }}.pub
+    dest: /home/{{ item.username }}/.ssh
+    owner: "{{ item.username }}"
+    group: "{{ item.username }}"
+    mode: "0600"
+  with_items: '{{ role_users_user_details }}'
+
+- name: Authorize admin pub_key in authorized_keys
+  ansible.posix.authorized_key:
+    user: "{{ item.username }}"
+    path: /home/{{ item.username }}/.ssh/authorized_keys
+    state: present
+    key: "{{ admin_pubkey }}"
+  with_items: "{{ role_users_user_details }}"
