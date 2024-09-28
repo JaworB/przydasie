@@ -1,0 +1,8 @@
+role_users_remote_username: "{{ inventory_hostname + '_' + 'user' }}"
+
+role_users_user_details:
+  - username: "{{ role_users_remote_username }}"
+    group: "{{ role_users_remote_username }}"
+    ssh_pubkey: "test-entry"
+  - username: ansible_usr
+    group: ansible_usr

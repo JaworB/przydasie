@@ -1,0 +1,31 @@
+- name: Create groups
+  ansible.builtin.group:
+    name: "{{ item.group }}"
+    state: present
+  loop: "{{ role_users_user_details }}"
+
+- name: Create users
+  ansible.builtin.user:
+    name: "{{ item.username }}"
+    groups: "{{ item.group }}"
+    password: "{{ password | password_hash('sha512') }}"
+    state: present
+  loop: "{{ role_users_user_details }}"
+
+- name: Provide required entry authorized_keys
+  ansible.builtin.copy:
+    src: ../files/authorized_keys
+    dest: /home/{{ item.username }}/.ssh/
+    owner: "{{ item.username }}"
+    group: "{{ item.username }}"
+    mode: '0644'
+    backup: true
+  loop: "{{ role_users_user_details }}"
+
+- name: Append user pubkey in authorized_keys
+  ansible.builtin.lineinfile:
+    dest: /home/{{ item.username }}/.ssh/authorized_keys
+    line: "{{ item.ssh_pubkey | default('#ansible: no use ssh_pubkey provided') }}"
+    state: present
+    insertafter: EOF
+  loop: "{{ role_users_user_details }}"

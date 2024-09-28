@@ -1,0 +1,7 @@
+---
+- name: Create user on Centos
+  ansible.builtin.include_tasks: Centos.yml
+  when: ansible_distribution == "CentOS"
+- name: Create user on Ubuntu
+  ansible.builtin.include_tasks: Ubuntu.yml
+  when: ansible_distribution == "Ubuntu"
