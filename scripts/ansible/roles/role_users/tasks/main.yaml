@@ -11,8 +11,8 @@
     groups: "{{ item.groups | default('') }}"
     append: true
     password: "{{ password | password_hash('sha512') }}"
-    state: present
-    comment: "Created with Ansible"
+    password_expire_max: -1
+    comment: "Created during provisioning"
   with_items: "{{ role_users_user_details }}"
 
 - name: Add user to sudoers
@@ -31,10 +31,17 @@
     path: ./files/{{ item.username }}
   with_items: '{{ role_users_user_details }}'
 
+- name: Create .ssh directory
+  ansible.builtin.file:
+    path: /home/{{ item.username }}/.ssh
+    state: directory
+    mode: '0750'
+  with_items: '{{ role_users_user_details }}'
+
 - name: Send ssh_key pair to remote hosts
   ansible.builtin.copy:
-    src: ./files/{{ item.username }}.pub
-    dest: /home/{{ item.username }}/.ssh
+    src: files/{{ item.username }}.pub
+    dest: /home/{{ item.username }}/.ssh/rsa.pub
     owner: "{{ item.username }}"
     group: "{{ item.username }}"
     mode: "0600"
@@ -43,7 +50,6 @@
 - name: Authorize admin pub_key in authorized_keys
   ansible.posix.authorized_key:
     user: "{{ item.username }}"
-    path: /home/{{ item.username }}/.ssh/authorized_keys
     state: present
-    key: "{{ admin_pubkey }}"
+    key: "{{ lookup('file', 'files/admin.pub') }}"
   with_items: "{{ role_users_user_details }}"

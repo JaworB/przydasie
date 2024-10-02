@@ -17,12 +17,6 @@
 #      ansible.builtin.hostname:
 #        name: "{{ inventory_hostname }}"
 #
-#    - name: Setup users
-#      ansible.builtin.user:
-#        name: "{{ remote_username }}"
-#        groups: 'wheel'
-#        home: /home/{{ remote_username }}
-#        shell: /bin/bash
 #
 #    - name: "Create .ssh dir"
 #      ansible.builtin.file:
