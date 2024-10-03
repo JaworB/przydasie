@@ -7,3 +7,4 @@ role_users_user_details:
   - username: ansible_usr
     groups: ansible_usr
     sudoers: true
+  - username: test
