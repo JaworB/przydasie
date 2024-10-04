@@ -1,0 +1,4 @@
+- name: Import tasks
+  block:
+    - name: Import tasks for RHEL like distro
+      ansible.builtin.import_tasks: rhel_like.yml

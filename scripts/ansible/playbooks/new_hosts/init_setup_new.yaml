@@ -13,34 +13,15 @@
     - name: Create users
       ansible.builtin.include_role:
         name: role_users
-#    - name: Set hostname
-#      ansible.builtin.hostname:
-#        name: "{{ inventory_hostname }}"
-#
-#
-#    - name: "Create .ssh dir"
-#      ansible.builtin.file:
-#        path: /home/{{ remote_username }}/.ssh
-#        state: directory
-#        owner: "{{ remote_username }}"
-#        group: "{{ remote_username }}"
-#        mode: '0700'
-#
-#    - name: "Provide authorized_keys for ansible user"
-#      ansible.builtin.copy:
-#        src: files/authorized_keys
-#        dest: /home/{{ remote_username }}/.ssh/authorized_keys
-#        mode: '0700'
-#        owner: "{{ remote_username }}"
-#        group: "{{ remote_username }}"
-#
-#    - name: "Allow admin users to sudo without a password (Fedora/CentOS)"
-#      ansible.builtin.lineinfile:
-#        dest: "/etc/sudoers" # path: in version 2.3
-#        state: "present"
-#        regexp: "^#%wheel"
-#        line: "%wheel ALL=(ALL) NOPASSWD: ALL"
-#
+
+    - name: Set hostname
+      ansible.builtin.hostname:
+        name: "{{ inventory_hostname }}"
+
+    - name: Setup ssh service
+      ansible.builtin.include_role:
+        name: role_ssh
+
 #    - name: "Disable Selinux on host"
 #      ansible.posix.selinux:
 #        state: disabled
