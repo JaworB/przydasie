@@ -3,7 +3,6 @@
   hosts: all
   become: true
   vars:
-    # ansible_user: ansible_usr
     ansible_port: "2229"
     ansible_become_method: sudo
   vars_files:
@@ -21,6 +20,8 @@
     - name: Setup ssh service
       ansible.builtin.include_role:
         name: role_ssh
+      # vars:
+      #   role_ssh_sshport: 2230
 
 #    - name: "Disable Selinux on host"
 #      ansible.posix.selinux:
@@ -33,15 +34,3 @@
 #        update_only: true
 #      tags: update
 #
-#    - name: Setup alternate SSH port
-#      ansible.builtin.lineinfile:
-#        dest: "/etc/ssh/sshd_config"
-#        regexp: "^Port"
-#        line: "Port 2229"
-#      notify: Restart sshd service and firewall (Fedora/CentOS)
-#
-#    - name: Add new ssh port to firewall (Fedora/CentOS)
-#      ansible.posix.firewalld:
-#        port: 2229/tcp
-#        state: enabled
-#        permanent: true
