@@ -1,0 +1,10 @@
+role_users_remote_username: "{{ inventory_hostname + '_' + 'user' }}"
+
+role_users_user_details:
+  - username: "{{ role_users_remote_username }}"
+    groups: wheel
+    sudoers: true
+  - username: ansible_usr
+    groups: ansible_usr
+    sudoers: true
+  - username: test

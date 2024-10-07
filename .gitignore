@@ -1,0 +1,3 @@
+scripts/ansible/playbooks/new_hosts/files/*
+.vscode/
+.vscode/settings.json

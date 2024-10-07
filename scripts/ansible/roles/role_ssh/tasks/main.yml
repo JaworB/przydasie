@@ -1,0 +1,8 @@
+- name: Import tasks
+  block:
+    - name: Import tasks for CentOS
+      ansible.builtin.import_tasks: rhel_like.yml
+      when: ansible_distribution == "CentOS"
+    - name: Import tasks for Ubuntu
+      ansible.builtin.import_tasks: ubuntu.yml
+      when: ansible_distribution == "Ubuntu"
