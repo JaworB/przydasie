@@ -10,11 +10,10 @@
     - name: Install required packages
       ansible.builtin.package:
         name:
-          - vim-enhanced
+          - vim
           - git
-          - powerline-fonts
           - fzf
-        state: installed
+        state: present
       become: true
       tags:
         - install_packages
@@ -43,7 +42,6 @@
         clone: true
         update: true
         recursive: false
-        version: latest # noqa: latest
       loop:
         - name: vim-airline
           url: https://github.com/vim-airline/vim-airline
