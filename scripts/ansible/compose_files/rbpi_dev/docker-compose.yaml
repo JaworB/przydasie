@@ -1,0 +1,56 @@
+services:
+  app:
+    image: 'jc21/nginx-proxy-manager:latest'
+    container_name: plain-proxy
+    network_mode: bridge
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '81:81'
+      - '443:443'
+    volumes:
+      - ./kontenery/nginx/data:/data
+      - ./kontenery/nginx/letsencrypt:/etc/letsencrypt
+
+  bitwarden:
+    container_name: vault
+    image: vaultwarden/server:latest
+      #    network_mode: bridge
+    volumes:
+       - ./kontenery/vault/vw-data:/data
+    ports:
+       - "892:80" #WebAccess
+    restart: unless-stopped
+
+  rickroll:
+    image: modem7/docker-rickroll
+    restart: unless-stopped
+    container_name: Rickroll
+    ports:
+      - 8180:8080
+    environment:
+      - TITLE="Rickroll" # Changes the title of the webpage
+
+  webtest:
+    image: nginx:latest
+    container_name: webtest
+    volumes:
+      - ./kontenery/webhost/site-content:/usr/share/nginx/html
+    ports:
+      - 8080:80
+    restart: unless-stopped
+
+  webtest-gritter:
+    image: nginx:latest
+    container_name: webtest-gritter
+    volumes:
+      - /root/repos/gritt-ify:/usr/share/nginx/html
+    ports:
+      - 8081:80
+    restart: unless-stopped
+
+  cloudflare-tunnel:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflare-tunnel
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run --token eyJhIjoiN2MzOGQ4Y2ZjZmRlYzA2OWY1MjI0ZmI0OThlZjZkYjgiLCJ0IjoiZTRjZjVjMWYtNTMzOS00MGQ1LWFiOGEtODMzNzBiNWU1OTJlIiwicyI6IjhobUNFNmNEVFd3dDZJN1FhUDk3aDlGZGZFMzNQNGxVWWFwdWdlM0grRjA9In0=
