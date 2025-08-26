@@ -5,5 +5,5 @@
       "file:///root/przydasie/scripts/ansible/update.yml"
     ]
   },
-  "ansible.python.interpreterPath": "/home/dworzec_user/ansible_env/bin/python"
+  "ansible.python.interpreterPath": "/home/bree_user/ansible_latest/bin/python"
 }
