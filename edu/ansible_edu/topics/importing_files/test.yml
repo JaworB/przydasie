@@ -1,0 +1,13 @@
+---
+  - name: test web service
+    hosts: localhost
+    tasks:
+      - name: connect to web server
+        uri:
+          url: "{{ url }}"
+          return_content: yes
+          status_code: 200
+        register: result
+      - name: Show connect result
+        debug:
+          var: result.content

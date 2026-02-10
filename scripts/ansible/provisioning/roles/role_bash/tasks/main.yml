@@ -1,0 +1,6 @@
+- name: Copy custom bash.profile
+  ansible.builtin.copy:
+    src: bashrc
+    dest: /home/{{ role_users_remote_username }}/.bashrc
+    owner: "{{ role_users_remote_username }}"
+    mode: '0644'

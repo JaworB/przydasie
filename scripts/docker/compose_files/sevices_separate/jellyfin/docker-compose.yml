@@ -1,0 +1,15 @@
+version: '3.5'
+services:
+  jellyfin:
+    image: jellyfin/jellyfin
+    container_name: jellyfin
+    network_mode: bridge
+    ports:
+      - "885:8096"
+    volumes:
+      - ./config:/config
+      - ./cache:/cache
+      - ./filmy/:/filmy
+      - ./audiobook/:/audiobook
+      - ./media2:/media2:ro
+    restart: 'unless-stopped'

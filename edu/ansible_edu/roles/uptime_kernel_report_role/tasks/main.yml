@@ -1,0 +1,11 @@
+---
+# tasks file for uptime_kernel_report_role
+- name: setu up fact
+  set_fact:
+    uptime_hours: "{{ (ansible_facts.uptime_seconds/86400)|round(2) }} days"
+
+- name: Parse info to local raport file
+  ansible.builtin.template:
+    src: hosts.j2
+    dest: "{{ report_file }}"
+  delegate_to: localhost

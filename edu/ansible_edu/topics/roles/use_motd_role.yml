@@ -1,0 +1,5 @@
+---
+- name: Setup motd using custom rule
+  hosts: all
+  roles:
+    - my_new_role

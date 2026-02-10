@@ -1,0 +1,82 @@
+---
+# tasks file for init_role_UBUNTU
+- name: Set hostname
+  hostname:
+    name: "{{ inventory_hostname }}"
+    
+- name: "Create remote users accounts"
+  user:
+    name: "{{ remote_username }}"
+    groups: 'admin'
+    home: /home/{{ remote_username }}
+    shell: /bin/bash
+    password: "{{ usr_password | password_hash ('sha512') }}"
+
+- name: "Create .ssh dir"
+  file:
+    path: /home/{{ remote_username }}/.ssh
+    state: directory
+    owner: "{{ remote_username }}"
+    group: "{{ remote_username }}"
+    mode: '0700'
+
+- name: "Provide authorized_keys for ansible user"
+  copy:
+    src: files/authorized_keys
+    dest: /home/{{ remote_username }}/.ssh/authorized_keys
+    mode: '0700'
+    owner: "{{ remote_username }}"
+    group: "{{ remote_username }}"
+
+- name: "Allow admin users to sudo without a password (Ubuntu)"
+  lineinfile:
+    dest: "/etc/sudoers"
+    state: "present"
+    regexp: "^%admin"
+    line: "%admin ALL=(ALL) NOPASSWD: ALL"
+
+- name: Setup prompt for remote 
+  lineinfile:
+    dest: /home/{{ remote_username }}/.profile
+    line: export PS1="\e[2;32m[\u@\h \W]\$ \e[0m"
+
+- name: Disable default motd
+  shell: chmod -x /etc/update-motd.d/*
+
+- name: "Update host (Ubuntu)"
+  apt:
+    name: "*"
+    state: latest
+    update_cache: yes
+    cache_valid_time: 3600
+  when: ansible_distribution=="Ubuntu"
+  tags: update
+
+- name: Setup alternate SSH port
+  lineinfile:
+    dest: "/etc/ssh/sshd_config"
+    regexp: "^Port"
+    line: "Port 2229"
+  register: sshport_change
+
+- name: Add hostname entry to /etc/hosts
+  lineinfile:
+    dest: "/etc/hosts"
+    line: "{{ ansible_hostname 127.0.0.1 }}"
+
+- name: Enable UFW and add new ssh port
+  ufw:
+    state: enabled
+    rule: allow
+    port: 2229
+    proto: tcp
+    comment: default SSH port
+
+- name: Restart sshd service and firewall (Ubuntu)
+  service:
+    name: "{{ item }}"
+    state: restarted
+  when: sshport_change.changed
+  with_items:
+    - sshd
+    - ufw

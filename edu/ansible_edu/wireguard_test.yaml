@@ -1,0 +1,7 @@
+---
+- name: Setup new host for next ansible playbooks
+  hosts: dworzec
+  tasks:
+    - name: Load Wiregiard role
+      ansible.builtin.include_role:
+        name: U_wireguard_role

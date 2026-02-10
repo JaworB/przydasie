@@ -1,0 +1,5 @@
+---
+- name: Use my role to setup web service
+  hosts: all
+  roles:
+    - my_role

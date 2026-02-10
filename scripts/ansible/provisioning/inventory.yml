@@ -1,0 +1,14 @@
+test:
+  hosts:
+    ubuntu1:
+      ansible_user: ansible_user
+
+infra:
+  hosts:
+    bree:
+      ansible_port: 2229
+      ansible_host: 10.66.66.2
+    shire:
+      ansible_port: 22
+      ansible_host: 10.66.66.3
+    

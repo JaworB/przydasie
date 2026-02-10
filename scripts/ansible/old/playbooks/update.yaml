@@ -1,0 +1,66 @@
+---
+- name: Update prepare
+  hosts: localhost
+  gather_facts: no
+  vars:
+    additional_bridge: true
+    bridge_name: int_bridge
+  tasks:
+    - name: Check if {{ bridge_name }} is active
+      shell: nmcli connection show --active |grep int | awk '{print $1}'
+      register: nmcli_command_result
+      when: additional_bridge is true
+
+    - name: Start internal bridge
+      command:
+        cmd: nmcli con up int_bridge
+      when: 
+        - additional_bridge is true  
+        - bridge_name not in nmcli_command_result.stdout
+    
+    - name: Ensure that vms are running
+      community.libvirt.virt:
+        name: "{{ item }}"
+        state: running
+      with_inventory_hostnames:
+        - infra
+
+- name: Upgrade all hosts
+  hosts: all
+  gather_facts: no
+  vars:
+    sync_etc_hosts: true
+  tasks:
+    - name: Verify if hosts are up and running
+      wait_for_connection:
+        delay: 5
+        timeout: 300
+          
+    - name: Sync /etc/hosts file on hosts
+      copy:
+        src: /etc/hosts
+        dest: /etc/hosts
+      when: sync_etc_hosts is true
+
+    - name: Upgrade all packages to latest version
+      dnf:
+        name: "*"
+        state: latest 
+      register: update
+
+    - name: Reboot updated hosts
+      reboot:
+      when: update.changed
+    
+    - name: Wait for host startup after reboot
+      wait_for_connection:
+        delay: 10
+        timeout: 300
+      when: update.changed
+
+- name: Shutdown testhosts
+  hosts: testhosts
+  gather_facts: no
+  tasks:
+    - name: Shutdown
+      community.general.shutdown:

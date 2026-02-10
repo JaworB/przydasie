@@ -1,0 +1,118 @@
+---
+- name: Ensure that docker is configured
+  hosts: localhost
+  gather_facts: no
+  become: yes
+  vars:
+    pkg:
+    - docker-ce
+    - docker-ce-cli
+    - containerd.io
+    - docker-compose
+    - docker-compose-plugin
+  tasks:
+    - name: Add docker repository
+      yum_repository:
+        name: docker-ce
+        baseurl: https://download.docker.com/linux/fedora/docker-ce.repo
+        description: docker install repository
+        enabled: yes
+
+    - name: Ensure that required docker packages are installed
+      dnf:
+        name: "{{ pkg }}"
+        state: latest  
+
+    - name: Update docker compose module
+      shell: ansible-galaxy collection install community.docker
+    
+    - name: Enable docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+- name: Start pihole with docker
+  hosts: localhost
+  gather_facts: no
+  become: no
+  vars_prompt:
+    - name: install_path
+      prompt: Where it should be installed? (e.g /docker_services/pihole_server)
+      private: false
+    - name: ip_address
+      prompt: Provide IP address that will be used for pihole webgui (e.g 192.168.0.180)
+      private: false
+    - name: web_port
+      prompt: Provide desired port numb. for web gui (e.g 80)
+      private: false
+    - name: pi_pass
+      prompt: Provide password for pihole
+
+  tasks:
+    - name: change ip address
+      lineinfile:
+        path: files/docker-compose.yaml
+        search_string: SERVER_IP
+        line: "      SERVER_IP: '{{ ip_address }}'"
+    - name: change web port
+      lineinfile:
+        path: files/docker-compose.yaml
+        search_string: WEB_PORT
+        line: "      WEB_PORT: '{{ web_port }}'"
+    - name: change password
+      lineinfile:
+        path: files/docker-compose.yaml
+        search_string: WEBPASSWORD
+        line: "      WEBPASSWORD: '{{ pi_pass }}'"
+
+    - name: Disable systemd-resolved service
+      service:
+        name: systemd-resolved
+        state: stopped
+        enabled: no
+
+    - name: Add temporary nameserver in /etc/resolv.conf
+      lineinfile:
+        path: /etc/resolv.conf
+        state: present
+        line: 'nameserver 1.1.1.1'
+
+    - name: Enable required services in firewalld (dhcp, dns)
+      firewalld:
+        service: "{{ item }}"
+        permanent: yes
+        state: enabled
+        immediate: yes
+      with_items:
+        - http
+        - dhcp
+        - dns
+
+    - name: Enable custom web gui port in firewall ( {{ web_port }}/tcp )
+      firewalld:
+        port: "{{ web_port }}/tcp"
+        permanent: yes
+        state: enabled
+        immediate: yes
+
+    - name: Create install directory {{ install_path }}
+      file:
+        path: "{{ install_path }}"
+        state: directory
+
+    - name: Copy docker compose and env files
+      copy:
+        src: files/docker-compose.yaml
+        dest: "{{ install_path }}"
+        mode: 0641
+
+    - name: Start container
+      community.docker.docker_compose:
+        project_src: "{{ install_path }}"
+
+    - name: Remove temporary entry from /etc/resolv.conf
+      lineinfile:
+        path: /etc/resolv.conf
+        state: absent
+        line: 'nameserver 1.1.1.1'

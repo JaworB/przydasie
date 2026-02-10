@@ -1,0 +1,15 @@
+- name: Create raport
+  hosts: all
+  vars:
+    report_file: "./raport.csv"
+  tasks:
+    - name: Setup up fact
+      ansible.builtin.set_fact:
+        uptime_hours: "{{ (ansible_facts.uptime_seconds / 86400) | round(2) }} days"
+
+    - name: Parse info to local raport file
+      ansible.builtin.template:
+        src: hosts.j2
+        dest: "{{ report_file }}"
+        mode: '0644'
+      delegate_to: localhost

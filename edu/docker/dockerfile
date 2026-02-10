@@ -1,0 +1,8 @@
+FROM ubuntu:latest
+RUN apt-get update && apt-get install -y \
+    sudo\
+    ssh
+RUN useradd -ms /bin/bash ansible_user
+COPY src/id_rsa.pub /home/ansible_user/.ssh/authorized_keys
+COPY src/sudo /etc/sudoers.d/ansible_user
+CMD service ssh start && tail -f /var/log/lastlog 

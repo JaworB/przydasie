@@ -1,0 +1,14 @@
+---
+# Ansible Galaxy requirements for external roles
+# Install with: ansible-galaxy install -r requirements.yml
+
+roles:
+  # Example:
+  # - src: geerlingguy.docker
+  #   version: 4.2.0
+  #   name: docker
+
+collections:
+  # Example:
+  # - name: community.general
+  #   version: 8.0.0

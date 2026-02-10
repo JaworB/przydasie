@@ -1,0 +1,239 @@
+{
+  "main": {
+    "id": "71f8c9fcf734db17",
+    "type": "split",
+    "children": [
+      {
+        "id": "ae04eaeb9a6bb406",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "609f5f7020c90357",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Edu/index.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "index"
+            }
+          },
+          {
+            "id": "b947701cd2dfb859",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Edu/Ansible-Concepts/04-Modules.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "04-Modules"
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "6740765495c6593e",
+    "type": "split",
+    "children": [
+      {
+        "id": "a2a3ec4f8b7628bf",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "4841863c33acabe0",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "c4adacbbed89b008",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "55b10e887fdca503",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "0710217211450741",
+    "type": "split",
+    "children": [
+      {
+        "id": "2c5eea21086a26a4",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "19969390bb0d3af7",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Edu/index.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for index"
+            }
+          },
+          {
+            "id": "be9bb1c13d912c28",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Edu/index.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from index"
+            }
+          },
+          {
+            "id": "6b35efccc578d4ab",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "b3da8de91351c287",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "b055a1243365639e",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Edu/index.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of index"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "b947701cd2dfb859",
+  "lastOpenFiles": [
+    "Edu/Ansible-Concepts/03-Roles.md",
+    "Edu/Ansible-Concepts/02-Inventory.md",
+    "Edu/Ansible-Concepts/01-Playbooks.md",
+    "Edu/Bash-Scripting-Concepts/05-Control-Flow.md",
+    "Edu/Ansible-Concepts/19-Error-Handling.md",
+    "Edu/Ansible-Concepts/18-Blocks.md",
+    "Edu/Ansible-Concepts/17-Tags.md",
+    "Edu/Ansible-Concepts/16-Collections.md",
+    "Edu/Ansible-Concepts/15-Delegation.md",
+    "Edu/Ansible-Concepts/14-Filters.md",
+    "Edu/Ansible-Concepts/13-Lookups.md",
+    "Edu/Ansible-Concepts/12-Facts.md",
+    "Edu/Ansible-Concepts/11-Privilege-Escalation.md",
+    "Edu/Ansible-Concepts/10-Handlers.md",
+    "Edu/Ansible-Concepts/09-Templates.md",
+    "Edu/Ansible-Concepts/08-Vault.md",
+    "Edu/Ansible-Concepts/07-Variables.md",
+    "Edu/Ansible-Concepts/06-Loops.md",
+    "Edu/Ansible-Concepts/05-Conditionals.md",
+    "Edu/Ansible-Concepts/04-Modules.md",
+    "Edu/Bash-Scripting-Concepts/01-Shebang.md",
+    "Edu/index.md",
+    "Manuals/Arch_after_install/01-DisplayLink-Setup.md",
+    "Manuals/Arch_after_install/03-Lid-Switch-Automation.md",
+    "Manuals/Arch_after_install/02-DisplayLink-Dock-Setup.md",
+    "Manuals/Arch_after_install/scripts/fix-cursor-vertical.sh",
+    "Manuals/Arch_after_install/scripts/toggle-dock-mode.sh",
+    "Manuals/Arch_after_install/scripts/lid-handler-daemon.sh",
+    "Manuals/Arch_after_install/Lid-Switch-Automation.md",
+    "Manuals/Arch_after_install/scripts",
+    "Manuals/Arch_after_install",
+    "Manuals",
+    "Obsidian",
+    "Edu/Bash-Scripting-Concepts",
+    "Edu"
+  ]
+}

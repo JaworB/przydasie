@@ -1,0 +1,7 @@
+---
+- name: Setup new host for next ansible playbooks
+  hosts: all
+  tasks:
+    - name: Load INIT role (Fedora/CentOS)
+      ansible.builtin.include_role:
+        name: uptime_kernel_report_role

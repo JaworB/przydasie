@@ -1,0 +1,22 @@
+execute pathogen#infect()
+syntax on
+filetype plugin indent on
+set number
+
+" Configuration vim Airline
+set laststatus=2
+
+let g:airline#extensions#tabline#enabled=1
+let g:airline_powerline_fonts=1
+
+" Configuration NERDTree
+map <F5> :NERDTreeToggle<CR>
+
+" Start NERDTree when Vim is started without file arguments.
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
+
+" Configuration floaterm
+let g:floaterm_keymap_toggle = '<F12>'
+let g:floaterm_width = 0.9
+let g:floaterm_height = 0.9

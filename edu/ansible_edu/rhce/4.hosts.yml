@@ -1,0 +1,9 @@
+---
+- name: Setup /etc/hosts with j2
+  hosts: all
+  tasks:
+    - name: Setup hosts2 file on prod
+      template:
+        src: hosts.j2
+        dest: /etc/hosts2
+      when: inventory_hostname not in groups.dev

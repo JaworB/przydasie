@@ -1,0 +1,57 @@
+- name: Check for required services
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - firewalld
+    - openssh
+
+- name: Set custom ssh port in config
+  ansible.builtin.lineinfile:
+    dest: "/etc/ssh/sshd_config"
+    regexp: "^#Port"
+    line: "Port {{ role_ssh_sshport | default('2229') }}"
+  notify: Restart sshd service
+
+- name: Enable PubkeyAuthentication
+  ansible.builtin.lineinfile:
+    dest: "/etc/ssh/sshd_config"
+    regexp: "^PubkeyAuthentication"
+    line: "PubkeyAuthentication yes"
+  notify: Restart sshd service
+
+- name: Harden ssh service
+  ansible.builtin.lineinfile:
+    dest: "/etc/ssh/sshd_config"
+    regexp: "^{{ item }}"
+    line: "{{ item }} no"
+  loop:
+    - ChallengeResponseAuthentication
+    - PasswordAuthentication
+    - UsePAM
+    - PermitRootLogin
+  notify: Restart sshd service
+
+- name: Ensure that services are started and enabled
+  ansible.builtin.service:
+    name: "{{ item }}"
+    state: started
+    enabled: true
+  loop:
+    - firewalld
+    - sshd
+
+- name: Enable sshd port in firewalld
+  ansible.posix.firewalld:
+    port: "{{ role_ssh_sshport | default('2229') }}/tcp"
+    permanent: true
+    state: enabled
+  notify: Restart firewalld service
+
+- name: Add custom sshd port to SELinux
+  community.general.seport:
+    ports: "{{ role_ssh_sshport | default('2229') }}"
+    proto: tcp
+    setype: ssh_port_t
+    state: present
+  when: ansible_facts.selinux.status == "enabled"
