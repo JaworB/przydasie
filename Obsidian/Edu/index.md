@@ -66,6 +66,43 @@
   - [[Git-Concepts/Git-GitHub-Workflow/03-Securing-Data]] - Vault, .env pattern
   - [[Git-Concepts/Git-GitHub-Workflow/04-Removing-Credentials]] - Clean history
 
+### JavaScript
+- [[JavaScript-Concepts/index]] - JavaScript fundamentals (start here)
+- [[JavaScript-Concepts/01-Introduction]] - What is JavaScript, ES6+
+- [[JavaScript-Concepts/02-Variables-Constants]] - let, const, var
+- [[JavaScript-Concepts/03-Functions]] - declarations, arrow functions
+- [[JavaScript-Concepts/04-Objects]] - object literals, methods
+- [[JavaScript-Concepts/05-Arrays]] - methods, iteration
+- [[JavaScript-Concepts/06-Conditionals]] - if, switch, ternary
+- [[JavaScript-Concepts/07-Loops]] - for, while, forEach
+- [[JavaScript-Concepts/08-Async-Basics]] - promises, async/await
+- [[JavaScript-Concepts/09-Modules]] - import, export
+- [[JavaScript-Concepts/10-Best-Practices]] - coding standards
+
+### Python
+- [[Python-Concepts/index]] - Python fundamentals (start here)
+- [[Python-Concepts/01-Introduction]] - What is Python, syntax
+- [[Python-Concepts/02-Variables-Types]] - dynamic typing, data types
+- [[Python-Concepts/03-Functions]] - def, args, kwargs
+- [[Python-Concepts/04-Data-Structures]] - lists, dicts, tuples, sets
+- [[Python-Concepts/05-Control-Flow]] - if, for, while
+- [[Python-Concepts/06-OOP]] - classes, inheritance
+- [[Python-Concepts/07-Files-IO]] - open, read, write
+- [[Python-Concepts/08-Virtual-Environments]] - venv, pip
+- [[Python-Concepts/09-Best-Practices]] - PEP 8, coding standards
+
+### Docker & Containers
+- [[Docker-Concepts/index]] - Container fundamentals (start here)
+- [[Docker-Concepts/01-Introduction]] - What is Docker, containers vs VMs
+- [[Docker-Concepts/02-Images]] - Dockerfile, building images
+- [[Docker-Concepts/03-Containers]] - running, managing containers
+- [[Docker-Concepts/04-Networking]] - port mapping, networks
+- [[Docker-Concepts/05-Volumes]] - data persistence
+- [[Docker-Concepts/06-Docker-Compose]] - multi-container apps
+- [[Docker-Concepts/07-Podman]] - Podman basics (Docker alternative)
+- [[Docker-Concepts/08-Containerization]] - best practices, security
+- [[Docker-Concepts/09-Cheatsheet]] - Quick reference
+
 ## Topics Covered
 
 ### Bash Scripting
@@ -111,6 +148,37 @@
 - Tags (lightweight vs annotated)
 - Git aliases for productivity
 - GitHub workflow (SSH, credentials, history cleanup)
+
+### JavaScript
+- Variables (let, const, var)
+- Functions (declarations, arrow functions)
+- Objects and object methods
+- Arrays and array methods
+- Conditionals (if, switch, ternary)
+- Loops (for, while, forEach)
+- Async basics (promises, async/await)
+- Modules (import, export)
+- ES6+ features and best practices
+
+### Python
+- Variables and dynamic typing
+- Data structures (lists, dicts, tuples, sets)
+- Functions (def, args, kwargs)
+- Control flow (if, for, while)
+- Object-oriented programming (classes)
+- File I/O operations
+- Virtual environments (venv, pip)
+- PEP 8 coding standards
+
+### Docker & Containers
+- Container fundamentals (containers vs VMs)
+- Docker images and Dockerfile
+- Container management (run, stop, logs)
+- Container networking (ports, networks)
+- Data volumes and persistence
+- Docker Compose for multi-container apps
+- Podman as Docker alternative
+- Container security and best practices
 
 ## Related
 
