@@ -14,29 +14,14 @@
               "type": "markdown",
               "state": {
                 "file": "Edu/index.md",
-                "mode": "source",
+                "mode": "preview",
                 "source": false
               },
               "icon": "lucide-file",
               "title": "index"
             }
-          },
-          {
-            "id": "b947701cd2dfb859",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Edu/Ansible-Concepts/04-Modules.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "04-Modules"
-            }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -198,8 +183,21 @@
       "bases:Create new base": false
     }
   },
-  "active": "b947701cd2dfb859",
+  "active": "4841863c33acabe0",
   "lastOpenFiles": [
+    "Edu/Git-Concepts/Git-GitHub-Workflow/07-Best-Practices.md",
+    "Edu/Git-Concepts/Git-GitHub-Workflow/06-Warnings.md",
+    "Edu/Git-Concepts/Git-GitHub-Workflow/05-Commands.md",
+    "Edu/Git-Concepts/Git-GitHub-Workflow/04-Removing-Credentials.md",
+    "Edu/Git-Concepts/Git-GitHub-Workflow/03-Securing-Data.md",
+    "Edu/Git-Concepts/Git-GitHub-Workflow/02-SSH-Keys.md",
+    "Edu/Git-Concepts/Git-GitHub-Workflow/01-Initial-Setup.md",
+    "Edu/Git-Concepts/Git-GitHub-Workflow/index.md",
+    "Edu/Git-Concepts/Git-GitHub-Workflow",
+    "Edu/Git-Concepts/02-Core-Concepts.md",
+    "Edu/Git-Concepts/01-Introduction.md",
+    "Edu/Git-GitHub-Workflow.md",
+    "Edu/Ansible-Concepts/04-Modules.md",
     "Edu/Ansible-Concepts/03-Roles.md",
     "Edu/Ansible-Concepts/02-Inventory.md",
     "Edu/Ansible-Concepts/01-Playbooks.md",
@@ -214,21 +212,9 @@
     "Edu/Ansible-Concepts/12-Facts.md",
     "Edu/Ansible-Concepts/11-Privilege-Escalation.md",
     "Edu/Ansible-Concepts/10-Handlers.md",
-    "Edu/Ansible-Concepts/09-Templates.md",
-    "Edu/Ansible-Concepts/08-Vault.md",
-    "Edu/Ansible-Concepts/07-Variables.md",
-    "Edu/Ansible-Concepts/06-Loops.md",
-    "Edu/Ansible-Concepts/05-Conditionals.md",
-    "Edu/Ansible-Concepts/04-Modules.md",
-    "Edu/Bash-Scripting-Concepts/01-Shebang.md",
-    "Edu/index.md",
-    "Manuals/Arch_after_install/01-DisplayLink-Setup.md",
-    "Manuals/Arch_after_install/03-Lid-Switch-Automation.md",
-    "Manuals/Arch_after_install/02-DisplayLink-Dock-Setup.md",
     "Manuals/Arch_after_install/scripts/fix-cursor-vertical.sh",
     "Manuals/Arch_after_install/scripts/toggle-dock-mode.sh",
     "Manuals/Arch_after_install/scripts/lid-handler-daemon.sh",
-    "Manuals/Arch_after_install/Lid-Switch-Automation.md",
     "Manuals/Arch_after_install/scripts",
     "Manuals/Arch_after_install",
     "Manuals",

@@ -28,6 +28,16 @@ Comprehensive guide to Git version control system concepts.
 15. [[15-Tips-Best-Practices]] - conventions, warnings
 16. [[16-Cheatsheet]] - Quick command reference
 
+### GitHub Workflow
+17. [[Git-GitHub-Workflow/index]] - GitHub-specific workflows
+    - [[Git-GitHub-Workflow/01-Initial-Setup]] - Create repo, init, first commit
+    - [[Git-GitHub-Workflow/02-SSH-Keys]] - SSH key generation and setup
+    - [[Git-GitHub-Workflow/03-Securing-Data]] - Vault files, .env pattern
+    - [[Git-GitHub-Workflow/04-Removing-Credentials]] - Remove secrets from history
+    - [[Git-GitHub-Workflow/05-Commands]] - Common commands
+    - [[Git-GitHub-Workflow/06-Warnings]] - Important cautions
+    - [[Git-GitHub-Workflow/07-Best-Practices]] - Recommendations
+
 ## Overview
 
 This guide covers Git concepts used for:
@@ -44,6 +54,5 @@ This guide covers Git concepts used for:
 
 ## Related
 
-- [[Git-GitHub-Workflow]] - Advanced workflows for GitHub
 - [[Ansible-Concepts]] - Ansible Vault for secrets
 - [[Bash-Scripting-Concepts]] - Automation scripts
