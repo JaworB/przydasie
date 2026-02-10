@@ -1,0 +1,23 @@
+---
+- name: mariadb server is running
+  hosts: dev
+  vars:
+    mariadb_packages:
+      - mariadb-server
+      - python3-PyMySQL
+    db_service: mariadb
+  tasks:
+    - name: Mariadb packages ares installed
+      dnf:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ mariadb_packages }}"
+      when: ansible_distribution == "Fedora"
+      notify: restart {{ db_service }}
+
+  handlers: 
+    - name: restart {{ db_service }}
+      service:
+        name: "{{ db_service }}"
+        state: restarted
+        enabled: yes

@@ -1,0 +1,10 @@
+users:
+  - username: dupa1
+    job: dev
+    expire_day: 30
+  - username: dupa2
+    job: mngr
+    epire_day: 30
+  - username: dupa3
+    job: dev
+    expire_day: 30

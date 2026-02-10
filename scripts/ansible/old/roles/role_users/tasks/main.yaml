@@ -1,0 +1,78 @@
+- name: Create groups
+  ansible.builtin.group:
+    name: "{{ item.groups }}"
+    state: present
+  when: item.groups is defined
+  loop: "{{ role_users_user_details }}"
+
+- name: Create users - with password
+  ansible.builtin.user:
+    name: "{{ item.username }}"
+    groups: "{{ item.groups | default('') }}"
+    append: true
+    create_home: true
+    password: "{{ password | password_hash('sha512') }}"
+    password_expire_max: -1
+    comment: "Created during provisioning"
+  loop: "{{ role_users_user_details }}"
+  when: password is defined
+
+- name: Create users - without password (locked)
+  ansible.builtin.user:
+    name: "{{ item.username }}"
+    groups: "{{ item.groups | default('') }}"
+    append: true
+    create_home: true
+    password: "*"
+    password_expire_max: -1
+    comment: "Created during provisioning"
+  loop: "{{ role_users_user_details }}"
+  when: password is undefined
+
+- name: Add user to sudoers
+  ansible.builtin.lineinfile:
+    dest: /etc/sudoers
+    insertafter: EOF
+    line: '{{ item.username }} ALL=(ALL) NOPASSWD: ALL'
+    regexp: '^{{ item.username }} .*'
+    state: present
+  when: item.sudoers is true
+  loop: '{{ role_users_user_details }}'
+
+- name: Create temporary directory for ssh_keys
+  delegate_to: localhost
+  ansible.builtin.file:
+    path: /tmp/ssh_keys
+    state: directory
+    mode: '0755'
+
+- name: Generate ssh_key pair for users
+  delegate_to: localhost
+  community.crypto.openssh_keypair:
+    path: /tmp/ssh_keys/{{ item.username }}
+  loop: '{{ role_users_user_details }}'
+
+- name: Create .ssh directory
+  ansible.builtin.file:
+    path: /home/{{ item.username }}/.ssh
+    state: directory
+    mode: '0750'
+    modification_time: preserve
+    access_time: preserve
+  loop: '{{ role_users_user_details }}'
+
+- name: Send ssh_key pair to remote hosts
+  ansible.builtin.copy:
+    src: /tmp/ssh_keys/{{ item.username }}.pub
+    dest: /home/{{ item.username }}/.ssh/rsa.pub
+    owner: "{{ item.username }}"
+    group: "{{ item.username }}"
+    mode: "0600"
+  loop: '{{ role_users_user_details }}'
+
+- name: Authorize admin pub_key in authorized_keys
+  ansible.posix.authorized_key:
+    user: "{{ item.username }}"
+    state: present
+    key: "{{ lookup('file', 'files/main.pub') }}"
+  loop: "{{ role_users_user_details }}"

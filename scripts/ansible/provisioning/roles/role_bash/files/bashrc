@@ -1,0 +1,96 @@
+# ~/.bashrc: executed by bash(1) for non-login shells.
+
+# Note: PS1 and umask are already set in /etc/profile. You should not
+# need this unless you want different defaults for root.
+# PS1='${debian_chroot:+($debian_chroot)}\h:\w\$ '
+# umask 022
+
+# You may uncomment the following lines if you want `ls' to be colorized:
+export LS_OPTIONS='--color=auto'
+eval "$(dircolors)"
+alias ls='ls $LS_OPTIONS'
+alias ll='ls $LS_OPTIONS -l --group-directories-first'
+alias la='ls $LS_OPTIONS -la --group-directories-first'
+alias l='ls $LS_OPTIONS -lA --group-directories-first'
+#Some more alias to avoid making mistakes:
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+alias temp='vcgencmd measure_temp'
+
+#Moje skróty
+cd() {
+    builtin cd "$@" && ls -l
+}
+extract() {
+    if [ -z ${1} ] || [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+        echo "Usage: extract <archive> [directory]"
+        echo "Example: extract presentation.zip."
+        echo "Valid archive types are:"
+        echo "tar.bz2, tar.gz, tar.xz, tar, bz2, gz, tbz2,"
+        echo "tbz, tgz, lzo, rar, zip, 7z, xz, txz, lzma and tlz"S
+    else
+        case "$1" in
+            *.tar.bz2|*.tbz2|*.tbz)         tar xvjf "$1" ;;
+            *.tgz)                          tar zxvf "$1" ;;
+            *.tar.gz)                       tar xvzf "$1" ;;
+            *.tar.xz)                       tar xvJf "$1" ;;
+            *.tar)                          tar xvf "$1" ;;
+            *.rar)                          7z x "$1" ;;
+            *.zip)                          unzip "$1" ;;
+            *.7z)                           7z x "$1" ;;
+            *.lzo)                          lzop -d  "$1" ;;
+            *.gz)                           gunzip "$1" ;;
+            *.bz2)                          bunzip2 "$1" ;;
+            *.Z)                            uncompress "$1" ;;
+            *.xz|*.txz|*.lzma|*.tlz)        xz -d "$1" ;;
+            *) echo "Sorry, '$1' could not be decompressed." ;;
+        esac
+    fi
+}
+
+function set_bash_prompt () {
+        # Color codes for easy prompt building
+        COLOR_DIVIDER="\[\e[30;1m\]"
+        COLOR_CMDCOUNT="\[\e[34;1m\]"
+        COLOR_USERNAME="\[\e[34;1m\]"
+        COLOR_USERHOSTAT="\[\e[34;1m\]"
+        COLOR_HOSTNAME="\[\e[34;1m\]"
+        COLOR_GITBRANCH="\[\e[33;1m\]"
+        COLOR_VENV="\[\e[33;1m\]"
+        COLOR_GREEN="\[\e[32;1m\]"
+        COLOR_PATH_OK="\[\e[32;1m\]"
+        COLOR_PATH_ERR="\[\e[31;1m\]"
+        COLOR_NONE="\[\e[0m\]"
+        # Change the path color based on return value.
+        if test $? -eq 0 ; then
+                PATH_COLOR=${COLOR_PATH_OK}
+        else
+                PATH_COLOR=${COLOR_PATH_ERR}
+        fi
+        # Set the PS1 to be "[workingdirectory:commandcount"
+    PS1="${COLOR_DIVIDER}[${PATH_COLOR}\w${COLOR_DIVIDER}:"
+
+        # Add git branch portion of the prompt, this adds ":branchname"
+        if ! git_loc="$(type -p "$git_command_name")" || [ -z "$git_loc" ]; then
+                # Git is installed
+                if [ -d .git ] || git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+                        # Inside of a git repository
+                        GIT_BRANCH=$(git symbolic-ref --short HEAD)
+                        PS1="${PS1}:${COLOR_GITBRANCH}${GIT_BRANCH}${COLOR_DIVIDER}"
+                fi
+        fi
+        # Add Python VirtualEnv portion of the prompt, this adds ":venvname"
+        if ! test -z "$VIRTUAL_ENV" ; then
+                PS1="${PS1}:${COLOR_VENV}`basename \"$VIRTUAL_ENV\"`${COLOR_DIVIDER}"
+        fi
+        # Close out the prompt, this adds "]\n[username@hostname] "
+        PS1="${PS1}]\n${COLOR_DIVIDER}[${COLOR_USERNAME}\u${COLOR_USERHOSTAT}@${COLOR_HOSTNAME}\h${COLOR_DIVIDER}]${COLOR_NONE} "
+}
+
+# Tell Bash to run the above function for every prompt
+export PROMPT_COMMAND=set_bash_prompt
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

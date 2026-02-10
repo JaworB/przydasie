@@ -1,0 +1,64 @@
+---
+- name: Init setup
+  hosts: all
+  become: true
+  become_user: root
+  tasks:
+    - name: Load PACKAGES role (Fedora/CentOS)
+      ansible.builtin.include_role:
+        name: packages_role
+        apply:
+          tags:
+            - packages
+      tags: always
+      when: ansible_facts['distribution'] == "Fedora" or
+            ansible_facts['distribution'] == "CentOS"
+
+    - name: Load MOTD role
+      ansible.builtin.include_role:
+        name: motd_role
+        apply:
+          tags:
+            - motd
+      tags: never
+
+    - name: Load NEOFETCH role
+      ansible.builtin.include_role:
+        name: neofetch_role
+        apply:
+          tags:
+            - neofetch
+      tags: always
+
+    - name: Load DOCKER role (Fedora/CentOS)
+      ansible.builtin.include_role:
+        name: FC_docker_role
+        apply:
+          tags:
+            - docker
+      tags:
+        - always
+
+      when: ansible_facts['distribution'] == "Fedora" or
+            ansible_facts['distribution'] == "CentOS"
+
+    - name: Load DOCKER role Ubuntu
+      ansible.builtin.include_role:
+        name: U_docker_role
+        apply:
+          tags:
+            - docker
+      tags:
+        - always
+      when: ansible_facts['distribution'] == "Ubuntu"
+
+    - name: Load VIM role (Fedora/CentOS)
+      ansible.builtin.include_role:
+        name: FC_vim_role
+        apply:
+          tags:
+            - vim
+      tags:
+        - always
+      when: ansible_facts['distribution'] == "Fedora" or
+            ansible_facts['distribution'] == "CentOS"

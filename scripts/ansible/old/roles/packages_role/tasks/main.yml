@@ -1,0 +1,15 @@
+---
+# tasks file for packages_role
+- name: Ensure that nano editor is absent
+  package:
+    name: 
+      - nano
+    state: absent
+- name: Install additional packages
+  package:
+    name:
+      - vim
+      - htop
+      - bash-completion
+      - bat.x86_64
+    state: latest

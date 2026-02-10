@@ -1,0 +1,38 @@
+---
+- name: Create lv on host
+  hosts: all
+  vars:
+    lvname: lvname
+    vgname: vg01
+  tasks:
+    - name: Create lv
+      block:
+      - name: create lv with default size
+        lvol:
+          lv: "{{ lvname }}"
+          vg: "{{ vgname }}"
+          size: 2000
+        register: result
+        when: lvname not in ansible_lvm["lvs"]  
+      rescue:
+      - name: Check if there is a space for smaller lv
+        debug:
+          msg: "Not enough free space, creating lv with half size"
+        when: '"has insufficient free space" in result.err'
+
+      - name: Fail if vg does not exist
+        fail:
+          msg: "VG does not exist"
+        when: vgname not in ansible_facts['lvm']['vgs']
+
+      - name: Create smaller lv
+        lvol:
+          lv: lvname
+          vg: vg01
+          size: 1000
+        when: lvname not in ansible_lvm["lvs"]
+
+      - name: create an xfs fs
+        filesystem:
+          fstype: xfs
+          dev: /dev/vg01/lvname

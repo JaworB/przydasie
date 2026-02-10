@@ -1,0 +1,17 @@
+- name: Install rsyslog package
+  ansible.builtin.package:
+    name: rsyslog
+    state: present
+
+- name: Copy rsyslog config file
+  ansible.builtin.template:
+    src: rsyslog_template.j2
+    dest: /etc/rsyslog.conf
+    mode: '0644'
+    owner: root
+
+- name: Start and enable rsyslog service
+  ansible.builtin.service:
+    name: rsyslog
+    state: restarted
+    enabled: true

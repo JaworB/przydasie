@@ -1,0 +1,29 @@
+---
+- name: Install wireguard packages (Debian/Ubuntu)
+  ansible.builtin.package:
+    name:
+      - wireguard
+      - wireguard-tools
+      - resolvconf
+    state: present
+  when: ansible_os_family == "Debian"
+
+- name: Install wireguard packages (RedHat)
+  ansible.builtin.dnf:
+    name:
+      - wireguard-tools
+    state: present
+  when: ansible_os_family == "RedHat"
+
+- name: Copy config template
+  ansible.builtin.template:
+    src: wireguard_template.j2
+    dest: /etc/wireguard/wg0.conf
+    mode: '0644'
+    owner: root
+
+- name: Enable and start wireguard service
+  ansible.builtin.service:
+    name: wg-quick@wg0.service
+    enabled: true
+    state: started

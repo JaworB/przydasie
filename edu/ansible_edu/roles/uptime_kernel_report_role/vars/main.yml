@@ -1,0 +1,3 @@
+---
+# vars file for uptime_kernel_report_role
+report_file: "./raport.csv"

@@ -1,0 +1,8 @@
+---
+- name: test
+  hosts: dev
+  tasks:
+    - name: isntall
+      dnf:
+        name: httpd
+        state: latest

@@ -1,0 +1,10 @@
+---
+# tasks file for motd_role
+- name: Setup new motd on host
+  ansible.builtin.template:
+    src: motd.j2
+    dest: /etc/motd
+    owner: root
+    group: root
+    mode: '0644'
+  tags: motd

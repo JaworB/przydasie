@@ -1,0 +1,24 @@
+---
+- name: Install required packages
+  dnf:
+    name: "{{ item }}"
+    state: latest
+  loop: "{{ packages }}"
+- name: ensure services are started
+  service:
+    name: "{{ item }}"
+    state: started
+  loop: "{{ services }}"
+- name: add rule to firewall service
+  firewalld:
+    service: "{{ item }}"
+    permanent: true
+    immediate: true
+    state: enabled
+  loop: "{{ fw_rule }}"
+  notify: restart_web
+- name: send template to {{ index_path }}
+  template:
+    src: index.j2
+    dest: /var/www/html/index.html
+  notify: restart_web

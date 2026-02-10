@@ -1,0 +1,18 @@
+This system {{ ansible_facts['hostname'] }} is managed by Ansible
+FQDN = {{ ansible_facts['fqdn'] }}
+MEMORY = {{ ansible_memtotal_mb }}
+DISK_VDA_SIZE = {{ ansible_devices.vda.size }}
+DISK_VDB_SIZE = {{ ansible_devices.vdb.size|default('NONE') }}
+   _
+ _( )_
+(     (o___
+ |      _ 7       Wilkommen
+  \    (")
+  /     \ \   
+ |    \ __/
+ |        |
+ (       /
+  \     /
+   )   /(_
+   |  (___)
+    \___)

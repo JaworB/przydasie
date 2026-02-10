@@ -1,0 +1,38 @@
+---
+- name: Create users on affectedhosts
+  hosts: all
+  vars_files:
+    - password.yml
+    - users.yml
+  tasks:
+    - name: create dev group on dev hosts
+      group:
+        name: dev
+      when: inventory_hostname in groups.dev
+    - name: create mngr group on prods
+      group:
+        name: mngr
+      when: inventory_hostname in groups.prod
+    - name: Register expire date in epoch format
+      shell: date --date="+30 days" +%s^C
+      register: result
+    - name: epoch debug
+      debug:
+        msg: "{{ result }}" 
+    - name: Create developers on dev hosts
+      user:
+        name: "{{ item.username }}"
+        groups: "{{ item.job }}"
+        password: "{{ dev_password | password_hash ('sha512') }}"
+        expires: "{{ result.stdout }}"
+      when: ( inventory_hostname in groups.dev ) and ( 'dev' in item.job )
+      loop: "{{ users }}"
+
+    - name: Create managesrs on prod hosts
+      user:
+        name: "{{ item.username }}"
+        groups: "{{ item.job }}"
+        password: "{{ man_password | password_hash ('sha512') }}"
+        expires: "{{ result.stdout }}"
+      when: ( inventory_hostname in groups.prod ) and ( 'mngr' in item.job )
+      loop: "{{ users }}"

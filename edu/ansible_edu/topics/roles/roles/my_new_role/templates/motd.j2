@@ -1,0 +1,8 @@
+This system {{ ansible_facts['hostname'] }} is managed by Anxible
+FQDN = {{ ansible_facts['fqdn'] }}
+BIOS = {{ ansible_bios_version }}
+MEMORY = {{ ansible_memtotal_mb }}
+DISK_VDA_SIZE = {{ ansible_devices.vda.size }}
+DISK_VDB_SIZE = {{ ansible_devices.vdb.size|default('NONE') }}
+
+In case of issues questions or whatever - please contact {{ server_owner }}

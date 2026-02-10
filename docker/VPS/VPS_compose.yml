@@ -1,0 +1,69 @@
+version: "3"
+services:
+  nginx:
+    container_name: nginx-proxy
+    image: 'jc21/nginx-proxy-manager:latest'
+    network_mode: bridge
+    ports:
+      - "80:80"
+      - "81:81"
+      - "443:443"
+    volumes:
+      - ./nginx/data:/data
+      - ./nginx/letsencrypt:/etc/letsencrypt
+    restart: unless-stopped
+  bitwarden:
+    container_name: vault
+    image: vaultwarden/server:latest
+    network_mode: bridge
+    volumes:
+       - ./vault/vw-data:/data
+    ports:
+    - "892:80" #WebAccess
+    restart: unless-stopped
+  valheim:
+    image: mbround18/valheim:latest
+    network_mode: bridge
+    container_name: valheim
+    stop_signal: SIGINT
+    ports:
+      - "2456:2456/udp"
+      - "2457:2457/udp"
+      - "2458:2458/udp"
+      - "8456:8456/tcp"
+    environment:
+      PORT: 2456
+      NAME: "Jawor - Valheim"
+      WORLD: "SZPIL"
+      PASSWORD: "${VALHEIM_PASSWORD}"
+      TZ: "Europe/Warsaw"
+      MODIFIERS: portals=casual,raids=none
+      PUBLIC: 1
+      AUTO_BACKUP: 1
+      AUTO_BACKUP_REMOVE_OLD: 1
+      AUTO_BACKUP_DAYS_TO_LIVE: 3
+      AUTO_BACKUP_SCHEDULE: "0 6 * * *"
+      HTTP_PORT: 8456
+    volumes:
+      - ./valheim/saves:/home/steam/.config/unity3d/IronGate/Valheim
+      - ./valheim/server:/home/steam/valheim
+      - ./valheim/backups:/home/steam/backups
+    restart: unless-stopped
+
+  foundry:
+    image: felddy/foundryvtt:release
+    container_name: vtt
+    hostname: my_foundry_host
+    volumes:
+      - type: bind
+        source: ./foundry_vtt
+        target: /data
+    environment:
+      - FOUNDRY_PASSWORD="${FOUNDRY_PASSWORD}"
+      - FOUNDRY_USERNAME="${FOUNDRY_USERNAME}"
+      - FOUNDRY_ADMIN_KEY="${FOUNDRY_ADMIN_KEY}"
+    ports:
+      - target: 30000
+        published: 30000
+        protocol: tcp
+    restart: unless-stopped

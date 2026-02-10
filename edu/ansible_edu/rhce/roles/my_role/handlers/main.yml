@@ -1,0 +1,6 @@
+---
+- name: restart_web
+  service:
+    name: "{{ web_service }}"
+    state: restarted
+# handlers file for my_role

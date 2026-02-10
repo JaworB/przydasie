@@ -1,0 +1,25 @@
+# Secrets and sensitive data
+*.secret
+password.yml
+*.vault.yml
+.vscode/
+*.pem
+*.key
+
+# Docker
+docker/**/*.env
+!docker/**/*.env.example
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+*.swp
+*~
+
+# Python
+__pycache__/
+*.py[cod]
+venv/

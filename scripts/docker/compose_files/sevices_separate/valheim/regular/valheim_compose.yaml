@@ -1,0 +1,51 @@
+- name: Setup Valheim server container
+  hosts: localhost
+  gather_facts: yes
+  become: no
+  vars:
+    install_path: /docker_services/valheim-server
+
+  tasks:
+    - name: Dodaj repo do pobrania paczek dockera
+      shell: dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+
+    - name: Sprawdź wymagane paczki dockera
+      dnf:
+        name: " {{ item }}"
+        state: present
+      with_items:
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
+        - docker-compose
+        - docker-compose-plugin
+
+    - name: Aktualizacja modułu ansible - docker compose
+      shell: ansible-galaxy collection install community.docker
+    
+    - name: Uruchom dockera
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Stórz nowy katalog dla serwera w home roota
+      file:
+        path: "{{ item }}"
+        state: directory
+      with_items:
+      - '{{ install_path }}/config'
+      - '{{ install_path }}/data'
+
+    - name: Skopiuj pliki konfiguracyjne do katalogu z serwerem
+      copy:
+        src: "{{ item }}"
+        dest: '{{ install_path }}'
+        mode: 0640
+      with_items:
+      - docker-compose.yaml
+      - valheim.env
+
+    - name: Start kontenera
+      community.docker.docker_compose:
+        project_src: '{{ install_path }}'

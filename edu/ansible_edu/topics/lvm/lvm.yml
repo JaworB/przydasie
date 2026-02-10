@@ -1,0 +1,51 @@
+---
+- name: Manage lvm on hosts
+  hosts: prod
+  vars_files:
+    - storage_vars.yml
+  tasks:
+    - name: Manage partition on device
+      parted:
+        device: /dev/vdb
+        state: present
+        number: "{{ item.number }}"
+        part_start: "{{ item.start }}"
+        part_end: "{{ item.end }}"
+      loop: "{{ partitions }}"
+    - name: Ensure that vg exists
+      lvg:
+        vg: "{{ item.name }}"
+        pvs: "{{ item.devices }}"
+      loop: "{{ volume_groups }}"
+
+    - name: Create logical volumes
+      lvol:
+        lv: "{{ item.name }}"
+        vg: "{{ item.vggroup }}"
+        size: "{{ item.size }}"
+      loop: "{{ logical_volumes }}"
+      when: item.name not in ansible_lvm["lvs"]
+      
+    - name: Ensure XFS filestsem exist on each LV
+      filesystem:
+        dev: "/dev/{{ item.vggroup }}/{{ item.name }}"
+        type: xfs
+      loop: "{{ logical_volumes }}"
+
+    - name: Ensure correct capacity of each LV
+      lvol:
+        vg: "{{ item.vggroup }}"
+        lv: "{{ item.name }}"
+        size: "{{ item.size }}"
+        resizefs: yes
+        force: yes
+      loop: "{{ logical_volumes }}"
+
+    - name: Ensure that FSs are mounted
+      mount:
+        path: "{{ item.mount_path }}"
+        src: "/dev/{{ item.vggroup }}/{{ item.name }}"
+        fstype: xfs
+        opts: noatime
+        state: mounted
+      loop: "{{ logical_volumes }}"

@@ -1,0 +1,4 @@
+---
+wireguard_addresses:
+  - "10.66.66.6/32"
+wireguard_allowed_ips: "10.66.66.0/24"

@@ -1,0 +1,8 @@
+---
+# vars file for docker_role
+docker_packages:
+  - docker-ce
+  - docker-ce-cli
+  - containerd.io
+  - docker-compose-plugin
+  - ansible

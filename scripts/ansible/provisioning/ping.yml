@@ -1,0 +1,7 @@
+---
+- name: Pinbonk
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Boink
+      ansible.builtin.ping:

@@ -1,0 +1,65 @@
+---
+- name: Setup webservice
+  hosts: all
+  vars:
+    selinux_state: enforcing
+    selinux_fcontexts:
+      - {target: '/webdev(/.*)?', setype: 'httpd_sys_content_t', state: 'present'}
+    selinux_restore_dirs:
+      - /webdev
+  tasks:
+    - name: Craete directory /webdev
+      file:
+        path: /webdev
+        state: directory
+        mode: '2755'
+
+    - name: Create link to dir
+      file:
+        src: /webdev
+        dest: /var/www/html/webdev
+        state: link
+    - name: isntal package
+      dnf:
+        name: httpd
+        state: latest
+    - name: start service
+      service:
+        name: httpd
+        state: started
+    - name: Add rule to firewall
+      firewalld:
+        service: http
+        state: enabled
+        permanent: true
+        immediate: true
+    - name: copy template
+      template:
+        src: index.j2
+        dest: /webdev/index.html
+      notify: restart web
+
+    - name: Ensure selinux policy
+      block:
+        - name: Include role
+          include_role:
+            name: linux-system-roles.selinux
+      rescue:
+        - name: handle errors
+          fail:
+            msg: 'role failed'
+          when: not selinux_reboot_required
+        - name: Restart managed hosts
+          reboot:
+        - name: wait for connection
+          wait_for_connection:
+            delay: 10
+            timeout: 300
+        - name: Reapply role
+          include_role:
+            name: linux-system-roles.selinux
+  handlers:
+    - name: restart web
+      service:
+        name: httpd
+        state: restarted

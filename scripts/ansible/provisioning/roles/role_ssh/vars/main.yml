@@ -1,0 +1,9 @@
+role_ssh_rbpi_packages:
+  - ssh
+  - firewalld
+role_ssh_rhel_packages:
+  - firewalld
+  - openssh
+role_ssh_ubuntu_packages:
+  - ssh
+  - firewalld
