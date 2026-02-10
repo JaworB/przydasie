@@ -42,6 +42,30 @@
 - [[Ansible-Concepts/18-Blocks]] - Blocks
 - [[Ansible-Concepts/19-Error-Handling]] - Error handling
 
+### Git & Version Control
+- [[Git-Concepts/index]] - Git fundamentals (start here)
+- [[Git-Concepts/01-Introduction]] - What is Git, features
+- [[Git-Concepts/02-Core-Concepts]] - Repository, Commit, Branch, HEAD
+- [[Git-Concepts/03-Git-Internals]] - SHA-1, Blob/Tree/Commit objects
+- [[Git-Concepts/04-Getting-Started]] - git init, git clone
+- [[Git-Concepts/05-Basic-Workflow]] - status, add, commit
+- [[Git-Concepts/06-Inspection]] - log, diff, show, blame
+- [[Git-Concepts/07-Undo-Fix]] - restore, reset, revert, amend
+- [[Git-Concepts/08-Branching]] - branch, checkout, merge, conflicts
+- [[Git-Concepts/09-Rebase]] - interactive rebase, squash, reword
+- [[Git-Concepts/10-Git-Bisect]] - binary search for bug finding
+- [[Git-Concepts/11-Stashing]] - stash, stash pop
+- [[Git-Concepts/12-Remotes]] - remote, push, pull, fetch
+- [[Git-Concepts/13-Tags]] - lightweight vs annotated tags
+- [[Git-Concepts/14-Aliases]] - common shortcuts
+- [[Git-Concepts/15-Tips-Best-Practices]] - conventions, warnings
+- [[Git-Concepts/16-Cheatsheet]] - Quick command reference
+- [[Git-Concepts/Git-GitHub-Workflow/index]] - GitHub workflows
+  - [[Git-Concepts/Git-GitHub-Workflow/01-Initial-Setup]] - Create repo, SSH setup
+  - [[Git-Concepts/Git-GitHub-Workflow/02-SSH-Keys]] - SSH authentication
+  - [[Git-Concepts/Git-GitHub-Workflow/03-Securing-Data]] - Vault, .env pattern
+  - [[Git-Concepts/Git-GitHub-Workflow/04-Removing-Credentials]] - Clean history
+
 ## Topics Covered
 
 ### Bash Scripting
@@ -75,6 +99,18 @@
 - Tags (selective execution)
 - Blocks (grouping tasks)
 - Error handling (ignore_errors, rescue)
+
+### Git & Version Control
+- Git basics (init, clone, add, commit)
+- Repository structure (local and remote)
+- Branching and merging strategies
+- Interactive rebase (squash, reword, edit)
+- Git bisect for bug finding
+- Stashing changes
+- Remote operations (push, pull, fetch)
+- Tags (lightweight vs annotated)
+- Git aliases for productivity
+- GitHub workflow (SSH, credentials, history cleanup)
 
 ## Related
 
