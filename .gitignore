@@ -9,6 +9,8 @@ password.yml
 # Docker
 docker/**/*.env
 !docker/**/*.env.example
+scripts/docker/**/.env
+!scripts/docker/**/.env.example
 
 # OS files
 .DS_Store

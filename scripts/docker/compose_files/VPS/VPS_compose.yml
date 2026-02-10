@@ -35,7 +35,7 @@ services:
       PORT: 2456
       NAME: "Jawor - Valheim"
       WORLD: "SZPIL"
-      PASSWORD: "[REMOVED]"
+      PASSWORD: "${VALHEIM_PASSWORD}"
       TZ: "Europe/Warsaw"
       MODIFIERS: portals=casual,raids=none
       PUBLIC: 1
@@ -59,9 +59,9 @@ services:
         source: ./foundry_vtt
         target: /data
     environment:
-      - FOUNDRY_PASSWORD=[REMOVED]
-      - FOUNDRY_USERNAME=[REMOVED]
-      - FOUNDRY_ADMIN_KEY=[REMOVED]
+      - FOUNDRY_PASSWORD="${FOUNDRY_PASSWORD}"
+      - FOUNDRY_USERNAME="${FOUNDRY_USERNAME}"
+      - FOUNDRY_ADMIN_KEY="${FOUNDRY_ADMIN_KEY}"
     ports:
       - target: 30000
         published: 30000
