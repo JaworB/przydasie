@@ -1,5 +1,4 @@
-# Opencode
-
+l
 Understanding and extending the Opencode CLI AI agent system.
 
 ## What is Opencode?
