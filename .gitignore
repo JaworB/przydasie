@@ -25,3 +25,7 @@ Thumbs.db
 __pycache__/
 *.py[cod]
 venv/
+
+# Obsidian
+Obsidian/.obsidian/workspace.json
+Obsidian/.obsidian/app.json
