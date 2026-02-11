@@ -103,6 +103,18 @@
 - [[Docker-Concepts/08-Containerization]] - best practices, security
 - [[Docker-Concepts/09-Cheatsheet]] - Quick reference
 
+### AI & Machine Learning
+- [[AI-Concepts/index]] - AI fundamentals (start here)
+- [[AI-Concepts/01-Introduction]] - What is AI, types, history
+- [[AI-Concepts/02-Core-Concepts]] - LLM, tokens, embeddings
+- [[AI-Concepts/03-Agents]] - Agentic AI systems
+- [[AI-Concepts/04-Prompting]] - Prompt engineering
+- [[AI-Concepts/05-Tools]] - Function calling
+- [[AI-Concepts/06-RAG-VectorDB]] - Retrieval-augmented generation
+- [[AI-Concepts/07-Models]] - Model comparison
+- [[AI-Concepts/08-Opencode]] - Extending Opencode CLI
+- [[AI-Concepts/09-Best-Practices]] - Safety, efficiency
+
 ## Topics Covered
 
 ### Bash Scripting
@@ -179,6 +191,17 @@
 - Docker Compose for multi-container apps
 - Podman as Docker alternative
 - Container security and best practices
+
+### AI & Machine Learning
+- AI fundamentals (types, history, ML basics)
+- LLM architecture (tokens, embeddings, context)
+- Agentic AI systems and autonomy levels
+- Prompt engineering (CoT, ReAct, templates)
+- Tools and function calling
+- RAG and vector databases
+- Model comparison (GPT, Claude, Llama)
+- Opencode extension (skills, agents, commands)
+- Safety, ethics, and best practices
 
 ## Related
 
