@@ -27,6 +27,7 @@ Comprehensive guide to Git version control system concepts.
 14. [[14-Aliases]] - common shortcuts
 15. [[15-Tips-Best-Practices]] - conventions, warnings
 16. [[16-Cheatsheet]] - Quick command reference
+18. [[17-Lazygit]] - Terminal UI for Git
 
 ### GitHub Workflow
 17. [[Git-GitHub-Workflow/index]] - GitHub-specific workflows

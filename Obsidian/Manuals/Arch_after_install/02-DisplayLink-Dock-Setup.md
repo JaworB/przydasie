@@ -102,4 +102,4 @@ monitor = eDP-1, preferred, 3440x0, 2
 | Low resolution | Verify EDID: `cat /sys/class/drm/card0-DVI-I-1/edid` |
 
 ## Related
-- [[03-Lid-Switch-Automation]] - Automated lid closing behavior
+- [[09-Custom-Scripts/01-lid-handler-daemon]] - Automated lid closing behavior
