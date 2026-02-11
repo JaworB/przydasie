@@ -17,13 +17,13 @@ AI refers to systems that can perform tasks that typically require human intelli
 
 Narrow AI specializes in a specific task:
 
-| Example | Capability |
-|---------|------------|
-| ChatGPT | Conversation, text generation |
-| Image generators | Creating images from prompts |
-| Speech recognition | Converting audio to text |
-| Recommendation systems | Suggesting products/content |
-| Your AI agents | Task-specific automation |
+| Example                | Capability                    |
+| ---------------------- | ----------------------------- |
+| ChatGPT                | Conversation, text generation |
+| Image generators       | Creating images from prompts  |
+| Speech recognition     | Converting audio to text      |
+| Recommendation systems | Suggesting products/content   |
+| Your AI agents         | Task-specific automation      |
 
 **Current state of AI:** We have powerful Narrow AI but no general-purpose artificial intelligence.
 
