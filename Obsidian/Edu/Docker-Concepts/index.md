@@ -18,6 +18,7 @@ Comprehensive guide to containerization with Docker and Podman.
 7. [[07-Podman]] - Podman basics
 8. [[08-Containerization]] - best practices, security
 9. [[09-Cheatsheet]] - Quick reference
+10. [[10-Lazydocker]] - Terminal UI for Docker
 
 ## Overview
 
