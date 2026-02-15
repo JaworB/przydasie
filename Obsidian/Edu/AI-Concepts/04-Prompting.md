@@ -95,7 +95,7 @@ Action: Read main.py
 
 ### Code Generation
 
-```markdown
+```
 You are an expert {language} developer.
 
 Task: Write a {function_type} function
@@ -112,7 +112,7 @@ Return only the code, no explanations.
 
 ### Code Review
 
-```markdown
+```
 You are a senior code reviewer.
 
 Review the following code for:
@@ -122,9 +122,8 @@ Review the following code for:
 - Missing tests
 
 Code:
-```{language}
-{code}
-```
+`{language}
+{code}`
 
 Format your review as:
 ## Issues Found
@@ -136,7 +135,7 @@ Format your review as:
 
 ### Documentation
 
-```markdown
+```
 You are a technical writer.
 
 Task: Document the following code
@@ -148,9 +147,8 @@ Requirements:
 - Explain return values
 
 Code:
-```{language}
-{code}
-```
+`{language}
+{code}`
 ```
 
 ## Iterative Prompting
@@ -193,29 +191,24 @@ Bad: "Write code to read CSV"
 
 ### Debugging
 
-```
-"Debug this Python code:
+Prompt for debugging code:
 
-```python
-{code}
-```
-
-Error: {error}
-
-Explain the cause and suggest a fix."
-```
+> "Debug this Python code:
+> ```python
+> {code}
+> ```
+> Error: {error}
+> Explain the cause and suggest a fix."
 
 ### Explaining Code
 
-```
-"Explain this code to a beginner:
+Prompt for explaining code:
 
-```python
-{code}
-```
-
-Use simple terms, avoid jargon, give examples."
-```
+> "Explain this code to a beginner:
+> ```python
+> {code}
+> ```
+> Use simple terms, avoid jargon, give examples."
 
 ## Prompt Optimization
 
@@ -239,7 +232,7 @@ For long context:
 
 ### Persona Prompting
 
-```markdown
+```
 You are {persona}.
 
 {persona_description}
@@ -249,7 +242,7 @@ Respond in the style of {persona}.
 
 ### Constraint Programming
 
-```markdown
+```
 Constraints:
 - Maximum {n} lines
 - Use only standard library
@@ -259,7 +252,7 @@ Constraints:
 
 ### Format Control
 
-```markdown
+```
 Output format: JSON
 
 {

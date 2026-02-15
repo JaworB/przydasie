@@ -95,7 +95,7 @@ Działanie: Przeczytaj main.py
 
 ### Generowanie kodu
 
-```markdown
+```
 Jesteś ekspertem {language} developerem.
 
 Zadanie: Napisz funkcję {function_type}
@@ -112,7 +112,7 @@ Zwróć tylko kod, bez wyjaśnień.
 
 ### Code Review
 
-```markdown
+```
 Jesteś senior code reviewerem.
 
 Przejrzyj następujący kod pod kątem:
@@ -122,9 +122,8 @@ Przejrzyj następujący kod pod kątem:
 - Brakujące testy
 
 Kod:
-```{language}
-{code}
-```
+`{language}
+{code}`
 
 Sformatuj przegląd jako:
 ## Znalezione problemy
@@ -136,7 +135,7 @@ Sformatuj przegląd jako:
 
 ### Dokumentacja
 
-```markdown
+```
 Jesteś pisarzem technicznym.
 
 Zadanie: Udokumentuj następujący kod
@@ -148,9 +147,8 @@ Wymagania:
 - Wyjaśnij wartości zwracane
 
 Kod:
-```{language}
-{code}
-```
+`{language}
+{code}`
 ```
 
 ## Iteracyjne promptowanie
@@ -193,29 +191,24 @@ Dobrze: "Utwórz funkcję Python do odczytu plików CSV z:
 
 ### Debugowanie
 
-```
-"Debuguj ten kod Python:
+Prompt do debugowania:
 
-```python
-{code}
-```
-
-Błąd: {error}
-
-Wyjaśnij przyczynę i sugeruj naprawę."
-```
+> "Debuguj ten kod Python:
+> ```python
+> {code}
+> ```
+> Błąd: {error}
+> Wyjaśnij przyczynę i sugeruj naprawę."
 
 ### Wyjaśnianie kodu
 
-```
-"Wyjaśnij ten kod początkującemu:
+Prompt do wyjaśniania kodu:
 
-```python
-{code}
-```
-
-Użyj prostych słów, unikaj żargonu, podaj przykłady."
-```
+> "Wyjaśnij ten kod początkującemu:
+> ```python
+> {code}
+> ```
+> Użyj prostych słów, unikaj żargonu, podaj przykłady."
 
 ## Optymalizacja promptów
 
@@ -239,7 +232,7 @@ Dla długiego kontekstu:
 
 ### Persona Prompting
 
-```markdown
+```
 Jesteś {persona}.
 
 {opis_persony}
@@ -249,7 +242,7 @@ Odpowiadaj w stylu {persona}.
 
 ### Programowanie ograniczeń
 
-```markdown
+```
 Ograniczenia:
 - Maksymalnie {n} linii
 - Użyj tylko biblioteki standardowej
@@ -259,7 +252,7 @@ Ograniczenia:
 
 ### Kontrola formatu
 
-```markdown
+```
 Format wyniku: JSON
 
 {
