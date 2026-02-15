@@ -1,0 +1,16 @@
+services:
+  ubuntu-test:
+    build: ./ubuntu
+    container_name: ubuntu-test
+    networks:
+      - prov_test_net
+
+  rhellike-test:
+    build: ./rhellike
+    container_name: rhellike-test
+    networks:
+      - prov_test_net
+
+networks:
+  prov_test_net:
+    name: prov_test_net
