@@ -23,6 +23,7 @@
     - name: Setup wireguard
       ansible.builtin.include_role:
         name: role_wireguard
+      tags: wireguard
 
     - name: Configure logs
       ansible.builtin.include_role:
@@ -36,6 +37,7 @@
     - name: Install docker service
       ansible.builtin.include_role:
         name: role_docker
+      tags: docker
 #
 #    - name: Start services
 # - name: Cleanup
