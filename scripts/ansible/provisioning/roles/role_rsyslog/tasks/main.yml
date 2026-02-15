@@ -16,3 +16,20 @@
     state: started
     enabled: true
   notify: Restart rsyslog
+  when: ansible_facts.service_mgr == "systemd"
+
+- name: Ensure rsyslog directory exists
+  become: true
+  ansible.builtin.file:
+    path: /var/lib/rsyslog
+    state: directory
+    mode: '0755'
+  when: ansible_facts.service_mgr != "systemd"
+
+- name: Ensure rsyslog is running (non-systemd)
+  become: true
+  ansible.builtin.command: /usr/sbin/rsyslogd
+  when: ansible_facts.service_mgr != "systemd"
+  changed_when: true
+  register: role_rsyslog_start
+  failed_when: false
