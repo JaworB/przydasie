@@ -13,5 +13,6 @@
 - name: Start and enable rsyslog service
   ansible.builtin.service:
     name: rsyslog
-    state: restarted
+    state: started
     enabled: true
+  notify: Restart rsyslog

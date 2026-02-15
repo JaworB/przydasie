@@ -1,54 +1,14 @@
 ---
-- name: Install SSH packages (Debian/Ubuntu)
-  ansible.builtin.apt:
-    name: openssh-server
-    state: present
-  when: ansible_os_family == "Debian"
+- name: Setup SSH (Debian)
+  ansible.builtin.import_tasks: debian.yml
+  when: ansible_facts['os_family'] == "Debian"
 
-- name: Install SSH packages (RedHat)
-  ansible.builtin.dnf:
-    name: openssh-server
-    state: present
-  when: ansible_os_family == "RedHat"
-
-- name: Configure SSHD using dedicated module (Debian/Ubuntu)
-  ansible.posix.sshd:
-    port: "{{ role_ssh_sshport | default('2229') }}"
-    pubkeyauthentication: yes
-    passwordauthentication: no
-    challengeuserresponseauthentication: no
-    permitrootlogin: no
-  when: ansible_os_family == "Debian"
-  notify: Restart sshd service
-
-- name: Configure SSHD using dedicated module (RedHat)
-  ansible.posix.sshd:
-    port: "{{ role_ssh_sshport | default('2229') }}"
-    pubkeyauthentication: yes
-    passwordauthentication: no
-    challengeuserresponseauthentication: no
-    permitrootlogin: no
-    firewalld: yes
-  when: ansible_os_family == "RedHat"
-  notify: Restart sshd service
+- name: Setup SSH (RedHat)
+  ansible.builtin.import_tasks: redhat.yml
+  when: ansible_facts['os_family'] == "RedHat"
 
 - name: Ensure SSH service is started and enabled
   ansible.builtin.service:
-    name: sshd
+    name: "{{ 'ssh' if ansible_facts['os_family'] == 'Debian' else 'sshd' }}"
     state: started
     enabled: yes
-
-- name: Allow SSH port in ufw (Debian/Ubuntu)
-  community.general.ufw:
-    rule: allow
-    port: "{{ role_ssh_sshport | default('2229') }}"
-    proto: tcp
-  when: ansible_os_family == "Debian"
-
-- name: Add custom sshd port to SELinux (RedHat)
-  community.general.seport:
-    ports: "{{ role_ssh_sshport | default('2229') }}"
-    proto: tcp
-    setype: ssh_port_t
-    state: present
-  when: ansible_facts.selinux.status is defined and ansible_facts.selinux.status == "enabled"
