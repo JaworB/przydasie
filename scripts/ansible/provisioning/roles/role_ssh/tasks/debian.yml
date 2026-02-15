@@ -1,0 +1,20 @@
+---
+- name: Install SSH packages
+  ansible.builtin.apt:
+    name: openssh-server
+    state: present
+
+- name: Configure SSHD
+  ansible.posix.sshd:
+    port: "{{ role_ssh_sshport | default('2229') }}"
+    pubkeyauthentication: yes
+    passwordauthentication: no
+    challengeuserresponseauthentication: no
+    permitrootlogin: no
+  notify: Restart sshd service
+
+- name: Allow SSH port in ufw
+  community.general.ufw:
+    rule: allow
+    port: "{{ role_ssh_sshport | default('2229') }}"
+    proto: tcp

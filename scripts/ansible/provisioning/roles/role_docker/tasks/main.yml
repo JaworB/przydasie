@@ -7,58 +7,13 @@
       - gnupg
     state: present
 
-- name: Add Docker GPG key (Debian/Ubuntu)
-  ansible.builtin.apt_key:
-    url: https://download.docker.com/linux/debian/gpg
-    state: present
-  when: ansible_os_family == "Debian"
+- name: Setup Docker (Debian)
+  ansible.builtin.import_tasks: debian.yml
+  when: ansible_facts['os_family'] == "Debian"
 
-- name: Add Docker repository (Debian/Ubuntu)
-  ansible.builtin.apt_repository:
-    repo: "deb [arch={{ ansible_architecture }}] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
-    state: present
-  when: ansible_os_family == "Debian"
-
-- name: Add Docker GPG key (RedHat)
-  ansible.builtin.rpm_key:
-    key: https://download.docker.com/linux/centos/gpg
-    state: present
-  when: ansible_os_family == "RedHat"
-
-- name: Add Docker repository (RedHat)
-  ansible.builtin.yum_repository:
-    name: docker-ce-stable
-    description: Docker CE Stable
-    baseurl: https://download.docker.com/linux/centos/{{ ansible_distribution_major_version }}/x86_64/stable
-    enabled: yes
-  when: ansible_os_family == "RedHat"
-
-- name: Update repolist (Debian/Ubuntu)
-  ansible.builtin.apt:
-    update_cache: true
-  when: ansible_os_family == "Debian"
-
-- name: Install Docker packages (Debian/Ubuntu)
-  ansible.builtin.package:
-    name:
-      - docker-ce
-      - docker-ce-cli
-      - containerd.io
-      - docker-buildx-plugin
-      - docker-compose-plugin
-    state: present
-  when: ansible_os_family == "Debian"
-
-- name: Install Docker packages (RedHat)
-  ansible.builtin.dnf:
-    name:
-      - docker-ce
-      - docker-ce-cli
-      - containerd.io
-      - docker-buildx-plugin
-      - docker-compose-plugin
-    state: present
-  when: ansible_os_family == "RedHat"
+- name: Setup Docker (RedHat)
+  ansible.builtin.import_tasks: redhat.yml
+  when: ansible_facts['os_family'] == "RedHat"
 
 - name: Start and enable Docker service
   ansible.builtin.service:
