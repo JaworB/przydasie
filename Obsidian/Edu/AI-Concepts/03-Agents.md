@@ -37,7 +37,7 @@ An AI agent is a system that can:
 │           Agent System                  │
 ├─────────────────────────────────────────┤
 │  ┌─────────────┐                        │
-│  │  Planning   │ ← Goal decomposition  │
+│  │  Planning   │ ← Goal decomposition   │
 │  └──────┬──────┘                        │
 │         ↓                               │
 │  ┌─────────────┐                        │
@@ -45,9 +45,9 @@ An AI agent is a system that can:
 │  └──────┬──────┘                        │
 │         ↓                               │
 │  ┌─────────────┐                        │
-│  │   Action    │ ← Tool calls          │
+│  │   Action    │ ← Tool calls           │
 │  │   Taking    │   File operations      │
-│  └──────┬──────┘   Commands            │
+│  └──────┬──────┘   Commands             │
 │         ↓                               │
 │  ┌─────────────┐                        │
 │  │  Learning   │ ← Feedback loop        │
