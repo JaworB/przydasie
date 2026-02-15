@@ -40,12 +40,14 @@
   when: item.sudoers is true
   loop: '{{ role_users_user_details }}'
 
-- name: Create backup directory on controller
-  delegate_to: localhost
+- name: Create .ssh directory
   ansible.builtin.file:
-    path: "{{ playbook_dir }}/ssh_keys/{{ inventory_hostname }}"
+    path: /home/{{ item.username }}/.ssh
     state: directory
-    mode: '0755'
+    mode: '0750'
+    modification_time: preserve
+    access_time: preserve
+  loop: '{{ role_users_user_details }}'
 
 - name: Generate SSH key on remote host
   remote_user: "{{ item.username }}"
@@ -72,15 +74,6 @@
     dest: "{{ playbook_dir }}/ssh_keys/{{ inventory_hostname }}/{{ item.username }}.pub"
     flat: yes
   loop: "{{ role_users_user_details }}"
-
-- name: Create .ssh directory
-  ansible.builtin.file:
-    path: /home/{{ item.username }}/.ssh
-    state: directory
-    mode: '0750'
-    modification_time: preserve
-    access_time: preserve
-  loop: '{{ role_users_user_details }}'
 
 - name: Authorize admin pub_key in authorized_keys
   ansible.posix.authorized_key:

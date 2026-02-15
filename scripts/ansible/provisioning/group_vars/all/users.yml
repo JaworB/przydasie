@@ -1,0 +1,7 @@
+---
+role_users_user_details:
+  - username: "{{ inventory_hostname }}_remote_user"
+    groups: sudo
+    sudoers: true
+  - username: test
+    sudoers: false
