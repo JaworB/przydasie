@@ -4,14 +4,36 @@
     name: openssh-server
     state: present
 
-- name: Configure SSHD
-  ansible.posix.sshd:
-    port: "{{ role_ssh_sshport | default('2229') }}"
-    pubkeyauthentication: yes
-    passwordauthentication: no
-    challengeuserresponseauthentication: no
-    permitrootlogin: no
-    firewalld: yes
+- name: Configure SSHD - Port
+  ansible.builtin.lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: '^#?Port'
+    line: "Port {{ role_ssh_sshport | default('2229') }}"
+    state: present
+  notify: Restart sshd service
+
+- name: Configure SSHD - PubkeyAuthentication
+  ansible.builtin.lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: '^#?PubkeyAuthentication'
+    line: "PubkeyAuthentication yes"
+    state: present
+  notify: Restart sshd service
+
+- name: Configure SSHD - PasswordAuthentication
+  ansible.builtin.lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: '^#?PasswordAuthentication'
+    line: "PasswordAuthentication no"
+    state: present
+  notify: Restart sshd service
+
+- name: Configure SSHD - PermitRootLogin
+  ansible.builtin.lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: '^#?PermitRootLogin'
+    line: "PermitRootLogin no"
+    state: present
   notify: Restart sshd service
 
 - name: Add custom sshd port to SELinux
@@ -25,6 +47,7 @@
 - name: Allow SSH in firewalld
   ansible.posix.firewalld:
     port: "{{ role_ssh_sshport | default('2229') }}/tcp"
-    permanent: yes
+    permanent: true
     state: enabled
-    immediate: yes
+    immediate: true
+  when: ansible_facts.packages['firewalld'] is defined
