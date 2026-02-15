@@ -7,8 +7,15 @@
   ansible.builtin.import_tasks: redhat.yml
   when: ansible_facts['os_family'] == "RedHat"
 
-- name: Ensure SSH service is started and enabled
+- name: Ensure SSH service is started and enabled (systemd)
   ansible.builtin.service:
     name: "{{ 'ssh' if ansible_facts['os_family'] == 'Debian' else 'sshd' }}"
     state: started
-    enabled: yes
+    enabled: true
+  when: ansible_facts.service_mgr == "systemd"
+
+- name: Ensure SSH service is running (non-systemd)
+  become: true
+  ansible.builtin.shell: pgrep sshd || /usr/sbin/sshd
+  when: ansible_facts.service_mgr != "systemd"
+  changed_when: true

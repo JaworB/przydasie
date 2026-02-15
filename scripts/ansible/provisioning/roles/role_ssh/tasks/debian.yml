@@ -4,17 +4,42 @@
     name: openssh-server
     state: present
 
-- name: Configure SSHD
-  ansible.posix.sshd:
-    port: "{{ role_ssh_sshport | default('2229') }}"
-    pubkeyauthentication: yes
-    passwordauthentication: no
-    challengeuserresponseauthentication: no
-    permitrootlogin: no
+- name: Configure SSHD - Port
+  ansible.builtin.lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: '^#?Port'
+    line: "Port {{ role_ssh_sshport | default('2229') }}"
+    state: present
+  notify: Restart sshd service
+
+- name: Configure SSHD - PubkeyAuthentication
+  ansible.builtin.lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: '^#?PubkeyAuthentication'
+    line: "PubkeyAuthentication yes"
+    state: present
+  notify: Restart sshd service
+
+- name: Configure SSHD - PasswordAuthentication
+  ansible.builtin.lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: '^#?PasswordAuthentication'
+    line: "PasswordAuthentication no"
+    state: present
+  notify: Restart sshd service
+
+- name: Configure SSHD - PermitRootLogin
+  ansible.builtin.lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: '^#?PermitRootLogin'
+    line: "PermitRootLogin no"
+    state: present
   notify: Restart sshd service
 
 - name: Allow SSH port in ufw
+  become: true
   community.general.ufw:
     rule: allow
     port: "{{ role_ssh_sshport | default('2229') }}"
     proto: tcp
+  when: false
