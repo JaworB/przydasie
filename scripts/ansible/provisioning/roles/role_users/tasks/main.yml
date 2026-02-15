@@ -50,21 +50,20 @@
   loop: '{{ role_users_user_details }}'
 
 - name: Generate SSH key on remote host
-  remote_user: "{{ item.username }}"
-  become: yes
-  become_user: "{{ item.username }}"
+  become: true
   community.crypto.openssh_keypair:
     path: "/home/{{ item.username }}/.ssh/id_rsa"
     owner: "{{ item.username }}"
     group: "{{ item.username }}"
     mode: '0600'
+    force: false
   loop: "{{ role_users_user_details }}"
 
 - name: Backup private keys to controller
   ansible.builtin.fetch:
     src: "/home/{{ item.username }}/.ssh/id_rsa"
     dest: "{{ playbook_dir }}/ssh_keys/{{ inventory_hostname }}/{{ item.username }}"
-    flat: yes
+    flat: true
     mode: '0600'
   loop: "{{ role_users_user_details }}"
 
@@ -72,7 +71,7 @@
   ansible.builtin.fetch:
     src: "/home/{{ item.username }}/.ssh/id_rsa.pub"
     dest: "{{ playbook_dir }}/ssh_keys/{{ inventory_hostname }}/{{ item.username }}.pub"
-    flat: yes
+    flat: true
   loop: "{{ role_users_user_details }}"
 
 - name: Authorize admin pub_key in authorized_keys
