@@ -49,6 +49,94 @@ ansible-vault view --vault-password-file .vault_pass secrets.yml
 ansible-vault rekey secrets.yml
 ```
 
+## Encrypt Single String
+
+Encrypts a single value to use inline in YAML files (recommended over encrypting entire files).
+
+```bash
+# Interactive (prompts for password)
+echo 'secret_value' | ansible-vault encrypt_string --stdin-name 'variable_name'
+
+# Using password file
+echo 'secret_value' | ansible-vault encrypt_string --stdin-name 'variable_name' --vault-password-file .vault_pass
+
+# Using password directly
+echo 'secret_value' | ansible-vault encrypt_string --stdin-name 'variable_name' --vault-password-file <(echo 'mypassword')
+```
+
+Output can be pasted directly into YAML files:
+
+```yaml
+---
+my_password: !vault |
+  $ANSIBLE_VAULT;1.1;AES256
+  3964323635633964373664353966...
+```
+
+## Decrypt Inline String
+
+**Important**: `ansible-vault decrypt_string` does NOT exist. Use these methods instead:
+
+### Method 1: Remove whitespace + pipe to decrypt (recommended)
+
+```bash
+# Copy encrypted string, remove all whitespace, pipe to decrypt
+echo '$ANSIBLE_VAULT;1.1;AES256
+36643662303931336362356361373334663632343139383832626130636237333134373034326565
+...' | tr -d ' ' | ansible-vault decrypt
+```
+
+### Method 2: Using ansible debug (easiest)
+
+```bash
+# View decrypted value directly
+ansible localhost -m debug -a 'var=vault_user_password' -e '@group_vars/all/vault.yml' --ask-vault-pass
+
+# With password file
+ansible localhost -m debug -a 'var=vault_user_password' -e '@group_vars/all/vault.yml' --vault-password-file .vault_pass
+```
+
+### Method 3: Using ansible-vault view (only for fully encrypted files)
+
+Only works if the ENTIRE file is encrypted (no variable names visible):
+
+```bash
+ansible-vault view group_vars/all/vault.yml --vault-password-file .vault_pass
+```
+
+## Example Workflow
+
+1. **Create encrypted string:**
+   ```bash
+   echo 'dupa123' | ansible-vault encrypt_string --stdin-name 'vault_user_password' --vault-password-file <(echo '9782471')
+   ```
+
+2. **Copy output to vault file:**
+   ```yaml
+   ---
+   vault_user_password: !vault |
+     $ANSIBLE_VAULT;1.1;AES256
+     396432363563396437...
+   ```
+
+3. **Run playbook:**
+   ```bash
+   ansible-playbook provisioning.yml --vault-password-file <(echo '9782471')
+   # or
+   ansible-playbook provisioning.yml --ask-vault-pass
+   ```
+
+4. **Decrypt to verify:**
+   ```bash
+   # Option 1: Debug module
+   ansible localhost -m debug -a 'var=vault_user_password' -e '@group_vars/all/vault.yml' --ask-vault-pass
+
+   # Option 2: Extract and decrypt
+   # Copy the encrypted part (without variable name), remove whitespace, decrypt
+   echo '$ANSIBLE_VAULT;1.1;AES256
+   396432363563396437...' | tr -d ' \n' | ansible-vault decrypt
+   ```
+
 ## Examples from Repository
 
 ### Vault File Structure
