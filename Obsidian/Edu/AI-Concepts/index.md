@@ -20,6 +20,7 @@ Comprehensive guide to artificial intelligence, machine learning, and AI agent s
 ### Opencode
 8. [[08-Opencode]] - Extending Opencode CLI, skills, agents, commands
 9. [[09-Best-Practices]] - Safety, optimization, ethics
+10. [[10-OpenClaw]] - Self-hosted AI agent with Ollama, free providers
 
 ## Overview
 
