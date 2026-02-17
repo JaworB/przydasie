@@ -3,14 +3,19 @@ services:
     build: ./ubuntu
     container_name: ubuntu-test
     networks:
-      - prov_test_net
+      prov_test_net:
+        ipv4_address: 172.18.0.10
 
   rhellike-test:
     build: ./rhellike
     container_name: rhellike-test
     networks:
-      - prov_test_net
+      prov_test_net:
+        ipv4_address: 172.18.0.11
 
 networks:
   prov_test_net:
     name: prov_test_net
+    ipam:
+      config:
+        - subnet: 172.18.0.0/16
