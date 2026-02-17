@@ -1,6 +1,6 @@
 ---
 - name: Configure new hosts
-  hosts: test
+  hosts: vms
   gather_facts: true
   become: true
   become_user: root
