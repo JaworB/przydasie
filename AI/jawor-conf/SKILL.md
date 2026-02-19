@@ -78,6 +78,65 @@ Subnet: `10.66.66.0/24`
 - Scripts: `~/scripts/`
 - Projects: `~/repos/`
 
+## Omarchy-after install PC
+
+**Date**: 2026-02-19
+**Hardware**: Desktop PC (Xiaomi Mi Monitor 3440x1440@144Hz)
+
+### Configuration Files Created
+
+| File | Purpose |
+|------|---------|
+| `~/.config/hypr/input.conf` | Polish keyboard layout (caps:escape) |
+| `~/.config/hypr/monitors.conf` | Monitor config (3440x1440@144Hz) |
+| `~/.config/hypr/bindings.conf` | Custom keybindings |
+| `~/.local/bin/toggle-audio-output.sh` | AirPods ↔ Speakers toggle |
+| `~/scripts/backup-omarchy-configs.sh` | Backup script with timestamp |
+
+### Theme
+
+- **Miasma**: https://github.com/OldJobobo/omarchy-miasma-theme
+
+### Keybindings
+
+| Binding | Action |
+|---------|--------|
+| SUPER + RETURN | Terminal |
+| SUPER + SHIFT + F | File Manager |
+| SUPER + SHIFT + B | Browser |
+| SUPER + SHIFT + M | Spotify |
+| SUPER + SHIFT + **A** | Audio Toggle (AirPods ↔ Speakers) |
+| SUPER + SHIFT + V | Editor |
+| SUPER + SHIFT + D | Docker TUI |
+| SUPER + SHIFT + O | Obsidian |
+| SUPER + CTRL + O | Opencode |
+| SUPER + SHIFT + Y | YouTube |
+| SUPER + SHIFT + W | WhatsApp |
+
+### Backup Location
+
+```
+~/config-backup/<timestamp>/
+├── hypr/
+└── omarchy/
+```
+
+### Commands
+
+```bash
+# Reload Hyprland config
+omarchy-restart-hyprctl
+
+# Change theme
+omarchy-theme-set "Miasma"
+
+# List themes
+omarchy-theme-list
+
+# Backup configs
+~/scripts/backup-omarchy-configs.sh
+```
+
 ## Usage
 
 Reference this skill when jawor asks to:
