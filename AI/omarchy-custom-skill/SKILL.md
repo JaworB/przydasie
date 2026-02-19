@@ -429,12 +429,41 @@ monitor = HDMI-A-1, 2560x1440@144, 1920x0, 1
 
 List monitors: `hyprctl monitors`
 
-**Custom user's setup:**
+**Custom user's setup (Desktop PC):**
 ```
-monitor = DVI-I-1, 3440x1440@50.00, 0x0, 1
-monitor = eDP-1, preferred, 0x1440, 2
-env = GDK_SCALE,2
+monitor = DP-2, 3440x1440@144.00, 0x0, 1
 ```
+
+### Keyboard (Polish)
+
+Edit `~/.config/hypr/input.conf`. Format:
+```
+input {
+  kb_layout = pl
+  kb_options = compose:caps
+  ...
+}
+```
+
+**Correct format (full config with touchpad):**
+```
+input {
+  kb_layout = pl
+  kb_options = compose:caps
+
+  repeat_rate = 40
+  repeat_delay = 600
+  numlock_by_default = true
+
+  touchpad {
+    scroll_factor = 0.4
+  }
+}
+```
+
+**Common issues:**
+- Fcitx5 can override keyboard layout - check `~/.config/fcitx5/profile`
+- If keyboard shows "English (US)" in `hyprctl devices`, ensure fcitx5 is configured with `pl` layout
 
 ### Window Rules
 
@@ -572,18 +601,28 @@ This creates a new migration file and outputs its path without opening an editor
 After Omarchy reinstall, copy these files to restore custom setup:
 
 ```bash
+# Restore keyboard config (Polish layout)
+cp dotfiles/hypr/input.conf ~/.config/hypr/input.conf
+
 # Restore keybindings
 cp dotfiles/hypr/bindings.conf ~/.config/hypr/bindings.conf
 
-# Restore display config
+# Restore display config (Desktop PC)
 cp dotfiles/hypr/monitors.conf ~/.config/hypr/monitors.conf
+
+# Restore autostart (keyboard fix)
+cp dotfiles/hypr/autostart.conf ~/.config/hypr/autostart.conf
 
 # Restore custom scripts
 cp dotfiles/local/bin/* ~/.local/bin/
 chmod +x ~/.local/bin/*.sh
 
+# Install Miasma theme
+omarchy-theme-install https://github.com/OldJobobo/omarchy-miasma-theme
+omarchy-theme-set "Miasma"
+
 # Restart Hyprland to apply changes
-omarchy-restart-hyprland
+omarchy-restart-hyprctl
 ```
 
 **Documentation reference:** See [[Obsidian/Manuals/Hyprland-Configuration/index|Hyprland Configuration Index]] for full details.
