@@ -470,6 +470,29 @@ omarchy-cmd-reboot              # Reboot
 
 ## Troubleshooting
 
+### SDDM Autologin Not Working
+
+If Hyprland doesn't start automatically after reboot and you see the SDDM greeter:
+
+**Check if user is in video group:**
+```bash
+id jawor
+```
+
+If `video` group is missing, add user to it:
+```bash
+sudo usermod -aG video jawor
+```
+
+Then reboot. This is required for Xorg (used by SDDM) to access the GPU.
+
+**Check SDDM logs:**
+```bash
+journalctl -b -u sddm --no-pager
+```
+
+Look for "Xorg dumped core" which indicates a crash preventing autologin.
+
 ```bash
 # Get debug information (ALWAYS use these flags to avoid interactive prompts)
 omarchy-debug --no-sudo --print
