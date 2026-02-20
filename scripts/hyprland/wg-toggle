@@ -1,0 +1,48 @@
+#!/bin/bash
+
+INTERFACE="wg0"
+LOCKFILE="/tmp/wg-toggle.lock"
+
+get_status() {
+    if ip link show "$INTERFACE" 2>/dev/null | grep -q "UP"; then
+        echo "up"
+    else
+        echo "down"
+    fi
+}
+
+notify() {
+    notify-send -u low -t 2000 "WireGuard" "$1"
+}
+
+toggle() {
+    if [ -f "$LOCKFILE" ]; then
+        exit 0
+    fi
+    touch "$LOCKFILE"
+    
+    status=$(get_status)
+    if [ "$status" = "up" ]; then
+        pkexec wg-quick down "$INTERFACE"
+        notify "Disconnected"
+    else
+        pkexec wg-quick up "$INTERFACE"
+        notify "Connected"
+    fi
+    
+    rm -f "$LOCKFILE"
+}
+
+case "${1:-status}" in
+    toggle)
+        toggle
+        ;;
+    status)
+        status=$(get_status)
+        if [ "$status" = "up" ]; then
+            echo "{\"text\": \"󰒍\", \"tooltip\": \"WireGuard: Connected\"}"
+        else
+            echo "{\"text\": \"󰒎\", \"tooltip\": \"WireGuard: Disconnected\"}"
+        fi
+        ;;
+esac
