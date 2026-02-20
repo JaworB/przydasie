@@ -1,9 +1,9 @@
 ---
 name: jawor-conf
 description: >
-  User-specific desktop configuration for jawor.
-  Includes OS info, window manager, GitHub repo, SSH configs, and common paths.
-  Use this skill to avoid repeating configuration details in new sessions.
+  Recovery plan for jawor's Omarchy/Arch Linux desktop.
+  Use to restore desktop configuration after fresh Omarchy install.
+  Includes keybindings, PC cooling, SSH, and OpenCode setup.
 ---
 
 > **IMPORTANT**: Update this skill whenever you learn new useful information about jawor's
@@ -22,128 +22,20 @@ Personal desktop configuration for jawor on Omarchy/Arch Linux.
 | Home Directory | /home/jawor |
 | Default Editor | code (VS Code) |
 
-## Git Security
+## Quick Recovery
 
-**ALWAYS check for secrets before committing to public repo.**
-
-Before any commit/push:
-- Scan for API keys, tokens, passwords
-- Check `.gitignore` covers sensitive files
-- Review diff with `git diff --staged`
-- Use `git status` to see what will be committed
-
-This repo is public - do not expose credentials, SSH keys, or sensitive configs.
-
-- **Name**: przydasie
-- **URL**: https://github.com/JaworB/przydasie.git
-- **Local path**: ~/repos/przydasie
-
-### Repo Structure
-
-```
-przydasie/
-├── AI/                        # AI-related configs
-│   ├── jawor-conf/            # This skill (symlinked to ~/.opencode/skills/)
-│   ├── omarchy-custom-skill/  # Custom omarchy overrides
-│   └── openclawbot/           # OpenClaw bot config
-├── Obsidian/                  # Obsidian vault (English)
-├── Obsidian_PL/               # Obsidian vault (Polish)
-├── docker/                    # Docker configs
-├── edu/                       # Educational materials
-├── scripts/                  # Scripts
-├── .ansible/                 # Ansible configs
-├── .vscode/                   # VS Code settings
-└── README.md
-```
-
-## Skill Locations
-
-- **Repo**: `~/repos/przydasie/AI/jawor-conf/SKILL.md`
-- **OpenCode**: `~/.opencode/skills/jawor-conf/SKILL.md` (symlinked or copied)
-
-## SSH Configuration
-
-Subnet: `10.66.66.0/24`
-
-| Host | IP | Port | User |
-|------|-----|------|------|
-| Router/Gateway | 10.66.66.1 | 2229 | root |
-| Other hosts | 10.66.66.x | 22 | root |
-
-## Common Paths
-
-- Config: `~/.config/`
-- Omarchy config: `~/.config/omarchy/`
-- Hyprland: `~/.config/hypr/`
-- Scripts: `~/scripts/`
-- Projects: `~/repos/`
-
-## Omarchy-after install PC
-
-**Date**: 2026-02-20
+**Date**: 2026-02-20  
 **Hardware**: Desktop PC (Xiaomi Mi Monitor 3440x1440@144Hz via DP-2)
 
-### Recovery Plan
+Complete these steps after fresh Omarchy install to restore desktop:
 
-#### Step 1: Monitor Configuration
-**File**: `~/.config/hypr/monitors.conf`
-
-```bash
-monitor = DP-2, 3440x1440@144.00, 0x0, 1
-env = GDK_SCALE,1
-```
-
-#### Step 2: Keybindings
-**File**: `~/.config/hypr/bindings.conf`
-
-```conf
-# Application bindings
-bindd = SUPER, RETURN, Terminal, exec, uwsm-app -- xdg-terminal-exec --dir="$(omarchy-cmd-terminal-cwd)"
-bindd = SUPER SHIFT, F, File manager, exec, uwsm-app -- nautilus --new-window
-bindd = SUPER SHIFT, B, Browser, exec, omarchy-launch-browser
-bindd = SUPER SHIFT ALT, B, Browser (private), exec, omarchy-launch-browser --private
-bindd = SUPER SHIFT, M, Music, exec, omarchy-launch-or-focus spotify
-bindd = SUPER SHIFT, A, Audio Toggle, exec, ~/.local/bin/toggle-audio-output.sh
-bindd = SUPER SHIFT, V, Editor, exec, omarchy-launch-editor
-bindd = SUPER SHIFT, D, Docker, exec, omarchy-launch-tui lazydocker
-bindd = SUPER SHIFT, O, Obsidian, exec, omarchy-launch-or-focus ^obsidian$ "uwsm-app -- obsidian -disable-gpu --enable-wayland-ime"
-bindd = SUPER CTRL, O, Opencode, exec, omarchy-launch-tui opencode
-
-# Web Applications
-bindd = SUPER SHIFT, Y, YouTube, exec, omarchy-launch-webapp "https://youtube.com/"
-bindd = SUPER SHIFT, W, WhatsApp, exec, omarchy-launch-or-focus-webapp WhatsApp "https://web.whatsapp.com/"
-bindd = SUPER SHIFT, C, Codecademy, exec, omarchy-launch-webapp "https://codecademy.com/learn"
-bindd = SUPER SHIFT, E, Email, exec, omarchy-launch-webapp "https://gmail.com"
-bindd = SUPER SHIFT, G, GitHub, exec, omarchy-launch-webapp "https://github.com/JaworB/przydasie"
-```
-
-**Keybindings Summary:**
-
-| Binding | Action |
-|---------|--------|
-| SUPER + RETURN | Terminal |
-| SUPER + SHIFT + F | File Manager |
-| SUPER + SHIFT + B | Browser |
-| SUPER + SHIFT + ALT + B | Browser (Private) |
-| SUPER + SHIFT + M | Spotify |
-| SUPER + SHIFT + **A** | Audio Toggle (AirPods ↔ Speakers) |
-| SUPER + SHIFT + V | Editor |
-| SUPER + SHIFT + D | Docker TUI |
-| SUPER + SHIFT + O | Obsidian |
-| SUPER + CTRL + O | Opencode |
-| SUPER + SHIFT + Y | YouTube |
-| SUPER + SHIFT + W | WhatsApp |
-| SUPER + SHIFT + C | Codecademy |
-| SUPER + SHIFT + G | GitHub - Przydasie |
-| SUPER + SHIFT + E | Email |
-
-#### Step 3: Dotfiles Setup
+### 1. Clone Dotfiles
 
 ```bash
 # Clone repo
 git clone https://github.com/JaworB/przydasie.git ~/repos/przydasie
 
-# Create symlinks
+# Create symlinks for Hyprland config
 mkdir -p ~/.config/hypr
 rm -f ~/.config/hypr/bindings.conf ~/.config/hypr/input.conf ~/.config/hypr/autostart.conf ~/.config/hypr/looknfeel.conf ~/.config/hypr/hypridle.conf ~/.config/hypr/hyprlock.conf ~/.config/hypr/hyprsunset.conf
 
@@ -156,143 +48,83 @@ ln -s ~/repos/przydasie/dotfiles/hypr/hyprlock.conf ~/.config/hypr/hyprlock.conf
 ln -s ~/repos/przydasie/dotfiles/hypr/hyprsunset.conf ~/.config/hypr/hyprsunset.conf
 ```
 
-**Note**: `monitors.conf` is NOT in dotfiles - it's hardware-specific.
+### 2. Configure Monitor
 
-#### Step 4: Theme
+**File**: `~/.config/hypr/monitors.conf`
+
+```bash
+monitor = DP-2, 3440x1440@144.00, 0x0, 1
+env = GDK_SCALE,1
+```
+
+> **Note**: `monitors.conf` is NOT in dotfiles - it's hardware-specific.
+
+### 3. Install Theme
 
 ```bash
 omarchy-theme-install https://github.com/OldJobobo/omarchy-miasma-theme
 omarchy-theme-set "Miasma"
 ```
 
-#### Step 5: Restart
-
-```bash
-omarchy-restart-hyprctl
-```
-
-#### Step 6: WireGuard Setup
-
-**Script**: `~/repos/przydasie/scripts/hyprland/wg-toggle`
+### 4. WireGuard (Optional)
 
 ```bash
 # Create symlink
 mkdir -p ~/.local/bin
 ln -sf ~/repos/przydasie/scripts/hyprland/wg-toggle ~/.local/bin/wg-toggle
 chmod +x ~/.local/bin/wg-toggle
-```
 
-**Waybar Widget**:
-
-Add to `~/.config/waybar/config.jsonc`:
-
-```jsonc
-// In modules-right, after "network":
-"custom/wireguard",
-
-// Add module config:
-"custom/wireguard": {
-  "exec": "~/.local/bin/wg-toggle status",
-  "on-click": "~/.local/bin/wg-toggle toggle",
-  "return-type": "json",
-  "format": "{text}",
-  "tooltip": true,
-  "interval": 5
-}
-```
-
-**Polkit Rule** (for passwordless toggle):
-
-```bash
+# Polkit rule (passwordless toggle)
 echo 'polkit.addRule(function(action, subject) {
     if (action.id == "org.freedesktop.policykit.exec" && 
         subject.isInGroup("wheel")) {
         return polkit.Result.YES;
     }
 });' | sudo tee /etc/polkit-1/rules.d/50-wireguard.rules
-```
 
-**Restart waybar**:
-```bash
+# Add waybar widget (see Waybar Widget Config below)
 omarchy-restart-waybar
 ```
 
-**Icons**: `󰒍` (connected) / `󰒎` (disconnected)
-
-### Dotfiles Structure
-
-```
-przydasie/
-├── dotfiles/
-│   └── hypr/                      # Hyprland configs (symlinked to ~/.config/hypr/)
-│       ├── bindings.conf           # Keybindings
-│       ├── input.conf             # Keyboard/touchpad settings
-│       ├── autostart.conf         # Startup apps
-│       ├── looknfeel.conf         # Gaps, borders, animations
-│       ├── hypridle.conf          # Idle/lock behavior
-│       ├── hyprlock.conf          # Lock screen
-│       └── hyprsunset.conf        # Night light
-└── AI/
-    └── jawor-conf/SKILL.md         # This skill
-```
-
-**Files NOT in dotfiles (hardware-specific):**
-- `monitors.conf` - monitor setup per PC
-- `envs.conf` - environment variables
-- `hyprland.conf` - main config (managed by omarchy)
-- `xdph.conf` - XWayland config
-
-### Not Included (PC-specific)
-
-These are laptop/DisplayLink-specific and are NOT needed for Desktop PC:
-- `toggle-dock-mode.sh` - DisplayLink dock management
-- `fix-cursor-vertical.sh` - vertical monitor stack cursor fix
-- SUPER+M (Dock Mode toggle)
-- SUPER+SHIFT+V (Fix Cursor - used for Editor on PC)
-- Google Messages, Google Photos, X/Twitter webapps
-
-### Backup Location
-
-```
-~/config-backup/<timestamp>/
-├── hypr/
-└── omarchy/
-```
-
-### Commands
+### 5. Restart
 
 ```bash
-# Reload Hyprland config
 omarchy-restart-hyprctl
-
-# Change theme
-omarchy-theme-set "Miasma"
-
-# List themes
-omarchy-theme-list
-
-# Backup configs
-~/scripts/backup-omarchy-configs.sh
 ```
 
-## Usage
+---
 
-Reference this skill when jawor asks to:
-- Configure desktop environment settings
-- Set up SSH connections to his network
-- Clone or work with his GitHub repos
-- Set up new development environment
-- Find AI-related configs or skills
+## Keybindings
 
-## Related Skills
+### Application Launchers
 
-- **Omarchy** (system desktop config): `~/.opencode/skills/omarchy/SKILL.md`
-- **Omarchy-Custom** (user overrides): `~/.opencode/skills/omarchy-custom/SKILL.md`
-- **OpenClawBot** (OpenClaw config): `~/.config/opencode/skills/openclawbot/SKILL.md`
+| Binding | Action |
+|---------|--------|
+| `SUPER + RETURN` | Terminal |
+| `SUPER + SHIFT + F` | File Manager |
+| `SUPER + SHIFT + B` | Browser |
+| `SUPER + SHIFT + ALT + B` | Browser (Private) |
+| `SUPER + SHIFT + M` | Spotify |
+| `SUPER + SHIFT + A` | Audio Toggle (AirPods ↔ Speakers) |
+| `SUPER + SHIFT + V` | Editor |
+| `SUPER + SHIFT + D` | Docker TUI |
+| `SUPER + SHIFT + O` | Obsidian |
+| `SUPER + CTRL + O` | Opencode |
+
+### Web Applications
+
+| Binding | Action |
+|---------|--------|
+| `SUPER + SHIFT + Y` | YouTube |
+| `SUPER + SHIFT + W` | WhatsApp |
+| `SUPER + SHIFT + C` | Codecademy |
+| `SUPER + SHIFT + G` | GitHub - Przydasie |
+| `SUPER + SHIFT + E` | Email |
+
+---
 
 ## PC Cooling Configuration
 
-**Date**: 2026-02-20
 **Hardware**: Desktop PC
 - Motherboard: ASUS X870 MAX GAMING WIFI7 W
 - CPU: AMD Ryzen 7 7800X3D
@@ -300,9 +132,11 @@ Reference this skill when jawor asks to:
 - Fans: Case fans connected to CHA_FAN (controlled via motherboard)
 
 ### Problem
+
 ASUS X870 doesn't expose fan controller by default in Linux. Drivers `nct6687d`, `asus-ec-sensors` don't work on this board.
 
 ### Solution
+
 Use built-in kernel driver `nct6775` (Nuvoton NCT6799).
 
 ### Installation
@@ -389,11 +223,13 @@ fan4 = { profile_uid = "gpu_profile" }
 ```
 
 ### BIOS Requirements
+
 - Disable Smart Fan Mode for fans to be controlled
 - Set mode to PWM (not DC)
 - Or leave on Auto - nct6775 should take over
 
 ### Verification
+
 ```bash
 # Check RPM
 sensors | grep -E "fan[24]"
@@ -406,11 +242,167 @@ sudo journalctl -u coolercontrold -f
 ```
 
 ### Notes
+
 - Fan5 may be marked as "Uncontrollable RPM-only"
 - Warning "Tctl is missing" in logs doesn't block operation - fans work
 - For full control, can use `pwmconfig` instead of CoolerControl
 
 ### References
+
 - https://unix.stackexchange.com/questions/790419/asus-motherboard-fan-control-under-linux
 - https://www.reddit.com/r/cachyos/comments/1qrnzbp/fix_coolercontrol_so_it_can_see_fans_on_an_asus/
 - https://docs.coolercontrol.org/
+
+---
+
+## SSH Configuration
+
+Subnet: `10.66.66.0/24`
+
+| Host | IP | Port | User |
+|------|-----|------|------|
+| Router/Gateway | 10.66.66.1 | 2229 | root |
+| Other hosts | 10.66.66.x | 22 | root |
+
+---
+
+## Git Security
+
+**ALWAYS check for secrets before committing to public repo.**
+
+Before any commit/push:
+- Scan for API keys, tokens, passwords
+- Check `.gitignore` covers sensitive files
+- Review diff with `git diff --staged`
+- Use `git status` to see what will be committed
+
+This repo is public - do not expose credentials, SSH keys, or sensitive configs.
+
+- **Name**: przydasie
+- **URL**: https://github.com/JaworB/przydasie.git
+- **Local path**: ~/repos/przydasie
+
+---
+
+## OpenCode Configuration
+
+**Config file**: `~/repos/przydasie/AI/jawor-conf/opencode.json`  
+**Symlink**: `~/.config/opencode/opencode.json` → `~/repos/przydasie/AI/jawor-conf/opencode.json`
+
+```json
+{
+  "model": "opencode/minimax-m2.5-free",
+  "default_agent": "plan",
+  "skills": {
+    "paths": [
+      "~/.claude/skills/omarchy",
+      "~/repos/przydasie/AI/"
+    ]
+  },
+  "theme": "system",
+  "autoupdate": true
+}
+```
+
+**Available models**: `opencode/minimax-m2.5-free`, `opencode/gpt-5-nano`, `opencode/trinity-large-preview-free`
+
+**Skills loaded**:
+- `~/.claude/skills/omarchy` - Omarchy desktop config
+- `~/repos/przydasie/AI/` - jawor-conf + omarchy-custom-skill
+
+---
+
+## Commands Reference
+
+```bash
+# Reload Hyprland config
+omarchy-restart-hyprctl
+
+# Change theme
+omarchy-theme-set "Miasma"
+
+# List themes
+omarchy-theme-list
+
+# Backup configs
+~/scripts/backup-omarchy-configs.sh
+```
+
+---
+
+## Waybar Widget Config
+
+### WireGuard Widget
+
+Add to `~/.config/waybar/config.jsonc`:
+
+```jsonc
+// In modules-right, after "network":
+"custom/wireguard",
+
+// Add module config:
+"custom/wireguard": {
+  "exec": "~/.local/bin/wg-toggle status",
+  "on-click": "~/.local/bin/wg-toggle toggle",
+  "return-type": "json",
+  "format": "{text}",
+  "tooltip": true,
+  "interval": 5
+}
+```
+
+**Icons**: `󰒍` (connected) / `󰒎` (disconnected)
+
+---
+
+## Repo Structure
+
+```
+przydasie/
+├── AI/
+│   ├── jawor-conf/              # This skill
+│   │   ├── SKILL.md
+│   │   └── opencode.json       # OpenCode config
+│   ├── omarchy-custom-skill/   # Custom omarchy overrides
+│   └── openclawbot/            # OpenClaw bot config
+├── dotfiles/
+│   └── hypr/                   # Hyprland configs
+│       ├── bindings.conf
+│       ├── input.conf
+│       ├── autostart.conf
+│       ├── looknfeel.conf
+│       ├── hypridle.conf
+│       ├── hyprlock.conf
+│       └── hyprsunset.conf
+├── Obsidian/
+├── Obsidian_PL/
+├── docker/
+├── edu/
+├── scripts/
+├── .ansible/
+└── .vscode/
+```
+
+**Files NOT in dotfiles (hardware-specific):**
+- `monitors.conf` - monitor setup per PC
+- `envs.conf` - environment variables
+- `hyprland.conf` - main config (managed by omarchy)
+- `xdph.conf` - XWayland config
+
+---
+
+## Related Skills
+
+- **Omarchy** (system desktop config): `~/.claude/skills/omarchy/SKILL.md`
+- **Omarchy-Custom** (user overrides): `~/repos/przydasie/AI/omarchy-custom-skill/SKILL.md`
+
+---
+
+## Usage
+
+Reference this skill when jawor asks to:
+- Restore desktop configuration after Omarchy install
+- Configure desktop environment settings
+- Set up SSH connections to his network
+- Clone or work with his GitHub repos
+- Find AI-related configs or skills
