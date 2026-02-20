@@ -171,6 +171,54 @@ omarchy-theme-set "Miasma"
 omarchy-restart-hyprctl
 ```
 
+#### Step 6: WireGuard Setup
+
+**Script**: `~/repos/przydasie/scripts/hyprland/wg-toggle`
+
+```bash
+# Create symlink
+mkdir -p ~/.local/bin
+ln -sf ~/repos/przydasie/scripts/hyprland/wg-toggle ~/.local/bin/wg-toggle
+chmod +x ~/.local/bin/wg-toggle
+```
+
+**Waybar Widget**:
+
+Add to `~/.config/waybar/config.jsonc`:
+
+```jsonc
+// In modules-right, after "network":
+"custom/wireguard",
+
+// Add module config:
+"custom/wireguard": {
+  "exec": "~/.local/bin/wg-toggle status",
+  "on-click": "~/.local/bin/wg-toggle toggle",
+  "return-type": "json",
+  "format": "{text}",
+  "tooltip": true,
+  "interval": 5
+}
+```
+
+**Polkit Rule** (for passwordless toggle):
+
+```bash
+echo 'polkit.addRule(function(action, subject) {
+    if (action.id == "org.freedesktop.policykit.exec" && 
+        subject.isInGroup("wheel")) {
+        return polkit.Result.YES;
+    }
+});' | sudo tee /etc/polkit-1/rules.d/50-wireguard.rules
+```
+
+**Restart waybar**:
+```bash
+omarchy-restart-waybar
+```
+
+**Icons**: `󰒍` (connected) / `󰒎` (disconnected)
+
 ### Dotfiles Structure
 
 ```
