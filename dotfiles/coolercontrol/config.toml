@@ -1,0 +1,37 @@
+[[profiles]]
+uid = "cpu_profile"
+name = "CPU Profile"
+p_type = "Graph"
+speed_profile = [[0.0, 25], [45.0, 35], [60.0, 50], [75.0, 70], [85.0, 100]]
+function_uid = "cpu_function"
+temp_source = { temp_name = "temp1", device_uid = "31afea3c316e94c19b918e2e76e98ca246202c76409c1faccfe3b155269f38a9" }
+temp_min = 0.0
+temp_max = 100.0
+
+[[functions]]
+uid = "cpu_function"
+name = "CPU Function"
+f_type = "Identity"
+duty_minimum = 25
+duty_maximum = 100
+
+[[profiles]]
+uid = "gpu_profile"
+name = "GPU Profile"
+p_type = "Graph"
+speed_profile = [[0.0, 30], [35.0, 35], [50.0, 50], [65.0, 70], [80.0, 100]]
+function_uid = "gpu_function"
+temp_source = { temp_name = "GPU Temp", device_uid = "7e51251c32d94c13a4a7fcfc30a4c8afd505f84019f61b924284334f62db9c21" }
+temp_min = 0.0
+temp_max = 100.0
+
+[[functions]]
+uid = "gpu_function"
+name = "GPU Function"
+f_type = "Identity"
+duty_minimum = 30
+duty_maximum = 100
+
+[device-settings.00a4da18625f56275c89e2fcd25a83c08c5ad3326452fa7e252fcc8a89c92493]
+fan2 = { profile_uid = "cpu_profile" }
+fan4 = { profile_uid = "gpu_profile" }
