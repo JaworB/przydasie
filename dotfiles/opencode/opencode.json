@@ -1,0 +1,12 @@
+{
+  "model": "opencode/minimax-m2.5-free",
+  "default_agent": "plan",
+  "skills": {
+    "paths": [
+      "~/.claude/skills/omarchy",
+      "~/repos/przydasie/AI/"
+    ]
+  },
+  "theme": "system",
+  "autoupdate": true
+}
