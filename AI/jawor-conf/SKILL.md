@@ -213,6 +213,63 @@ sensors | grep -E "pwm[24]"
 
 ---
 
+### 3.8 Remote Logging (Arch → Rocky)
+
+**Konfiguracja**: `~/repos/przydasie/dotfiles/system/rsyslog/`
+
+Arch (klient) wysyła logi do Rocky (serwer) przez UDP.
+
+| Parametr | Wartość |
+|----------|---------|
+| Serwer | 10.66.66.1:514 UDP |
+| Protokół | UDP |
+| Retention lokalne | 4 dni (daily, rotate 4) |
+| Retention zdalne | 180 tygodni (weekly, rotate 180) |
+
+#### Arch (klient) - syslog-ng
+
+```bash
+# Instalacja
+pacman -S syslog-ng
+
+# Konfiguracja (z dotfiles)
+cp ~/repos/przydasie/dotfiles/system/rsyslog/arch/syslog-ng.conf /etc/syslog-ng/syslog-ng.conf
+cp ~/repos/przydasie/dotfiles/system/rsyslog/arch/logrotate-local /etc/logrotate.d/local-logs
+
+# Uruchomienie
+systemctl enable --now syslog-ng@default
+```
+
+#### Rocky (serwer) - rsyslog
+
+```bash
+# Instalacja
+dnf install rsyslog
+
+# Konfiguracja (z dotfiles)
+cp ~/repos/przydasie/dotfiles/system/rsyslog/rocky/rsyslog.conf /etc/rsyslog.conf
+cp ~/repos/przydasie/dotfiles/system/rsyslog/rocky/remote.conf /etc/rsyslog.d/
+cp ~/repos/przydasie/dotfiles/system/rsyslog/rocky/remote-split.conf /etc/rsyslog.d/
+cp ~/repos/przydasie/dotfiles/system/rsyslog/rocky/remote-security.conf /etc/rsyslog.d/
+cp ~/repos/przydasie/dotfiles/system/rsyslog/rocky/logrotate-remote /etc/logrotate.d/
+
+# Firewall - dopuszć sieć lokalną
+firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="10.66.66.0/24" port port="514" protocol="udp" accept'
+firewall-cmd --reload
+
+# Uruchomienie
+systemctl enable --now rsyslog
+```
+
+#### Struktura logów
+
+| Lokalizacja | Zawartość |
+|-------------|-----------|
+| Rocky /var/log/{secure,messages,cron} | Lokalne logi (jawor.vpn) |
+| Rocky /var/log/remote/{HOSTNAME}/ | Logi zdalne per host |
+
+---
+
 ## Related Skills
 
 - **Omarchy** (system desktop config): `~/.claude/skills/omarchy/SKILL.md`
