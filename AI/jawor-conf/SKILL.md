@@ -56,13 +56,13 @@ przydasie/
 
 ### 3.1 Base Setup (Both)
 
-**Location**: `~/.local/bin/`
-
-**Setup:**
+**Packages:**
 ```bash
-mkdir -p ~/.local/bin
-cp ~/repos/przydasie/dotfiles/scripts/hyprland/*.sh ~/.local/bin/
-chmod +x ~/.local/bin/*.sh
+# Core packages
+sudo pacman -S --noconfirm stow
+
+# Optional: Discord (for autostart)
+yay -S --noconfirm discord
 ```
 
 ---
@@ -85,17 +85,59 @@ omarchy-theme-set "Miasma"
 
 **Setup:**
 ```bash
+# First time: remove existing config and symlink
+rm -rf ~/.config/hypr
 cd ~/repos/przydasie/dotfiles/hypr
-stow -t ~ hypr
+stow -t ~/.config .config
+```
+
+**Note**: After stow, update `monitors.conf` in the repo for your hardware (see section 3.5).
+
+---
+
+### 3.4 DisplayLink Driver (Laptop only)
+
+**Hardware**: Lenovo ThinkPad Hybrid USB-C with USB-A Dock, Xiaomi Mi Monitor 3440x1440@50Hz
+
+**Setup:**
+```bash
+# Install dependencies
+sudo pacman -S --noconfirm dkms linux-headers
+
+# Install DisplayLink driver
+yay -S --noconfirm evdi-dkms displaylink
+
+# Enable service
+sudo systemctl enable --now displaylink.service
+
+# Verify
+systemctl status displaylink.service
+hyprctl monitors
+```
+
+**Troubleshooting**:
+```bash
+# Check monitors
+hyprctl monitors
+
+# Restart service
+sudo systemctl restart displaylink.service
+
+# Check EVID
+ls /dev/dri/card*
 ```
 
 ---
 
-### 3.4 Monitor config
+### 3.5 Monitor config
 
-**Location**: `~/.config/hypr/monitors.conf`
+**Location**: `~/repos/przydasie/dotfiles/hypr/.config/hypr/monitors.conf`
 
-**Setup:**
+**IMPORTANT**: After running `stow` (section 3.3), edit `monitors.conf` in the **repo** to match your hardware, then reload Hyprland:
+
+```bash
+hyprctl reload
+```
 
 #### PC (Desktop)
 ```
@@ -121,7 +163,7 @@ env = GDK_SCALE,1
 
 ---
 
-### 3.5 OpenCode (Both)
+### 3.6 OpenCode (Both)
 
 **Location**: `~/repos/przydasie/dotfiles/opencode/opencode.json`
 
@@ -135,7 +177,7 @@ ln -sf ~/repos/przydasie/dotfiles/opencode/opencode.json ~/.config/opencode/open
 
 ---
 
-### 3.6 WireGuard (Both)
+### 3.7 WireGuard (Both)
 
 **Location**: 
 - Script: `~/repos/przydasie/dotfiles/scripts/hyprland/wg-toggle`
@@ -160,11 +202,16 @@ omarchy-restart-waybar
 
 ---
 
-### 3.7 Custom Scripts (Laptop)
+### 3.8 Custom Scripts (Laptop)
 
-**Location**: `~/repos/przydasie/dotfiles/scripts/hyprland/`
+**Setup:**
+```bash
+mkdir -p ~/.local/bin
+cp ~/repos/przydasie/dotfiles/scripts/hyprland/*.sh ~/.local/bin/
+chmod +x ~/.local/bin/*.sh
+```
 
-**Keybindings** (automatically from `~/.config/hypr/bindings-laptop.conf`):
+**Keybindings** (automatically loaded from `~/.config/hypr/bindings-laptop.conf`):
 
 | Script | Purpose | Keybinding |
 |--------|---------|------------|
@@ -173,7 +220,7 @@ omarchy-restart-waybar
 | `toggle-audio-output.sh` | Toggle AirPods ↔ Speakers | `SUPER + SHIFT + A` |
 | `lid-handler-daemon.sh` | Auto-switch display on lid/AC state | Auto-start |
 
-**Lid handler auto-start** (add to autostart or systemd):
+**Lid handler auto-start**:
 ```bash
 ~/.local/bin/lid-handler-daemon.sh &
 ```
