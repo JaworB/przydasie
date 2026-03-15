@@ -1,0 +1,13 @@
+/var/log/syslog
+/var/log/messages
+/var/log/secure
+/var/log/cron
+{
+    daily
+    rotate 4
+    compress
+    delaycompress
+    missingok
+    notifempty
+    create 0640 root adm
+}
