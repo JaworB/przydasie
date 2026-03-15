@@ -268,6 +268,20 @@ systemctl enable --now rsyslog
 | Rocky /var/log/{secure,messages,cron} | Lokalne logi (jawor.vpn) |
 | Rocky /var/log/remote/{HOSTNAME}/ | Logi zdalne per host |
 
+#### Debian (shire) - rsyslog
+
+```bash
+# Instalacja (jeśli nie ma)
+apt install rsyslog
+
+# Konfiguracja (z dotfiles)
+cp ~/repos/przydasie/dotfiles/system/rsyslog/debian/client.conf /etc/rsyslog.d/
+cp ~/repos/przydasie/dotfiles/system/rsyslog/debian/logrotate-local /etc/logrotate.d/
+
+# Uruchomienie
+systemctl restart rsyslog
+```
+
 ---
 
 ## Related Skills
