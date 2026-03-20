@@ -1,0 +1,6 @@
+---
+ansible_user: root
+wg_server_config: "none"
+wg_interface_name: "palantir"
+wg_listen_port: 51820
+wg_server_address: 10.11.12.1/24

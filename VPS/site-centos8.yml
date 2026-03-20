@@ -1,0 +1,62 @@
+---
+- name: Bootstrap - SSH Password and Key
+  hosts: rocky9_bootstrap
+  become: true
+  gather_facts: yes
+  ignore_unreachable: yes
+  vars_prompt:
+    - name: bootstrap_new_password
+      prompt: "Enter new root password"
+      private: yes
+      confirm: yes
+
+  pre_tasks:
+    - name: Check if SSH is reachable on port 22
+      ansible.builtin.wait_for:
+        host: "{{ ansible_host }}"
+        port: 22
+        timeout: 5
+        state: started
+      register: ssh_check
+      failed_when: false
+      changed_when: false
+
+    - name: Skip bootstrap if port 22 is not reachable
+      ansible.builtin.meta: end_host
+      when: ssh_check is failed
+
+  roles:
+    - role: bootstrap
+    - role: sshd
+
+  post_tasks:
+    - name: Wait for SSH to be ready on new port
+      wait_for:
+        host: "{{ ansible_host }}"
+        port: 2229
+        timeout: 30
+        delay: 2
+      delegate_to: localhost
+
+- name: Hardening - Kernel, SELinux, Firewall, Fail2ban
+  hosts: rocky9_config
+  become: true
+  gather_facts: yes
+  ignore_unreachable: yes
+
+  roles:
+    - role: selinux
+    - role: kernel_hardening
+    - role: firewalld
+    - role: fail2ban
+
+- name: Services - Logging, Container, VPN
+  hosts: rocky9_config
+  become: true
+  gather_facts: yes
+  ignore_unreachable: yes
+
+  roles:
+    - role: rsyslog
+    - role: podman
+    - role: wireguard
