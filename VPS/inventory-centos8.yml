@@ -1,0 +1,29 @@
+# Inventory for Rocky Linux 9 VPS
+# IMPORTANT: Replace HOST_IP with your server IP before running
+# IMPORTANT: Set ansible_password or use --ask-pass for bootstrap
+
+all:
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+
+  children:
+    rocky9_bootstrap:
+      vars:
+        ansible_port: 22
+        ansible_ssh_pubkey_authentication: no
+      hosts:
+        rocky9-bs:
+          ansible_host: HOST_IP
+          ansible_user: root
+          ansible_password: "REPLACE_WITH_PASSWORD"
+          ansible_ssh_private_key_file: ~/.ssh/id_rsa
+
+    rocky9_config:
+      vars:
+        ansible_port: 2229
+        ansible_ssh_pubkey_authentication: yes
+      hosts:
+        rocky9:
+          ansible_host: HOST_IP
+          ansible_user: root
+          ansible_ssh_private_key_file: ~/.ssh/id_rsa
