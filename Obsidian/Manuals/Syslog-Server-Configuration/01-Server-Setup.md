@@ -105,3 +105,36 @@ Ensure the log directory has correct permissions:
 sudo chown root:adm /var/log/remote
 sudo chmod 755 /var/log/remote
 ```
+
+### SELinux Issues
+
+If SELinux is enabled and blocking rsyslog:
+
+1. Check SELinux status:
+```bash
+sudo getenforce
+```
+
+2. Check for denied operations:
+```bash
+sudo ausearch -c rsyslogd
+sudo journalctl -u rsyslog -p err -b
+```
+
+3. If there are denials, generate a custom policy:
+```bash
+sudo ausearch -c 'rsyslogd' --raw | audit2allow -M rsyslog-custom
+sudo semodule -i rsyslog-custom.pp
+```
+
+4. To temporarily disable SELinux enforcement (for testing):
+```bash
+sudo setenforce 0
+```
+
+5. To permanently set SELinux mode, edit `/etc/selinux/config`:
+```bash
+sudo sed -i 's/^SELINUX=.*/SELINUX=enforcing/' /etc/selinux/config
+```
+
+**Note:** On Fedora, rsyslog typically works with SELinux in enforcing mode without additional policies. The default "targeted" policy includes necessary permissions for rsyslog.
