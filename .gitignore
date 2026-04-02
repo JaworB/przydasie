@@ -13,6 +13,8 @@ docker/**/*.env
 scripts/docker/**/.env
 !scripts/docker/**/.env.example
 docker/VPS/.env.example
+VPS/.env
+VPS/default.env
 
 # Ansible
 scripts/ansible/provisioning/host_vars/
