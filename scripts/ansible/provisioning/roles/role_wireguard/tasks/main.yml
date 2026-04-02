@@ -1,19 +1,27 @@
 ---
-- name: Install wireguard packages (Debian/Ubuntu)
-  ansible.builtin.package:
-    name:
-      - wireguard
-      - wireguard-tools
-      - resolvconf
-    state: present
-  when: ansible_facts['os_family'] == "Debian"
+- name: Verify required wireguard variables
+  ansible.builtin.assert:
+    that:
+      - wireguard_private_key is defined
+      - wireguard_public_key is defined
+      - wireguard_preshared_key is defined
+      - wireguard_endpoint is defined
+      - wireguard_addresses is defined
+      - wireguard_allowed_ips is defined
+    fail_msg: "Missing required wireguard variables. Please define them in host_vars/{{ inventory_hostname }}/vault.yml"
+    success_msg: "All required wireguard variables are defined"
+  register: wireguard_vars_check
+  failed_when: false
 
-- name: Install wireguard packages (RedHat)
-  ansible.builtin.dnf:
-    name:
-      - wireguard-tools
+- name: Set wireguard configured flag
+  ansible.builtin.set_fact:
+    wireguard_configured: "{{ wireguard_vars_check is succeeded }}"
+
+- name: Install wireguard packages
+  ansible.builtin.package:
+    name: "{{ wireguard_packages[ansible_facts['os_family']] }}"
     state: present
-  when: ansible_facts['os_family'] == "RedHat"
+  when: ansible_facts['os_family'] in wireguard_packages and wireguard_configured
 
 - name: Copy config template
   ansible.builtin.template:
@@ -21,9 +29,13 @@
     dest: /etc/wireguard/wg0.conf
     mode: '0644'
     owner: root
+    validate: 'wg-quick check %s'
+  notify: restart wireguard
+  when: wireguard_configured
 
 - name: Enable and start wireguard service
   ansible.builtin.service:
     name: wg-quick@wg0.service
     enabled: true
     state: started
+  when: wireguard_configured
