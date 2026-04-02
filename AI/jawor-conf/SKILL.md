@@ -22,11 +22,21 @@ przydasie/
 ├── AI/
 │   └── jawor-conf/              # This skill
 ├── dotfiles/
-│   ├── hypr/.config/hypr/
-│   ├── coolercontrol/
-│   ├── opencode/
-│   ├── waybar/
-│   └── scripts/hyprland/
+│   ├── desktop/                 # PC configuration
+│   │   ├── hypr/.config/hypr/
+│   │   ├── waybar/.config/waybar/
+│   │   ├── scripts/bin/         # wg-toggle, gpu-power-toggle
+│   │   ├── coolercontrol/
+│   │   ├── opencode/.config/opencode/
+│   │   └── uwsm/.config/uwsm/
+│   ├── laptop/                  # Laptop configuration
+│   │   ├── hypr/.config/hypr/
+│   │   ├── scripts/bin/         # laptop scripts + wg-toggle
+│   │   ├── opencode/
+│   │   └── uwsm/.config/uwsm/
+│   ├── system/                  # rsyslog configs
+│   ├── stow-desktop.sh          # Stow script for PC
+│   └── stow-laptop.sh           # Stow script for laptop
 ├── Obsidian/
 ├── docker/
 ├── edu/
@@ -34,10 +44,10 @@ przydasie/
 └── .vscode/
 ```
 
-### Hardware-specific files (NOT in dotfiles):
-- `monitors.conf` - monitor configuration
-- `envs.conf` - environment variables
-- `xdph.conf` - XWayland config
+### Hardware-specific files:
+- **monitors.conf** - now in dotfiles/desktop/ or dotfiles/laptop/ (already configured for each machine)
+- **envs.conf** - not in dotfiles
+- **xdph.conf** - not in dotfiles
 
 ---
 
@@ -81,17 +91,39 @@ omarchy-theme-set "Miasma"
 
 ### 3.3 dotfiles (Hyprland)
 
-**Location**: `~/repos/przydasie/dotfiles/hypr/.config/hypr/`
+**Location**: `~/repos/przydasie/dotfiles/{desktop|laptop}/`
 
 **Setup:**
+
+**PC:**
 ```bash
-# First time: remove existing config and symlink
-rm -rf ~/.config/hypr
-cd ~/repos/przydasie/dotfiles/hypr
-stow -t ~/.config .config
+cd ~/repos/przydasie/dotfiles
+./stow-desktop.sh
 ```
 
-**Note**: After stow, update `monitors.conf` in the repo for your hardware (see section 3.5).
+**Laptop:**
+```bash
+cd ~/repos/przydasie/dotfiles
+./stow-laptop.sh
+```
+
+**Manual (without script):**
+```bash
+# PC
+cd ~/repos/przydasie/dotfiles/desktop
+stow -t ~ hypr uwsm waybar opencode coolercontrol scripts
+
+# Laptop
+cd ~/repos/przydasie/dotfiles/laptop
+stow -t ~ hypr uwsm opencode scripts
+```
+
+**After stow:**
+```bash
+hyprctl reload
+```
+
+**Note**: Monitors are already pre-configured in dotfiles for each machine. No manual edits needed.
 
 ---
 
@@ -131,10 +163,11 @@ ls /dev/dri/card*
 
 ### 3.5 Monitor config
 
-**Location**: `~/repos/przydasie/dotfiles/hypr/.config/hypr/monitors.conf`
+**Location**: 
+- PC: `~/repos/przydasie/dotfiles/desktop/hypr/.config/hypr/monitors.conf`
+- Laptop: `~/repos/przydasie/dotfiles/laptop/hypr/.config/hypr/monitors.conf`
 
-**IMPORTANT**: After running `stow` (section 3.3), edit `monitors.conf` in the **repo** to match your hardware, then reload Hyprland:
-
+**Note**: Monitors are pre-configured in dotfiles for each machine. After stow, just reload Hyprland:
 ```bash
 hyprctl reload
 ```
@@ -165,13 +198,11 @@ env = GDK_SCALE,1
 
 ### 3.6 OpenCode (Both)
 
-**Location**: `~/repos/przydasie/dotfiles/opencode/opencode.json`
+**Location**: 
+- PC: `~/repos/przydasie/dotfiles/desktop/opencode/.config/opencode/opencode.json`
+- Laptop: `~/repos/przydasie/dotfiles/laptop/opencode/opencode.json`
 
-**Setup:**
-```bash
-mkdir -p ~/.config/opencode
-ln -sf ~/repos/przydasie/dotfiles/opencode/opencode.json ~/.config/opencode/opencode.json
-```
+**Setup**: Automatically stowed by `stow-desktop.sh` or `stow-laptop.sh`. No manual setup needed.
 
 **Available models**: `opencode/minimax-m2.5-free`, `opencode/gpt-5-nano`, `opencode/trinity-large-preview-free`
 
@@ -180,56 +211,62 @@ ln -sf ~/repos/przydasie/dotfiles/opencode/opencode.json ~/.config/opencode/open
 ### 3.7 WireGuard (Both)
 
 **Location**: 
-- Script: `~/repos/przydasie/dotfiles/scripts/hyprland/wg-toggle`
-- Waybar widget: `~/repos/przydasie/dotfiles/waybar/wireguard-widget.jsonc`
+- PC: `~/repos/przydasie/dotfiles/desktop/scripts/bin/wg-toggle`
+- Laptop: `~/repos/przydasie/dotfiles/laptop/scripts/bin/wg-toggle`
 
-**Setup:**
+**Setup**: Automatically stowed by `stow-desktop.sh` or `stow-laptop.sh`.
+
+**Polkit rule** (needed for toggle):
 ```bash
-ln -sf ~/repos/przydasie/dotfiles/scripts/hyprland/wg-toggle ~/.local/bin/wg-toggle
-chmod +x ~/.local/bin/wg-toggle
-
 echo 'polkit.addRule(function(action, subject) {
     if (action.id == "org.freedesktop.policykit.exec" && 
         subject.isInGroup("wheel")) {
         return polkit.Result.YES;
     }
 });' | sudo tee /etc/polkit-1/rules.d/50-wireguard.rules
-
-# Add widget to waybar config (copy from dotfiles/waybar/wireguard-widget.jsonc)
-
-omarchy-restart-waybar
 ```
 
 ---
 
-### 3.8 Custom Scripts (Laptop)
+### 3.8 GPU Power (PC only)
 
-**Setup:**
-```bash
-mkdir -p ~/.local/bin
-cp ~/repos/przydasie/dotfiles/scripts/hyprland/*.sh ~/.local/bin/
-chmod +x ~/.local/bin/*.sh
-```
+**Widget**: Waybar GPU Power toggle (undervolt/normal TDP)
 
-**Keybindings** (automatically loaded from `~/.config/hypr/bindings-laptop.conf`):
+**Script**: `~/.local/bin/gpu-power-toggle`
 
+**Function**:
+- Toggle TDP between 300W (undervolt) and 450W (normal)
+- Displays icon in waybar: 󰡧 (undervolt) / 󰡨 (normal)
+- Click on widget to toggle
+
+**Setup**: Automatically stowed by `stow-desktop.sh` (desktop package includes waybar with GPU Power widget)
+
+---
+
+### 3.9 Custom Scripts (Laptop)
+
+**Location**: `~/repos/przydasie/dotfiles/laptop/scripts/bin/`
+
+**Setup**: Automatically stowed by `stow-laptop.sh`. All scripts are symlinked to `~/.local/bin/`.
+
+**Scripts:**
 | Script | Purpose | Keybinding |
 |--------|---------|------------|
 | `toggle-dock-mode.sh` | Toggle dock mode (dual display ↔ external only) | `SUPER + M` |
 | `fix-cursor-vertical.sh` | Fix cursor with vertical monitor stack | `SUPER + SHIFT + V` |
 | `toggle-audio-output.sh` | Toggle AirPods ↔ Speakers | `SUPER + SHIFT + A` |
-| `lid-handler-daemon.sh` | Auto-switch display on lid/AC state | Auto-start |
+| `lid-handler-daemon.sh` | Auto-switch display on lid/AC state | Auto-start via autostart.conf |
+| `wg-toggle` | WireGuard toggle | Auto-start |
 
-**Lid handler auto-start**:
-```bash
-~/.local/bin/lid-handler-daemon.sh &
-```
+**Note**: All keybindings are pre-configured in `dotfiles/laptop/hypr/.config/hypr/bindings.conf`. Lid handler starts automatically from autostart.conf - no manual start needed.
 
 ---
 
 ## 4. PC Cooling (optional, PC only)
 
-**Location**: `~/repos/przydasie/dotfiles/coolercontrol/config.toml`
+**Location**: `~/repos/przydasie/dotfiles/desktop/coolercontrol/config.toml`
+
+**Hardware**: ASUS X870 MAX GAMING WIFI7 W, AMD Ryzen 7 7800X3D, NVIDIA RTX 4090
 
 **Hardware**: ASUS X870 MAX GAMING WIFI7 W, AMD Ryzen 7 7800X3D, NVIDIA RTX 4090
 
@@ -246,7 +283,7 @@ echo "nct6775" | sudo tee /etc/modules-load.d/nct6775.conf
 sudo systemctl enable --now coolercontrold
 
 # Copy config
-sudo cp ~/repos/przydasie/dotfiles/coolercontrol/config.toml /etc/coolercontrol/config.toml
+sudo cp ~/repos/przydasie/dotfiles/desktop/coolercontrol/config.toml /etc/coolercontrol/config.toml
 sudo systemctl restart coolercontrold
 
 # Verify
