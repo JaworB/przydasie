@@ -1,17 +1,27 @@
+---
 - name: Restart sshd service
-  ansible.builtin.meta: noop
+  block:
+    - name: Restart sshd service (systemd)
+      ansible.builtin.service:
+        name: "{{ 'ssh' if ansible_facts['os_family'] == 'Debian' else 'sshd' }}"
+        state: restarted
+      when: ansible_facts.service_mgr is defined and ansible_facts.service_mgr == "systemd"
 
-- name: Restart sshd service (systemd)
+    - name: Restart sshd service (non-systemd)
+      become: true
+      ansible.builtin.command: pkill -HUP sshd || /usr/sbin/sshd
+      when: ansible_facts.service_mgr is undefined or ansible_facts.service_mgr != "systemd"
+      changed_when: true
+  rescue:
+    - name: Restart sshd service fallback
+      ansible.builtin.service:
+        name: "{{ 'ssh' if ansible_facts['os_family'] == 'Debian' else 'sshd' }}"
+        state: restarted
+
+- name: Reload sshd service
   ansible.builtin.service:
     name: "{{ 'ssh' if ansible_facts['os_family'] == 'Debian' else 'sshd' }}"
-    state: restarted
-  when: ansible_facts.service_mgr is defined and ansible_facts.service_mgr == "systemd"
-
-- name: Restart sshd service (non-systemd)
-  become: true
-  ansible.builtin.shell: pkill -HUP sshd || /usr/sbin/sshd
-  when: ansible_facts.service_mgr is undefined or ansible_facts.service_mgr != "systemd"
-  changed_when: true
+    state: reloaded
 
 - name: Restart firewalld service
   ansible.builtin.service:
