@@ -1,11 +1,9 @@
 ---
 - name: Configure new hosts
   hosts: vms
-  gather_facts: true
+  gather_facts: smart
   become: true
   become_user: root
-  vars:
-    role_users_remote_username: "{{ inventory_hostname }}_remote_user"
   tasks:
     - name: Setup users
       ansible.builtin.include_role:
@@ -18,7 +16,7 @@
     - name: Configure ssh service
       ansible.builtin.include_role:
         name: role_ssh
-      when: role_ssh_skip_task is undefined
+      when: not (role_ssh_skip_task | default(false))
 
     - name: Setup wireguard
       ansible.builtin.include_role:

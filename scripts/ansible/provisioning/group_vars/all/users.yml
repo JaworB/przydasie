@@ -1,6 +1,8 @@
 ---
+target_username: "{{ inventory_hostname }}_remote_user"
+
 role_users_user_details:
-  - username: "{{ inventory_hostname }}_remote_user"
+  - username: "{{ target_username }}"
     groups: sudo
     sudoers: true
   - username: test
