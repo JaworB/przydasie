@@ -40,6 +40,8 @@ przydasie/
 ├── Obsidian/
 ├── docker/
 ├── edu/
+├── plymouth/                    # Plymouth themes
+│   └── bogusz-theme/           # Custom boot theme
 ├── scripts/
 └── .vscode/
 ```
@@ -259,6 +261,29 @@ echo 'polkit.addRule(function(action, subject) {
 | `wg-toggle` | WireGuard toggle | Auto-start |
 
 **Note**: All keybindings are pre-configured in `dotfiles/laptop/hypr/.config/hypr/bindings.conf`. Lid handler starts automatically from autostart.conf - no manual start needed.
+
+---
+
+### 3.10 Plymouth Theme (bogusz-theme)
+
+**Location**: `~/repos/przydasie/plymouth/bogusz-theme/`
+
+**Description**: Custom Plymouth boot theme z logo Omarchy. Logo przeskalowane do 400×717px.
+
+**Setup:**
+```bash
+cd ~/repos/przydasie/plymouth/bogusz-theme
+./install.sh
+```
+
+**Manual:**
+```bash
+sudo cp -r bogusz-theme/ /usr/share/plymouth/themes/
+sudo plymouth-set-default-theme bogusz-theme
+sudo plymouth-set-default-theme --rebuild-initrd
+```
+
+**Note**: Wymaga przebudowania initrd (wykonywane przez install.sh).
 
 ---
 
