@@ -1,0 +1,12 @@
+[Plymouth Theme]
+Name=Bogusz Theme
+Description=Omarchy splash screen with custom logo.
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/bogusz-theme
+ScriptFile=/usr/share/plymouth/themes/bogusz-theme/omarchy.script
+ConsoleLogBackgroundColor=0x1a1b26
+MonospaceFont=Cantarell 11
+Font=Cantarell 11
+
