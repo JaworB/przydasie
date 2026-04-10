@@ -293,8 +293,6 @@ sudo plymouth-set-default-theme --rebuild-initrd
 
 **Hardware**: ASUS X870 MAX GAMING WIFI7 W, AMD Ryzen 7 7800X3D, NVIDIA RTX 4090
 
-**Hardware**: ASUS X870 MAX GAMING WIFI7 W, AMD Ryzen 7 7800X3D, NVIDIA RTX 4090
-
 **Setup:**
 ```bash
 # Install CoolerControl
@@ -324,70 +322,70 @@ sensors | grep -E "pwm[24]"
 
 ### 3.8 Remote Logging (Arch → Rocky)
 
-**Konfiguracja**: `~/repos/przydasie/dotfiles/system/rsyslog/`
+**Configuration**: `~/repos/przydasie/dotfiles/system/rsyslog/`
 
-Arch (klient) wysyła logi do Rocky (serwer) przez UDP.
+Arch (client) sends logs to Rocky (server) via UDP.
 
-| Parametr | Wartość |
-|----------|---------|
-| Serwer | 10.66.66.1:514 UDP |
-| Protokół | UDP |
-| Retention lokalne | 4 dni (daily, rotate 4) |
-| Retention zdalne | 180 tygodni (weekly, rotate 180) |
+| Parameter | Value |
+|-----------|-------|
+| Server | 10.66.66.1:514 UDP |
+| Protocol | UDP |
+| Local retention | 4 days (daily, rotate 4) |
+| Remote retention | 180 weeks (weekly, rotate 180) |
 
-#### Arch (klient) - syslog-ng
+#### Arch (client) - syslog-ng
 
 ```bash
-# Instalacja
+# Install
 pacman -S syslog-ng
 
-# Konfiguracja (z dotfiles)
+# Configuration (from dotfiles)
 cp ~/repos/przydasie/dotfiles/system/rsyslog/arch/syslog-ng.conf /etc/syslog-ng/syslog-ng.conf
 cp ~/repos/przydasie/dotfiles/system/rsyslog/arch/logrotate-local /etc/logrotate.d/local-logs
 
-# Uruchomienie
+# Enable
 systemctl enable --now syslog-ng@default
 ```
 
-#### Rocky (serwer) - rsyslog
+#### Rocky (server) - rsyslog
 
 ```bash
-# Instalacja
+# Install
 dnf install rsyslog
 
-# Konfiguracja (z dotfiles)
+# Configuration (from dotfiles)
 cp ~/repos/przydasie/dotfiles/system/rsyslog/rocky/rsyslog.conf /etc/rsyslog.conf
 cp ~/repos/przydasie/dotfiles/system/rsyslog/rocky/remote.conf /etc/rsyslog.d/
 cp ~/repos/przydasie/dotfiles/system/rsyslog/rocky/remote-split.conf /etc/rsyslog.d/
 cp ~/repos/przydasie/dotfiles/system/rsyslog/rocky/remote-security.conf /etc/rsyslog.d/
 cp ~/repos/przydasie/dotfiles/system/rsyslog/rocky/logrotate-remote /etc/logrotate.d/
 
-# Firewall - dopuszć sieć lokalną
+# Firewall - allow local network
 firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="10.66.66.0/24" port port="514" protocol="udp" accept'
 firewall-cmd --reload
 
-# Uruchomienie
+# Enable
 systemctl enable --now rsyslog
 ```
 
-#### Struktura logów
+#### Log Structure
 
-| Lokalizacja | Zawartość |
-|-------------|-----------|
-| Rocky /var/log/{secure,messages,cron} | Lokalne logi (jawor.vpn) |
-| Rocky /var/log/remote/{HOSTNAME}/ | Logi zdalne per host |
+| Location | Contents |
+|----------|----------|
+| Rocky /var/log/{secure,messages,cron} | Local logs (jawor.vpn) |
+| Rocky /var/log/remote/{HOSTNAME}/ | Remote logs per host |
 
 #### Debian (shire) - rsyslog
 
 ```bash
-# Instalacja (jeśli nie ma)
+# Install (if missing)
 apt install rsyslog
 
-# Konfiguracja (z dotfiles)
+# Configuration (from dotfiles)
 cp ~/repos/przydasie/dotfiles/system/rsyslog/debian/client.conf /etc/rsyslog.d/
 cp ~/repos/przydasie/dotfiles/system/rsyslog/debian/logrotate-local /etc/logrotate.d/
 
-# Uruchomienie
+# Enable
 systemctl restart rsyslog
 ```
 
