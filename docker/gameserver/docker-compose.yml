@@ -1,0 +1,22 @@
+services:
+  vintage-story:
+    container_name: VintageStory
+    image: sknnr/vintage-story-server:latest
+    ports:
+      - "42420:42420/tcp"
+    environment:
+      - GAME_VERSION=1.21.6
+    volumes:
+      - ./vintage-story-data:/home/vintagestory/data
+      - ./vintage-story-server:/home/vintagestory/server
+  
+  stationeers:
+    container_name: stationeers
+    image: sknnr/stationeers-server:latest
+    env_file:
+      - ./stationeers.env
+    ports:
+      - "27015:27015/udp"
+      - "27016:27016/udp"
+    volumes:
+      - ./stationeers-data:/home/steam/stationeers
