@@ -1,4 +1,0 @@
----
-sshd_port: "2229"
-sshd_pubkey_auth: "yes"
-sshd_rsa_key_size: "4096"

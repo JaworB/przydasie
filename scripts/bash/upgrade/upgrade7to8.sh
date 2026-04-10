@@ -8,14 +8,26 @@
 #  Script converts all OS filesystems from ext3/4 to xfs
 #  Script converts partition table on primary disk from MBR to GPT
 #
-#  Authors:  Rafał Bera (KYNDRYL)
-#            Paweł Kurzydłowski (KYNDRYL)
-#
+#  Configuration variables - set these before running:
+#    ORG="your-organization"
+#    ACTIVATION_KEY="your-activation-key"
+#    REPO_NAME="your-repo-name"
+#    SATELLITE_HOST="your-satellite-hostname"
+#    ICINGA_TOOL="/path/to/icinga-tool"
+#    REBUILD_INITRD_SCRIPT="/path/to/rebuild-initrd-script"
 #
 #  Version: 1.0
 #
 #
 ##########################################################################################
+
+# Configuration - set these variables before running the script
+ORG="your-organization"
+ACTIVATION_KEY="your-activation-key"
+REPO_NAME="your-repo-name"
+SATELLITE_HOST="your-satellite-hostname"
+ICINGA_TOOL="/path/to/send-to-icinga"
+REBUILD_INITRD_SCRIPT="/path/to/rebuild-initrds.sh"
 
 printok() {
   echo "[01;32m$1[0m"
@@ -80,7 +92,7 @@ prepare78() {
 
   printinfo "== Set maintenance mode in icinga:"
   printinfo "     Run from second console: "
-  printwarn "     /usr/isbs/bin/send_to_icinga --setdowntime --date now --duration 240 --author IH-IOIX-MSP --hostname $(hostname) --comment WaWo 2>&1 > /dev/null"
+  printwarn "     ${ICINGA_TOOL} --setdowntime --date now --duration 240 --author UPGRADE --hostname \$(hostname) --comment WaWo 2>&1 > /dev/null"
   read -p "Press [Enter] to continue..."
 
   printinfo "== Set temporary root password on server for emergency access."
@@ -207,7 +219,7 @@ prepare78() {
   printinfo "Installing required software"
   epelstatus=$(yum repolist all | grep epel | awk '{print $3}' | sed 's/://g')
   if [[ ${epelstatus} != "enabled" ]]; then
-    subscription-manager repos --enable=vwfs_vwfs_oss_epel7
+    subscription-manager repos --enable=${REPO_NAME}
   fi
   yum install -y gdisk dosfstools fstransform rsync
   read -p "Press [Enter] to continue..."
@@ -630,10 +642,10 @@ upgrade78() {
   fi
 
   printinfo "Preparing to leapp..."
-  #curl https://sat-capsule-bs/pub/leapp-data${_leappdataver}.tar.gz -o /tmp/leapp-data${_leappdataver}.tar.gz
+  #curl https://${SATELLITE_HOST}/pub/leapp-data${_leappdataver}.tar.gz -o /tmp/leapp-data${_leappdataver}.tar.gz
   #tar -zxf /tmp/leapp-data${_leappdataver}.tar.gz -C /etc/leapp/files/
   subscription-manager unregister
-  subscription-manager register --activationkey=ak-upgrade-rhel7-rhel8-dev --org vwfs --force
+  subscription-manager register --activationkey=${ACTIVATION_KEY} --org ${ORG} --force
   subscription-manager release --unset
   subscription-manager repos --disable=rhel-7-server-supplementary-rpms --disable=rhel-7-server-extras-rpms --disable=rhel-7-server-optional-rpms --disable=rhel-server-rhscl-7-rpms
   systemctl stop pxp-agent
@@ -760,7 +772,7 @@ post() {
   read -p "Press [ENTER] to continue..."
 
   printinfo "Rebuilding initramfs..."
-  /usr/isbs/bin/rebuild_initrds.sh
+  ${REBUILD_INITRD_SCRIPT}
   read -p "Press [ENTER] to continue..."
 
   grep -q nfs /etc/fstab
@@ -817,53 +829,52 @@ post() {
     printmark
     printinfo "Please select key for registering system to satellite"
     printinfo "== Generic content views. RHEL 8 latest available: "
-    echo "    1 - ak-rhel8-generic-dev     # Generic content view for development,"
-    echo "    2 - ak-rhel8-generic-cons    # Generic content view for consolidation"
-    echo "    3 - ak-rhel8-generic-prod    # Generic content view for prod"
+    echo "    1 - Generic development"
+    echo "    2 - Generic consolidation"
+    echo "    3 - Generic production"
     printinfo "== SAP content views, RHEL 8.4"
-    echo "    4 - ak-rhel84-e4s-dev        # E4S content view for development"
-    echo "    5 - ak-rhel84-e4s-cons       # E4S content view for consolidation"
-    echo "    6 - ak-rhel84-e4s-prod       # E4S content view for production"
+    echo "    4 - SAP E4S development"
+    echo "    5 - SAP E4S consolidation"
+    echo "    6 - SAP E4S production"
     printmark
     read -p "Please select answer:" ans
     case ${ans} in
     1)
-      regkey="ak-rhel8-generic-dev"
+      regkey=${ACTIVATION_KEY}
       echo "CV: generic" >> ${_statefile}
       echo "env: dev" >> ${_statefile}
       break
       ;;
     2)
-      regkey="ak-rhel8-generic-cons"
+      regkey=${ACTIVATION_KEY}
       echo "CV: generic" >> ${_statefile}
       echo "env: cons" >> ${_statefile}
       break
       ;;
     3)
-      regkey="ak-rhel8-generic-prod"
+      regkey=${ACTIVATION_KEY}
       echo "CV: generic" >> ${_statefile}
       echo "env: prod" >> ${_statefile}
       break
       ;;
     4)
-      regkey="ak-rhel84-e4s-dev"
+      regkey=${ACTIVATION_KEY}
       echo "CV: E4S" >> ${_statefile}
       echo "env: dev" >> ${_statefile}
       break
       ;;
     5)
-      regkey="ak-rhel84-e4s-cons"
+      regkey=${ACTIVATION_KEY}
       echo "CV: E4S" >> ${_statefile}
       echo "env: cons" >> ${_statefile}
       break
       ;;
     6)
-      regkey="ak-rhel84-e4s-prod"
+      regkey=${ACTIVATION_KEY}
       echo "CV: E4S" >> ${_statefile}
       echo "env: prod" >> ${_statefile}
       break
-      ;;
-    *)
+      *)
       echo "Wrong selection! Please select option from 1 to 6."
       ;;
     esac
@@ -877,7 +888,7 @@ post() {
 
   printinfo "Registering to target content view"
   subscription-manager unregister
-  subscription-manager register --activationkey=${regkey} --org vwfs --force
+  subscription-manager register --activationkey=${regkey} --org ${ORG} --force
   read -p "Press [Enter] to continue..."
 
   if grep -q "e4s" <<<${regkey}; then
@@ -947,7 +958,7 @@ post() {
   printinfo "     - Correct \"Double motd\" and \"TMOUT\" errors"
   printinfo "     - Reconcile root password with CyberArk"
   printinfo "     - Remove icinga downtime:"
-  echo "              /usr/isbs/bin/send_to_icinga --removedowntime --hostname $(hostname) >> /tmp/icinga_remove_downtime.txt"
+  echo "              ${ICINGA_TOOL} --removedowntime --hostname \$(hostname) >> /tmp/icinga_remove_downtime.txt"
   printinfo "     - Contact customer to perform application side checks"
   printinfo "     - Gather evidence for the change"
   printmark

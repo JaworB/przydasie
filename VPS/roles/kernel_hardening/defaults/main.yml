@@ -1,6 +1,0 @@
----
-kernel_hardening_disabled_services:
-  - postfix
-  - cups
-  - atd
-  - rhnsd

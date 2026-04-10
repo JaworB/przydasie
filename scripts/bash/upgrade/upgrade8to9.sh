@@ -6,16 +6,22 @@
 #
 #  Script for performing in-place upgrades from RHEL 8.x to RHEL 9.X
 #
-#  Authors:
-#            Paweł Kurzydłowski (KYNDRYL)
-#            Bartosz Jawornicki (KYNDRYL)
-#            Martyna Marzec (KYNDRYL)
-#
+#  Configuration variables - set these before running:
+#    ORG="your-organization"
+#    ACTIVATION_KEY="your-activation-key"
+#    SATELLITE_HOST="your-satellite-hostname"
+#    ICINGA_TOOL="/path/to/icinga-tool"
 #
 #  Version: 1.0
 #
 #
 ##########################################################################################
+
+# Configuration - set these variables before running the script
+ORG="your-organization"
+ACTIVATION_KEY="your-activation-key"
+SATELLITE_HOST="your-satellite-hostname"
+ICINGA_TOOL="/path/to/send-to-icinga"
 
 # COLOR CONSTANTS
 
@@ -484,7 +490,7 @@ function prepare(){
   gather_evidence
 
   write_message "INFO" "Setting icinga downtime"
-  /usr/isbs/bin/send_to_icinga --setdowntime --date now --duration 240 --author IH-IOIS-MSP --hostname $(hostname) --comment "Server upgrade in progress" 2>&1 > /dev/null
+  ${ICINGA_TOOL} --setdowntime --date now --duration 240 --author UPGRADE --hostname $(hostname) --comment "Server upgrade in progress" 2>&1 > /dev/null
 
   write_message "INFO" "Installing required packages"
   install_requirements
@@ -555,10 +561,10 @@ function upgrade(){
 #
 #####################################################################################
   write_message "INFO" "Preparing to leapp..."
-  curl https://sat-capsule-bs/pub/leapp-data${leapp_data_ver}.tar.gz -o /tmp/leapp-data${leapp_data_ver}.tar.gz
+  curl https://${SATELLITE_HOST}/pub/leapp-data${leapp_data_ver}.tar.gz -o /tmp/leapp-data${leapp_data_ver}.tar.gz
   tar -zxf /tmp/leapp-data${leapp_data_ver}.tar.gz -C /etc/leapp/files/
   subscription-manager unregister
-  subscription-manager register --activationkey=ak-upgrade-rhel8-rhel9-dev --org vwfs --force
+  subscription-manager register --activationkey=${ACTIVATION_KEY} --org ${ORG} --force
   subscription-manager release --unset
   subscription-manager repos --disable=rhel-8-for-x86_64-supplementary-rpms --disable=rhel-8-server-extras-rpms --disable=rhel-8-server-optional-rpms --disable=rhel-server-rhscl-8-rpms
   yum versionlock clear
@@ -626,7 +632,7 @@ function upgrade(){
 function rollback(){
 
   subscription-manager unregister
-  subscription-manager register --activationkey=ak-rhel8-generic-dev --org vwfs --force
+  subscription-manager register --activationkey=${ACTIVATION_KEY} --org ${ORG} --force
 }
 
 function post(){
@@ -652,14 +658,14 @@ function post(){
   subscription-manager unregister
   subscription-manager clean
   if [ ${server_type} = "normal" ]; then
-    activation_key="ak-rhel9-generic-${satellite_env/ /}"
+    activation_key=${ACTIVATION_KEY}
     echo ${activation_key}
   elif [ ${server_type} = 'SAP' ]; then
-    activation_key="ak-rhel90-e4s-${satellite_env}"
+    activation_key=${ACTIVATION_KEY}
   fi
 
   write_message "INFO" "Registering server with ${activation_key}"
-  subscription-manager register --activationkey=${activation_key} --org vwfs --force
+  subscription-manager register --activationkey=${activation_key} --org ${ORG} --force
   subscription-manager release --set=9
   write_message "INFO" "Updating OS to latest version."
   dnf clean all
