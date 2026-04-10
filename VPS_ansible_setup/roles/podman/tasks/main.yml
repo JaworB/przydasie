@@ -1,0 +1,38 @@
+---
+- name: Install Podman
+  dnf:
+    name: podman
+    state: present
+    update_cache: yes
+
+- name: Ensure podman group exists
+  group:
+    name: podman
+    state: present
+
+- name: Add deploy user to podman group
+  user:
+    name: "{{ deploy_user }}"
+    groups: podman
+    append: yes
+  when: deploy_user is defined
+
+- name: Start test webserver on loopback:8080
+  command: >
+    podman run -d --name test-webserver
+    -p 127.0.0.1:8080:80
+    docker.io/library/nginx:alpine
+  changed_when: true
+
+- name: Verify webserver is running
+  uri:
+    url: http://127.0.0.1:8080
+    method: GET
+  register: web_test
+  retries: 5
+  delay: 2
+  until: web_test.status == 200
+
+- name: Show webserver status
+  debug:
+    msg: "Test webserver running on http://127.0.0.1:8080 - Status: {{ web_test.status }}"
