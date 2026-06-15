@@ -10,35 +10,32 @@ Rzym był gorący, ale Głuche Błota są lepkie. Twoi przełożeni z Kongregacj
     
 - **Postawa:** Protekcjonalny wobec "lokalnych", podejrzliwy wobec milicji.
     
-- **Sprzęt:** Walizka z brewiarzem, pistolet na wodę święconą (z spirytusem), flakonik "olejków egzotycznych".
-    
+- **Sprzęt:** Walizka z brewiarzem i sprzętem do "mokrej roboty".
 
 ## III. Statystyki (7ed)
 
-- **STR:** 45 | **CON:** 55 | **SIZ:** 50 | **DEX:** 60 | **INT:** 80
+- **STR: 45** | **CON: 55** | **SIZ: 50** | **DEX: 70** | **INT: 70**
     
-- **APP:** 65 | **POW:** 75 | **EDU:** 85 | **LUCK:** 50
+- **APP: 65** | **POW: 75** | **EDU: 85** | **LUCK: 50**
     
-- **HP:** 10 | **SAN:** 75 | **MOV:** 8
+- **HP: 10** | **SAN: 75** | **MOV: 8**
     
 
 ## IV. Umiejętności Kluczowe
 
-- **Okultyzm:** 60%
+- **Psychologia: 70%** – bezbłędne czytanie intencji i wykrywanie szaleństwa.
     
-- **Psychologia:** 70%
+- **Zwinne Dłonie: 65%** – kradzież kieszonkowa, podkładanie pluskiew lub podmiana przedmiotów.
     
-- **Bibliotekoznawstwo:** 65%
+- **Okultyzm: 60%** – wiedza o klątwach, Shub-Niggurath i ektoplazmie.
     
-- **Perswazja:** 50%
+- **Ukrywanie się: 60%** – ciche przemieszczanie się po plebanii.
     
-- **Język (Łacina):** 60%
-    
-- **Słuchanie:** 40%
+- **Słuchanie: 60%** – podsłuchiwanie rozmów i mlaśnięć za drzwiami.
     
 
 ## V. Motywacja i Sekret
 
-- **Motywacja:** Odzyskać Listę i wrócić do cywilizacji (Rzymu).
+- **Motywacja:** Odzyskać Listę i wrócić do cywilizacji.
     
 - **Sekret:** Lista jest w gipsowej figurze św. Huberta. Musisz ją rozbić, nie wzbudzając podejrzeń.

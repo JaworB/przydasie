@@ -2,7 +2,7 @@
 
 ## I. Wstęp Fabularny
 
-Głuche Błota to Twoja ostatnia szansa. Redakcja twierdzi, że w tutejszej chrzcielnicy dzieją się cuda, a woda świeci w nocy. Brzmi jak tania sensacja, ale jeśli to prawda, spłacisz długi u bukmacherów. Na razie widzisz tylko błoto i podejrzanych lokalsów. Wyciągasz aparat i czekasz na dowód oszustwa lub prawdziwego cudu. Jeśli opiszesz to z odpowiednim polotem, wrócisz do Warszawy jako król reportażu.
+Głuche Błota to Twoja ostatnia szansa. Redakcja twierdzi, że w tutejszej chrzcielnicy dzieją się cuda, a woda świeci w nocy. Brzmi jak tania sensacja, ale jeśli to prawda, spłacisz długi u bukmacherów. Na razie widzisz tylko błoto i podejrzanych lokalsów. Czekasz na dowód oszustwa lub prawdziwego cudu. Jeśli opiszesz to z odpowiednim polotem, wrócisz do Warszawy jako król reportażu.
 
 ## II. Wskazówki do odgrywania
 
@@ -13,18 +13,24 @@ Głuche Błota to Twoja ostatnia szansa. Redakcja twierdzi, że w tutejszej chrz
 
 ## III. Statystyki (7ed)
 
-- **STR:** 50 | **CON:** 45 | **SIZ:** 55 | **DEX:** 65 | **INT:** 75
+- **STR: 50** | **CON: 45** | **SIZ: 55** | **DEX: 65** | **INT: 75**
     
-- **APP:** 60 | **POW:** 55 | **EDU:** 70 | **LUCK:** 45
+- **APP: 60** | **POW: 55** | **EDU: 70** | **LUCK: 45**
     
-- **HP:** 10 | **SAN:** 55 | **MOV:** 9
+- **HP: 10** | **SAN: 55** | **MOV: 9**
     
 
 ## IV. Umiejętności Kluczowe
 
-- **Szybka Gadka:** 75% | **Spostrzegawczość:** 70% | **Fotografia:** 60%
+- **Szybka Gadka: 75%** – oszukiwanie NPC i legitymowanie się falsyfikatem.
     
-- **Wiedza (Światowy Poziom):** 50% | **Psychologia:** 45% | **Urok Osobisty:** 50%
+- **Spostrzegawczość: 70%** – dostrzeganie ukrytych detali i śladów.
+    
+- **Fotografia: 60%** – robienie zdjęć dowodowych (flesz oślepia wrogów).
+    
+- **Urok Osobisty: 50%** – zjednywanie sobie przychylności mieszkańców.
+    
+- **Psychologia: 45%** – podstawowe wyczuwanie nieszczerości.
     
 
 ## V. Motywacja i Sekret

@@ -2,7 +2,7 @@
 
 ## I. Wstęp Fabularny
 
-Służba w Głuchych Błotach to tylko przykrywka. Jesteś pewien, że Twoje raporty o „stonce ziemniaczanej zrzucanej przez CIA” w końcu trafią na biurko samego Ministra. Dzisiaj masz grubą rybę. Ten „Włoch” z PKS-u wygląda na zawodowca. A ten dziennikarzyna z Warszawy? Pewnie jego łącznik. Musisz ich inwigilować, używając swoich niezawodnych metod. Staszek Bimbrownik to element antyspołeczny, ale może przydać się jako wtyka. Pamiętaj: oczy dookoła głowy, Polska Ludowa liczy na Ciebie.
+W twojej głowie służba w Głuchych Błotach to tylko przykrywka. Jesteś pewien, że Twoje raporty o „stonce ziemniaczanej zrzucanej przez CIA” w końcu trafią na biurko samego Ministra. Dzisiaj masz grubą rybę. Ten „Włoch” z PKS-u wygląda na zawodowca. A ten dziennikarzyna z Warszawy? Pewnie jego łącznik. Musisz ich inwigilować, używając swoich niezawodnych metod. Staszek Bimbrownik to element antyspołeczny, ale może przydać się jako wtyka. Pamiętaj: oczy dookoła głowy, Polska Ludowa liczy na Ciebie.
 
 ## II. Wskazówki do odgrywania
 
@@ -15,26 +15,23 @@ Służba w Głuchych Błotach to tylko przykrywka. Jesteś pewien, że Twoje rap
 
 ## III. Statystyki (7ed)
 
-- **STR:** 70 | **CON:** 75 | **SIZ:** 65 | **DEX:** 50 | **INT:** 45
+- **STR: 70** | **CON: 75** | **SIZ: 65** | **DEX: 50** | **INT: 45**
     
-- **APP:** 55 | **POW:** 50 | **EDU:** 55 | **LUCK:** 40
+- **APP: 55** | **POW: 50** | **EDU: 55** | **LUCK: 40**
     
-- **HP:** 14 | **SAN:** 50 | **MOV:** 7
-    
+- **HP: 14** | **SAN: 50** | **MOV: 7**
 
 ## IV. Umiejętności Kluczowe
 
-- **Zastraszanie:** 70%
+- **Zastraszanie: 70%** – zmuszanie NPC do uległości.
     
-- **Spostrzegawczość:** 60%
+- **Broń Palna (Strzelba): 65%** – obsługa dubeltówki z bagażnika Poloneza.
     
-- **Broń Palna (Strzelba):** 65%
+- **Bijatyka: 60%** – profesjonalna walka wręcz.
     
-- **Prawo:** 40%
+- **Prowadzenie Samochodu: 50%** – pościgi Polonezem "007".
     
-- **Prowadzenie Samochodu:** 50%
-    
-- **Bijatyka:** 60%
+- **Prawo: 40%** – znajomość przepisów (często interpretowanych na własną korzyść).
     
 
 ## V. Motywacja i Sekret
