@@ -1,0 +1,17 @@
+alias sensor d0
+
+alias kat_v r0
+alias kat_h r1
+
+define panel -539224550
+
+start:
+l kat_v sensor Vertical
+add kat_v kat_v 90
+l kat_h sensor Horizontal
+
+sb panel Vertical kat_v
+sb panel Horizontal kat_h
+
+yield
+j start

@@ -1,0 +1,59 @@
+alias extgas d0
+alias roomtemp d1
+alias activevent d2
+alias analyzer d3
+alias pompa d4
+alias wywiew d5
+start:
+
+yield
+jal laduj_zbiornik
+jal sprawdz_zawartosc
+jal sterowanie_pompy
+jal regulacja_cisnienia
+j start
+
+
+laduj_zbiornik:
+l r1 analyzer Pressure
+sgt r2 r1 8000
+bgtz r2 disable_vent
+
+l r1 analyzer Pressure
+l r0 extgas Temperature
+slt r0 r0 233 #Warunek temparatury
+slt r1 r1 6000 #Dolna granica cisnienia
+and r0 r0 r1
+bgtz r0 enable_vent
+j disable_vent
+
+enable_vent:
+s activevent On r0
+sb 1944485013 On 1
+j ra
+
+disable_vent:
+s activevent On 0
+sb 1944485013 On 0
+j ra
+
+sprawdz_zawartosc:
+l r0 analyzer VolumeOfLiquid
+seqz r0 r0
+l r1 analyzer RatioCarbonDioxide
+seqz r1 r1
+and r0 r0 r1
+j ra
+
+sterowanie_pompy:
+s pompa On r0
+l r0 roomtemp Temperature
+sub r0 r0 297
+s pompa Setting r0
+j ra
+
+regulacja_cisnienia:
+l r0 roomtemp Pressure
+sgt r0 r0 90
+s wywiew On r0
+j ra

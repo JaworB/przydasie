@@ -1,0 +1,51 @@
+define hdlampa 555215790
+define hmlampa 1436121888
+define hmsensor 322782515
+define hproxsensor 568800213
+
+alias SensorLozko r1
+alias SensorInt r2
+alias lampastate r4
+
+start:
+jal wlacz_szafa
+jal wlacz_kuchnia
+jal wlacz_lozko
+jal wlacz_sala
+sleep 1
+j start
+
+
+wlacz_lozko:
+lbn SensorLozko hproxsensor HASH("Sensor lozko") Quantity 0
+blt SensorLozko 0 koniec_lozko
+sgt lampastate SensorLozko 0
+sbn hmlampa HASH("Lampa lozko") On lampastate
+koniec_lozko:
+j ra
+
+wlacz_szafa:
+lbn SensorLozko hproxsensor HASH("Sensor szafa") Quantity 0
+blt SensorLozko 0 koniec_szafa
+sgt lampastate SensorLozko 0
+sbn hmlampa HASH("Lampa szafa") On lampastate
+koniec_szafa:
+j ra
+
+wlacz_kuchnia:
+lbn SensorLozko hmsensor HASH("Sensor kuchnia") Quantity 0
+blt SensorLozko 0 koniec_kuchnia
+sgt lampastate SensorLozko 0
+sbn hdlampa HASH("Lampa kuchnia") On lampastate
+koniec_kuchnia:
+j ra
+
+wlacz_sala:
+lbn SensorLozko hproxsensor HASH("Sensor lozko") Quantity 0
+blt SensorLozko 0 koniec_sala
+lbn SensorInt hmsensor HASH("Sensor int") Quantity 0
+blt SensorInt 0 koniec_sala
+sgt lampastate SensorInt SensorLozko
+sbn hdlampa HASH("Lampa int") On lampastate
+koniec_sala:
+j ra
