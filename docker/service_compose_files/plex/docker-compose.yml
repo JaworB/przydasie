@@ -1,0 +1,15 @@
+version: '3.5'
+services:
+  plex:
+    image: plexinc/pms-docker
+    container_name: plex
+    network_mode: bridge
+    ports:
+      - "32400:32400"
+    environment:
+      - PLEX_CLAIM=${PLEX_CLAIM}
+      - TZ=Europe/Warsaw
+    volumes:
+      - ./config:/config
+      - /home/jawor/Filmy:/Filmy:ro
+    restart: 'unless-stopped'

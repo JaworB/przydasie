@@ -10,6 +10,8 @@ vault.yml
 # Docker
 docker/**/*.env
 !docker/**/*.env.example
+docker/service_compose_files/plex/.env
+docker/service_compose_files/plex/config/
 scripts/docker/**/.env
 !scripts/docker/**/.env.example
 docker/VPS/.env.example
