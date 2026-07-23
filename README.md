@@ -11,6 +11,7 @@ Personal educational repository for learning Linux, Ansible, Docker, and DevOps.
 | `docker/` | Docker compose configurations |
 | `edu/` | Educational materials and exercises |
 | `Obsidian/` | Notes and documentation |
+| `Obsidian/Manuals/Lorien-Infrastructure/` | Lorien backup & syslog infrastructure docs |
 | `plymouth/` | Custom boot themes |
 | `scripts/` | Automation scripts |
 | `VPS_ansible_setup/` | Ansible playbooks for VPS management |

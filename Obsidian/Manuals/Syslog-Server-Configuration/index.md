@@ -64,3 +64,8 @@ On the server, logs are stored in `/var/log/remote/` with the following structur
 - Server: rsyslog with TCP module
 - Network: Private VPN network between all hosts
 - Firewall: Port 514/tcp open on server
+
+## See Also
+
+- [[Lorien-Infrastructure/04-Syslog-Server]] - Live syslog server configuration on lorien
+- [[Lorien-Infrastructure/01-Overview]] - Full infrastructure overview
