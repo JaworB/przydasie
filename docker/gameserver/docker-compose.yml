@@ -1,15 +1,19 @@
+# Run as the `gameservers` user (rootless Podman), not root.
 services:
   vintage-story:
     container_name: VintageStory
-    image: ralnoc/vintagestory
+    image: ghcr.io/darkmatterproductions/vintagestory:latest
+    restart: always
     ports:
       - "42420:42420/tcp"
     volumes:
       - ./vintage-story-data:/vintagestory/data
+      - ./vintage-story-server:/home/vintagestory/server
 
   stationeers:
     container_name: stationeers
     image: sknnr/stationeers-server:latest
+    restart: always
     env_file:
       - ./stationeers.env
     ports:
