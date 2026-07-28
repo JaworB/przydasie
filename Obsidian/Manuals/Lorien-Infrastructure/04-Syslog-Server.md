@@ -69,14 +69,15 @@ if $fromhost != "lorien" and $fromhost-ip != "127.0.0.1" and $fromhost-ip != "10
 
 | Hostname | OS | Client | Status |
 |----------|-----|--------|--------|
-| shire | Ubuntu/Debian | rsyslog | Active |
+| shire | Debian (RPi) | rsyslog | Active |
 | gondor | Arch Linux | syslog-ng | Active |
-| jawor | Linux VPS | rsyslog | Active |
-| nginx.jawor.org | Linux VPS | rsyslog | Active (same host as jawor) |
-| BIOS | - | rsyslog | Active |
-| Board | - | rsyslog | Active |
-| ELF | - | rsyslog | Active |
-| Stack | - | rsyslog | Active |
+| jawor | Rocky Linux (VPS) | rsyslog | Active |
+| nginx.jawor.org | Rocky Linux (VPS) | rsyslog | Active (same host as jawor) |
+
+## Local Lorien Services
+
+Hostnamy BIOS, Board, ELF, Stack widoczne w `/var/log/remote/` to lokalne procesy lub kontenery
+działające na samym Lorient — nie są to zdalne hosty wysyłające logi przez sieć.
 
 ## Service Management
 

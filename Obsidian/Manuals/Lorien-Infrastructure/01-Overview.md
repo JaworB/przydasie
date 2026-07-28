@@ -49,14 +49,21 @@ Lorien initiates SSH connections (pull model):
 | Hostname | OS | Syslog Client | Backup |
 |----------|-----|---------------|--------|
 | hassio | HA OS | - | backup-ha.sh (daily) |
-| shire | Ubuntu/Debian | rsyslog | paperless_backup.sh (weekly) |
+| shire | Debian (RPi) | rsyslog | paperless_backup.sh (weekly) |
 | gondor | Arch Linux | syslog-ng | - |
-| jawor | Linux VPS | rsyslog | - |
-| nginx.jawor.org | Linux VPS | rsyslog | - |
-| BIOS | - | rsyslog | - |
-| Board | - | rsyslog | - |
-| ELF | - | rsyslog | - |
-| Stack | - | rsyslog | - |
+| jawor | Rocky Linux (VPS) | rsyslog | - |
+| nginx.jawor.org | Rocky Linux (VPS) | rsyslog | - |
+
+## Local Services (Lorien)
+
+Poniższe hostnamy widoczne w `/var/log/remote/` to lokalne procesy/kontenery działające na samym Lorient:
+
+| Hostname | Opis |
+|----------|------|
+| BIOS | Lokalny proces/kontener Lorient |
+| Board | Lokalny proces/kontener Lorient |
+| ELF | Lokalny proces/kontener Lorient |
+| Stack | Lokalny proces/kontener Lorient |
 
 ## Crontab
 

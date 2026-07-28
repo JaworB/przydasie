@@ -320,20 +320,21 @@ sensors | grep -E "pwm[24]"
 
 ---
 
-### 3.8 Remote Logging (Arch → Rocky)
+### 3.8 Remote Logging (klienci → Lorien)
 
 **Configuration**: `~/repos/przydasie/dotfiles/system/rsyslog/`
 
-Arch (client) sends logs to Rocky (server) via UDP.
+Klienci wysyłają logi do Lorien (Fedora, 10.66.66.10) przez TCP.
 
 | Parameter | Value |
 |-----------|-------|
-| Server | 10.66.66.1:514 UDP |
-| Protocol | UDP |
-| Local retention | 4 days (daily, rotate 4) |
-| Remote retention | 180 weeks (weekly, rotate 180) |
+| Server | lorien (10.66.66.10) port 514 TCP |
+| Protocol | TCP |
+| Local retention (Arch) | 4 days (daily, rotate 4) |
+| Local retention (Debian) | 4 days (daily, rotate 4) |
+| Remote retention (Lorien) | 14 days (daily, rotate 14) |
 
-#### Arch (client) - syslog-ng
+#### Arch (gondor) - syslog-ng
 
 ```bash
 # Install
@@ -347,34 +348,6 @@ cp ~/repos/przydasie/dotfiles/system/rsyslog/arch/logrotate-local /etc/logrotate
 systemctl enable --now syslog-ng@default
 ```
 
-#### Rocky (server) - rsyslog
-
-```bash
-# Install
-dnf install rsyslog
-
-# Configuration (from dotfiles)
-cp ~/repos/przydasie/dotfiles/system/rsyslog/rocky/rsyslog.conf /etc/rsyslog.conf
-cp ~/repos/przydasie/dotfiles/system/rsyslog/rocky/remote.conf /etc/rsyslog.d/
-cp ~/repos/przydasie/dotfiles/system/rsyslog/rocky/remote-split.conf /etc/rsyslog.d/
-cp ~/repos/przydasie/dotfiles/system/rsyslog/rocky/remote-security.conf /etc/rsyslog.d/
-cp ~/repos/przydasie/dotfiles/system/rsyslog/rocky/logrotate-remote /etc/logrotate.d/
-
-# Firewall - allow local network
-firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="10.66.66.0/24" port port="514" protocol="udp" accept'
-firewall-cmd --reload
-
-# Enable
-systemctl enable --now rsyslog
-```
-
-#### Log Structure
-
-| Location | Contents |
-|----------|----------|
-| Rocky /var/log/{secure,messages,cron} | Local logs (jawor.vpn) |
-| Rocky /var/log/remote/{HOSTNAME}/ | Remote logs per host |
-
 #### Debian (shire) - rsyslog
 
 ```bash
@@ -382,12 +355,39 @@ systemctl enable --now rsyslog
 apt install rsyslog
 
 # Configuration (from dotfiles)
-cp ~/repos/przydasie/dotfiles/system/rsyslog/debian/client.conf /etc/rsyslog.d/
-cp ~/repos/przydasie/dotfiles/system/rsyslog/debian/logrotate-local /etc/logrotate.d/
+cp ~/repos/przydasie/dotfiles/system/rsyslog/debian/client.conf /etc/rsyslog.d/client.conf
+cp ~/repos/przydasie/dotfiles/system/rsyslog/debian/logrotate-local /etc/logrotate.d/local-logs
 
 # Enable
 systemctl restart rsyslog
 ```
+
+#### Fedora (lorien server) - rsyslog
+
+```bash
+# Install (usually pre-installed)
+dnf install rsyslog
+
+# Configuration (from dotfiles)
+cp ~/repos/przydasie/dotfiles/system/rsyslog/fedora/server.conf /etc/rsyslog.d/server.conf
+cp ~/repos/przydasie/dotfiles/system/rsyslog/fedora/logrotate-remote /etc/logrotate.d/remote-logs
+
+# Firewall
+firewall-cmd --permanent --add-port=514/tcp
+firewall-cmd --reload
+
+# Enable
+systemctl enable --now rsyslog
+```
+
+#### Log Structure (Lorien)
+
+| Location | Contents |
+|----------|----------|
+| /var/log/remote/HOSTNAME.log | Wszystkie logi z hosta |
+| /var/log/remote/HOSTNAME-messages.log | Logi info-level |
+| /var/log/remote/HOSTNAME-secure.log | Logi auth/authpriv |
+| /var/log/remote/HOSTNAME-cron.log | Logi crona |
 
 ---
 

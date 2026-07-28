@@ -6,6 +6,7 @@ vault.yml
 .vscode/
 *.pem
 *.key
+SECRET_KEY
 
 # Docker
 docker/**/*.env

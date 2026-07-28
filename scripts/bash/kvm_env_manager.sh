@@ -49,10 +49,10 @@ vms () {
 
 auto () {
 	if [ $param == "on" ];then
-		for vm in $virsh_list; do virsh autostart $i 2> /dev/null ; done
+		for vm in $virsh_list; do virsh autostart $vm 2> /dev/null ; done
 		echo "Enabled autostart for VMs"
 	elif [ $param == "off" ];then
-		for vm in $virsh_list; do virsh autostart --disable $i 2> /dev/null ; done
+		for vm in $virsh_list; do virsh autostart --disable $vm 2> /dev/null ; done
 		echo "Disabled autostart for VMs"
 	fi
 }
