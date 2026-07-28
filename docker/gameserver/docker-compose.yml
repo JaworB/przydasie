@@ -1,15 +1,12 @@
 services:
   vintage-story:
     container_name: VintageStory
-    image: sknnr/vintage-story-server:latest
+    image: ralnoc/vintagestory
     ports:
       - "42420:42420/tcp"
-    environment:
-      - GAME_VERSION=1.21.6
     volumes:
-      - ./vintage-story-data:/home/vintagestory/data
-      - ./vintage-story-server:/home/vintagestory/server
-  
+      - ./vintage-story-data:/vintagestory/data
+
   stationeers:
     container_name: stationeers
     image: sknnr/stationeers-server:latest
