@@ -59,6 +59,12 @@ cd ~/repos/przydasie/dotfiles && ./stow-desktop.sh
 cd ~/repos/przydasie/dotfiles && ./stow-laptop.sh
 ```
 
+If a target file already exists (e.g. Omarchy's default configs, or a
+leftover from a previous install) and isn't already the symlink stow would
+create, the script backs it up to `<file>.bak-<timestamp>` next to it before
+stowing. Report any `.bak-*` files created so the user can review/discard
+them.
+
 Then reload:
 ```bash
 hyprctl reload

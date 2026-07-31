@@ -2,6 +2,9 @@
 # Runs on lorien only: central rsyslog store lives at /var/log/remote on this host.
 set -euo pipefail
 
+# cron's default PATH doesn't include /usr/local/bin, where npm installs `claude`.
+export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"
+
 LOG_DIR="/var/log/remote"
 REPORT_DIR="/var/log/reports"
 RETENTION_DAYS=30

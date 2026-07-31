@@ -115,6 +115,26 @@
 - [[AI-Concepts/08-Opencode]] - Extending Opencode CLI
 - [[AI-Concepts/09-Best-Practices]] - Safety, efficiency
 
+### PHP & Laravel
+- [[PHP-Concepts/index]] - PHP fundamentals (start here)
+- [[PHP-Concepts/01-Syntax-Variables-Types]] - Tags, variables, data types
+- [[PHP-Concepts/02-Control-Structures]] - if/elseif/else, switch/match, loops
+- [[PHP-Concepts/03-Functions]] - Declarations, return values, type hinting, closures
+- [[PHP-Concepts/04-Arrays]] - Indexed/associative arrays, array_map/array_filter
+- [[PHP-Concepts/05-OOP-Classes-Objects]] - Classes, objects, constructors, property promotion
+- [[PHP-Concepts/06-OOP-Inheritance-Interfaces]] - extends, parent::, interfaces
+
+### SQL (PostgreSQL)
+- [[SQL-Concepts/index]] - SQL fundamentals (start here)
+- [[SQL-Concepts/01-Select-Where]] - SELECT, FROM, WHERE, comparison operators
+- [[SQL-Concepts/02-Order-By-Limit]] - Sorting and limiting results
+- [[SQL-Concepts/03-Pattern-Matching]] - IN, BETWEEN, LIKE
+- [[SQL-Concepts/04-Aggregation]] - COUNT, SUM, AVG, GROUP BY, HAVING
+- [[SQL-Concepts/05-Joins]] - INNER JOIN, LEFT JOIN
+- [[SQL-Concepts/06-Aliases-Subqueries]] - Table/column aliases, subqueries
+- [[SQL-Concepts/07-Update-Delete-Transactions]] - UPDATE, DELETE, transactions
+- [[SQL-Concepts/08-Views-Indexes]] - VIEW, CREATE INDEX, EXPLAIN
+
 ## Topics Covered
 
 ### Bash Scripting
@@ -202,6 +222,27 @@
 - Model comparison (GPT, Claude, Llama)
 - Opencode extension (skills, agents, commands)
 - Safety, ethics, and best practices
+
+### PHP & Laravel
+- Syntax, variables, data types, string concatenation
+- Control structures (if/elseif/else, switch/match, loops)
+- Functions (return values, type hinting, named args, closures)
+- Arrays (indexed/associative, foreach, array_map/array_filter)
+- OOP: classes, objects, constructors, property promotion, access modifiers
+- OOP: inheritance (extends, parent::), interfaces (implements)
+
+### SQL (PostgreSQL)
+- SELECT, FROM, WHERE, comparison operators
+- ORDER BY and LIMIT
+- IN, BETWEEN, LIKE pattern matching
+- Aggregate functions (COUNT, SUM, AVG, MIN, MAX)
+- GROUP BY and HAVING
+- INNER JOIN and LEFT JOIN
+- Table/column aliases (AS)
+- Subqueries (scalar and IN-based)
+- UPDATE, DELETE, transactions (BEGIN/COMMIT/ROLLBACK)
+- Views (CREATE VIEW) and indexes (CREATE INDEX)
+- Reading query plans with EXPLAIN
 
 ## Related
 

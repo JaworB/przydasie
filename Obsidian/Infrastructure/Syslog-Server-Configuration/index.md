@@ -15,13 +15,13 @@ This guide covers setting up a centralized syslog server that collects logs from
                     |   Port 514/tcp   |
                     +--------+---------+
                              |
-         +-------------------+-------------------+
-         |                   |                   |
-+--------+--------+  +-------+--------+  +------+--------+
-| Client 1        |  | Client 2        |  | Client 3      |
-| (shire)         |  | (gondor)        |  | (other)       |
-| rsyslog         |  | syslog-ng       |  | rsyslog       |
-+-----------------+  +-----------------+  +---------------+
+         +-------------------+-------------------+-------------------+
+         |                   |                   |                   |
++--------+--------+  +-------+--------+  +------+--------+  +-------+--------+
+| Client 1        |  | Client 2        |  | Client 3      |  | Client 4       |
+| (shire)         |  | (gondor)        |  | (rivendell)   |  | (VPS)          |
+| rsyslog         |  | syslog-ng       |  | syslog-ng     |  | rsyslog        |
++-----------------+  +-----------------+  +---------------+  +----------------+
 ```
 
 ## Topics

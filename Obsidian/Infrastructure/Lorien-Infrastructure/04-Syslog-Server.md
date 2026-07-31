@@ -71,6 +71,7 @@ if $fromhost != "lorien" and $fromhost-ip != "127.0.0.1" and $fromhost-ip != "10
 |----------|-----|--------|--------|
 | shire | Debian (RPi) | rsyslog | Active |
 | gondor | Arch Linux | syslog-ng | Active |
+| rivendell | Arch Linux (laptop) | syslog-ng | Active (intermittent — laptop not always on) |
 | jawor | Rocky Linux (VPS) | rsyslog | Active |
 | nginx.jawor.org | Rocky Linux (VPS) | rsyslog | Active (same host as jawor) |
 

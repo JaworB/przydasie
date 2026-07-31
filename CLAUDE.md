@@ -14,7 +14,7 @@ VPN network: `10.66.66.0/24` (WireGuard, gateway on VPS)
 | vps | 10.66.66.1, port 2229 | Rocky Linux | VPN gateway, public IP, hosted at Korbank |
 | shire | 10.66.66.3 | Debian (Raspberry Pi) | Containerized services |
 | lorien | 10.66.66.10 | Fedora | 24/7 server — container backups, central rsyslog, game servers |
-| rivendell | — | Arch Linux + Omarchy | Laptop, not always available |
+| rivendell | 10.66.66.9 | Arch Linux + Omarchy | Laptop, not always available |
 
 SSH connections via aliases defined in `~/.ssh/config`. All hosts reachable only through VPN.
 
@@ -25,7 +25,7 @@ SSH connections via aliases defined in `~/.ssh/config`. All hosts reachable only
 | `AI/jawor-conf/` | OpenCode skill — desktop config recovery guide |
 | `dotfiles/desktop/` | Gondor dotfiles (stow-managed) |
 | `dotfiles/laptop/` | Rivendell dotfiles (stow-managed) |
-| `dotfiles/system/rsyslog/` | Syslog configs: `arch/` (gondor), `debian/` (shire), `fedora/` (lorien server) |
+| `dotfiles/system/rsyslog/` | Syslog configs: `arch/` (gondor, rivendell), `debian/` (shire), `fedora/` (lorien server) |
 | `docker/VPS/` | VPS Docker Compose |
 | `docker/service_compose_files/` | Per-service Compose files |
 | `docker/gameserver/` | Game server Compose (lorien) |
@@ -60,7 +60,7 @@ SSH connections via aliases defined in `~/.ssh/config`. All hosts reachable only
 
 | File | Description |
 |------|-------------|
-| `dotfiles/system/rsyslog/arch/syslog-ng.conf` | Gondor syslog-ng client → Lorien TCP 514 |
+| `dotfiles/system/rsyslog/arch/syslog-ng.conf` | Arch syslog-ng client (gondor, rivendell) → Lorien TCP 514 |
 | `dotfiles/system/rsyslog/debian/client.conf` | Shire rsyslog client → Lorien TCP 514 |
 | `dotfiles/system/rsyslog/fedora/server.conf` | Lorien rsyslog server config |
 | `VPS_ansible_setup/group_vars/all.yml` | Ansible vars (incl. `rsyslog_server: 10.66.66.10`) |

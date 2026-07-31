@@ -47,16 +47,18 @@ tar -czf /home/gameservers/vintage-story-data/manual-backups/pre-upgrade-$(date 
 
 ## Mods
 
-Dropped as `.zip` files into `/home/gameservers/vintage-story-data/Mods/` on lorien (bind-mounted from `./vintage-story-data`), owned by uid/gid `1100:1100` (the in-container `vintagestory` user). Restart the container to load new/updated mods:
+Dropped as `.zip` files into `/home/gameservers/vintage-story-data/Mods/` on lorien (bind-mounted from `./vintage-story-data`). Owned by the rootless-namespace-mapped host uid/gid for the in-container `vintagestory` user (`1100` in-container → **`590923`** on host — see "Migrating rootful → rootless" below for how that mapping is derived; it changed from a plain `1100:1100` after the 2026-07-28 rootless migration). Downloading as root and then `chown 590923:590923 <file>` is the simplest way to get new mods in, since `gameservers` itself can't write directly into a directory now owned by the mapped uid. Restart the container to load new/updated mods:
 
 ```bash
 podman restart VintageStory
 podman logs VintageStory 2>&1 | grep -E 'Found [0-9]+ mods|Could not resolve'
 ```
 
-Mods are versioned per game version on [mods.vintagestory.at](https://mods.vintagestory.at) — always check the mod's file list for a version tagged to the running game version before downloading. Not every mod publishes a build for every point release; the latest available build is often forward-compatible even if tagged for an older point release, but check community comments when in doubt (as of 2026-07-28: `ExpandedFoods` has no stable build past game 1.20.4, only a WIP `2.0.0-dev.x` branch tagged 1.22.3 requiring the `A Culinary Artillery` dependency — intentionally left uninstalled).
+Mods are versioned per game version on [mods.vintagestory.at](https://mods.vintagestory.at) — always check the mod's file list for a version tagged to the running game version before downloading. Not every mod publishes a build for every point release; the latest available build is often forward-compatible even if tagged for an older point release, but check community comments when in doubt.
 
-Currently installed (as of 2026-07-28, game version 1.22.5): BetterRuins, BetterTraders, Buried+Hostility, CarryOn(+Lib), CaveSymphony, Conquest Blocklayer Overhaul, ForestSymphony, Knapster, PlayerLists, ProspectTogether, StepUpAdvanced, animalcages, bedspawnv2, configlib, hangingoillamps, primitivesurvival, realsmoke, rustboundmagic, statushudcont, vsimgui, vsroofing, zoombuttonreborn, buzzwords 1.8.2, **chiseltools** 1.17.4, **BloodTrail** 1.2.5, **butchering** 1.13.6.
+Known unavailable for 1.22.x (as of 2026-07-29, checked directly on the mod DB): `XLib` and `XSkills` (official, mod IDs 244/247) are both dead upstream, stuck on game 1.21.0 — a community fork chain (`xlibfork`, `xskillsfork` by El_Neuman, `xskillsgilded`) is officially tagged for 1.22.5 and installed instead (see below). `wildfarmingrevival` has no 1.22.x build at all yet (author states it's in progress) — nothing to install.
+
+Currently installed (as of 2026-07-29, game version 1.22.5): BetterRuins, BetterTraders, Buried+Hostility, CarryOn(+Lib), CaveSymphony, Conquest Blocklayer Overhaul, ForestSymphony, Knapster, PlayerLists, ProspectTogether, StepUpAdvanced, animalcages, bedspawnv2, configlib, hangingoillamps, primitivesurvival, realsmoke, rustboundmagic, statushudcont, vsimgui, vsroofing, zoombuttonreborn, buzzwords 1.8.2, chiseltools 1.17.4, BloodTrail 1.2.5, butchering 1.13.6, **ExpandedFoods** 2.0.0-dev.12 (WIP branch — no stable build exists for 1.22.x), **ACulinaryArtillery** 2.0.0-dev.21 (WIP dependency required by ExpandedFoods), **FromGoldenCombs** 2.0.8 (tagged 1.22.0-1.22.3, closest available to 1.22.5), **XLib Fork** 1.0.31, **xSkills Fork** 1.0.90, **xSkills Gilded** 1.3.45 (community fork chain, all three officially tagged 1.22.0-pre.1–1.22.5 — the fork bundles its own mod-ID spoofing so no extra "compatibility fix" mod was needed).
 
 Known pre-existing (not caused by mod updates) benign log noise: `realsmoke` throws a `Cannot find CoolNow function on BlockEntityFirepit` exception on certain firepit block-entity init — server keeps running fine.
 
@@ -68,16 +70,19 @@ Not required after a version bump — Vintage Story auto-migrates existing saves
 
 ```bash
 ssh lorien
+su - gameservers
 podman stop VintageStory
 cd /home/gameservers/vintage-story-data
 mkdir -p archived-worlds
 mv Saves "archived-worlds/Saves-$(date +%Y%m%d-%H%M%S)"
-mkdir -p Saves && chown 1100:1100 Saves
+mkdir -p Saves && chown 590923:590923 Saves   # rootless-mapped uid, see below — not a plain 1100
 podman start VintageStory
 podman logs VintageStory 2>&1 | grep 'Create new save game data'   # confirms fresh world
 ```
 
-Done on 2026-07-28 at the user's request following the 1.22.5 upgrade — old world archived under `archived-worlds/Saves-20260728-204527/` on lorien (players lost their prior builds/progress; this was explicitly confirmed before proceeding).
+Done twice: 2026-07-28 (post-1.22.5-upgrade, at the user's request) and 2026-07-29 (user didn't like the generated terrain, asked for another). Old worlds archived under `archived-worlds/Saves-*/` on lorien.
+
+**First-login client crash on a brand-new world (2026-07-29):** right after the first regeneration, the connecting client crashed with a `NullReferenceException` in `Entity.Initialize` → `SyncedTreeAttribute.FromBytes` while deserializing the player entity's first sync packet — the server itself stayed up fine (`Player X got removed. Reason: The Players client crashed`). This matches a known, once-fixed (in vanilla 1.20.12) race condition in the order entity data loads client-side on a very first spawn into a new world ([VintageStory-Issues#6025](https://github.com/anegostudios/VintageStory-Issues/issues/6025)); it likely resurfaced because the newly installed entity-attribute-heavy mods (xSkills/xLib/rustboundmagic/aculinaryartillery) register many more watchers on the player entity than vanilla does, making the same timing window more likely to be hit. **Fix: just reconnect** — the entity is no longer "new" server-side on the second attempt, and it did not recur. Only worth digging further (and suspecting a specific mod) if it happens repeatedly rather than once on first spawn.
 
 ## Migrating rootful → rootless
 
