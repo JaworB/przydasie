@@ -18,8 +18,6 @@
 
 ```
 /root/kontenery/
-├── vault/
-│   └── vw-data/             # Vaultwarden persistent data
 ├── paperless/
 │   ├── docker-compose.yaml  # Paperless stack definition
 │   ├── data/                # Paperless app data

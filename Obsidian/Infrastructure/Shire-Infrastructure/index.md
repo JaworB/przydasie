@@ -18,7 +18,6 @@ Shire (10.66.66.3) is a Raspberry Pi running containerized services on Docker.
 
 | Container | Image | Port | Status |
 |-----------|-------|------|--------|
-| vault | vaultwarden/server | :892 | Up (healthy) |
 | Rickroll | custom | :8180 | Up (healthy) |
 | webtest-gritter | nginx | :8081 | Up |
 | paperless-webserver | paperless-ngx:latest | :8000 | Up (healthy) |

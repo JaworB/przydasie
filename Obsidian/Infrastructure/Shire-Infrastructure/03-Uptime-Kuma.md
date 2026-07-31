@@ -54,7 +54,7 @@ Tested 2026-08-01 with a throwaway TCP-port monitor pointed at a closed port (gu
 
 Monitors are grouped in the UI under Lorien / Shire / VPS folders.
 
-Gondor and Rivendell (desktop/laptop, not always powered on) are intentionally excluded — monitoring them would just generate constant false "down" alerts. **Vaultwarden is also intentionally excluded** (owner's call, 2026-08-01) despite being reachable at `http://10.66.66.3:892`.
+Gondor and Rivendell (desktop/laptop, not always powered on) are intentionally excluded — monitoring them would just generate constant false "down" alerts.
 
 Retries: 2, check interval: 60s (avoids single dropped-packet false positives).
 
