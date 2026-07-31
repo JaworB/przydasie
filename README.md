@@ -9,7 +9,7 @@ Personal infrastructure and dotfiles repository — home network of 5 hosts conn
 | `AI/jawor-conf/` | Claude Code skill — desktop config recovery guide (Omarchy/Arch post-install) |
 | `dotfiles/desktop/` | Gondor (desktop PC) dotfiles, stow-managed |
 | `dotfiles/laptop/` | Rivendell (laptop) dotfiles, stow-managed |
-| `dotfiles/system/rsyslog/` | Syslog configs per host: `arch/` (gondor), `debian/` (shire), `fedora/` (lorien server) |
+| `dotfiles/system/rsyslog/` | Syslog configs per host: `arch/` (gondor, rivendell), `debian/` (shire), `fedora/` (lorien server) |
 | `docker/VPS/` | VPS Docker Compose stack |
 | `docker/service_compose_files/` | Per-service Compose files (jellyfin, pihole, plex, valheim) |
 | `docker/gameserver/` | Game server Compose files (lorien) |
@@ -34,7 +34,7 @@ Personal infrastructure and dotfiles repository — home network of 5 hosts conn
 | vps | 10.66.66.1, port 2229 | Rocky Linux | VPN gateway, public IP, hosted at Korbank |
 | shire | 10.66.66.3 | Debian (Raspberry Pi) | Containerized services |
 | lorien | 10.66.66.10 | Fedora | 24/7 server — container backups, central rsyslog, game servers |
-| rivendell | — | Arch Linux + Omarchy | Laptop, not always available |
+| rivendell | 10.66.66.9 | Arch Linux + Omarchy | Laptop, not always available |
 
 All hosts reachable only through the WireGuard VPN; SSH via aliases defined in `~/.ssh/config`.
 

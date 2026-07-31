@@ -2,6 +2,8 @@
 
 Configure syslog-ng to send logs to a centralized syslog server.
 
+Applies to any Arch Linux host on the VPN — currently gondor and rivendell.
+
 ## Installation
 
 syslog-ng is available in the official repositories:

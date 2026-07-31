@@ -61,7 +61,7 @@
   .node-shire    { fill: #21262d; stroke: #3fb950; stroke-width: 2.5; }
   .node-lorien   { fill: #21262d; stroke: #bc8cff; stroke-width: 2.5; }
   .node-hassio   { fill: #21262d; stroke: #d29922; stroke-width: 2.0; }
-  .node-rivendell { fill: #161b22; stroke: #484f58; stroke-width: 1.5; stroke-dasharray: 5 3; }
+  .node-rivendell { fill: #21262d; stroke: #79c0ff; stroke-width: 1.8; stroke-dasharray: 6 3; }
 
   .lbl-host   { font-size: 13px; font-weight: 700; fill: #e6edf3; }
   .lbl-sub    { font-size: 10px; fill: #8b949e; }
@@ -108,7 +108,7 @@
   .card.gondor   { border-top-color: #58a6ff; }
   .card.shire    { border-top-color: #3fb950; }
   .card.lorien   { border-top-color: #bc8cff; }
-  .card.rivendell { border-top-color: #484f58; opacity: 0.65; }
+  .card.rivendell { border-top-color: #79c0ff; }
 
   .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
   .card-name { font-size: 1rem; font-weight: 700; color: #e6edf3; }
@@ -152,82 +152,87 @@
   </div>
 
   <div class="diagram-wrap">
-  <svg viewBox="0 0 900 490" width="100%" style="min-width:640px">
+  <svg viewBox="0 0 1100 400" width="100%" style="min-width:780px">
     <defs>
       <marker id="n-arr-vpn"  markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#1f6feb" opacity="0.8"/></marker>
       <marker id="n-arr-inet" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#8b949e"/></marker>
     </defs>
 
     <!-- Internet -->
-    <ellipse cx="450" cy="40" rx="66" ry="26" fill="#21262d" stroke="#8b949e" stroke-width="1.5"/>
-    <text x="450" y="36" text-anchor="middle" fill="#8b949e" font-size="11" font-weight="600">INTERNET</text>
-    <text x="450" y="52" text-anchor="middle" fill="#6e7681" font-size="9">:80 / :443 public</text>
-    <line x1="450" y1="66" x2="450" y2="98" stroke="#8b949e" stroke-width="2" marker-end="url(#n-arr-inet)"/>
+    <ellipse cx="550" cy="40" rx="66" ry="26" fill="#21262d" stroke="#8b949e" stroke-width="1.5"/>
+    <text x="550" y="36" text-anchor="middle" fill="#8b949e" font-size="11" font-weight="600">INTERNET</text>
+    <text x="550" y="52" text-anchor="middle" fill="#6e7681" font-size="9">:80 / :443 public</text>
+    <line x1="550" y1="66" x2="550" y2="98" stroke="#8b949e" stroke-width="2" marker-end="url(#n-arr-inet)"/>
 
     <!-- VPN box -->
-    <rect x="14" y="88" width="872" height="292" rx="16" fill="#1f6feb11" stroke="#1f6feb" stroke-width="1" stroke-dasharray="8 4"/>
+    <rect x="14" y="88" width="1072" height="292" rx="16" fill="#1f6feb11" stroke="#1f6feb" stroke-width="1" stroke-dasharray="8 4"/>
     <text x="40" y="110" fill="#1f6feb" font-size="11" opacity="0.7">WireGuard VPN &middot; 10.66.66.0/24</text>
 
     <!-- VPS -->
-    <rect x="330" y="100" width="240" height="82" rx="10" fill="#21262d" stroke="#f85149" stroke-width="2"/>
-    <text x="450" y="122" text-anchor="middle" fill="#ff7b72" font-size="14" font-weight="700">VPS</text>
-    <text x="450" y="140" text-anchor="middle" fill="#8b949e" font-size="10">Rocky Linux 9 &middot; Korbank &middot; :2229</text>
-    <text x="450" y="157" text-anchor="middle" fill="#ff7b72" font-size="12" font-family="monospace" font-weight="600">10.66.66.1</text>
-    <text x="450" y="173" text-anchor="middle" fill="#484f58" font-size="9">WireGuard server &middot; nginx-proxy &middot; Pi-hole</text>
+    <rect x="430" y="100" width="240" height="82" rx="10" fill="#21262d" stroke="#f85149" stroke-width="2"/>
+    <text x="550" y="122" text-anchor="middle" fill="#ff7b72" font-size="14" font-weight="700">VPS</text>
+    <text x="550" y="140" text-anchor="middle" fill="#8b949e" font-size="10">Rocky Linux 9 &middot; Korbank &middot; :2229</text>
+    <text x="550" y="157" text-anchor="middle" fill="#ff7b72" font-size="12" font-family="monospace" font-weight="600">10.66.66.1</text>
+    <text x="550" y="173" text-anchor="middle" fill="#484f58" font-size="9">WireGuard server &middot; nginx-proxy &middot; Pi-hole</text>
 
     <!-- VPN tunnels: VPS → clients -->
-    <line x1="404" y1="182" x2="123" y2="242" stroke="#1f6feb" stroke-width="1.5" stroke-dasharray="6 3" marker-end="url(#n-arr-vpn)"/>
-    <line x1="427" y1="182" x2="341" y2="242" stroke="#1f6feb" stroke-width="1.5" stroke-dasharray="6 3" marker-end="url(#n-arr-vpn)"/>
-    <line x1="473" y1="182" x2="559" y2="242" stroke="#1f6feb" stroke-width="1.5" stroke-dasharray="6 3" marker-end="url(#n-arr-vpn)"/>
-    <line x1="500" y1="182" x2="775" y2="242" stroke="#1f6feb" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6" marker-end="url(#n-arr-vpn)"/>
+    <line x1="450" y1="182" x2="126" y2="242" stroke="#1f6feb" stroke-width="1.5" stroke-dasharray="6 3" marker-end="url(#n-arr-vpn)"/>
+    <line x1="490" y1="182" x2="337" y2="242" stroke="#1f6feb" stroke-width="1.5" stroke-dasharray="6 3" marker-end="url(#n-arr-vpn)"/>
+    <line x1="550" y1="182" x2="548" y2="242" stroke="#1f6feb" stroke-width="1.5" stroke-dasharray="6 3" marker-end="url(#n-arr-vpn)"/>
+    <line x1="610" y1="182" x2="759" y2="242" stroke="#1f6feb" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6" marker-end="url(#n-arr-vpn)"/>
+    <line x1="650" y1="182" x2="970" y2="242" stroke="#1f6feb" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.75" marker-end="url(#n-arr-vpn)"/>
 
     <!-- Gondor -->
-    <rect x="28"  y="242" width="190" height="122" rx="10" fill="#21262d" stroke="#58a6ff" stroke-width="2"/>
-    <text x="123" y="265" text-anchor="middle" fill="#79c0ff" font-size="13" font-weight="700">gondor</text>
-    <text x="123" y="282" text-anchor="middle" fill="#8b949e" font-size="10">Arch Linux &middot; Omarchy &middot; PC</text>
-    <text x="123" y="299" text-anchor="middle" fill="#79c0ff" font-size="12" font-family="monospace" font-weight="600">10.66.66.8</text>
-    <text x="123" y="315" text-anchor="middle" fill="#484f58" font-size="9">Workstation &middot; Docker</text>
-    <text x="123" y="329" text-anchor="middle" fill="#484f58" font-size="9">Plex :32400 &middot; syslog-ng</text>
-    <text x="123" y="343" text-anchor="middle" fill="#484f58" font-size="9">CoolerControl &middot; stow dotfiles</text>
-    <text x="123" y="357" text-anchor="middle" fill="#484f58" font-size="8">SSH: local only</text>
+    <rect x="28"  y="242" width="196" height="122" rx="10" fill="#21262d" stroke="#58a6ff" stroke-width="2"/>
+    <text x="126" y="265" text-anchor="middle" fill="#79c0ff" font-size="13" font-weight="700">gondor</text>
+    <text x="126" y="282" text-anchor="middle" fill="#8b949e" font-size="10">Arch Linux &middot; Omarchy &middot; PC</text>
+    <text x="126" y="299" text-anchor="middle" fill="#79c0ff" font-size="12" font-family="monospace" font-weight="600">10.66.66.8</text>
+    <text x="126" y="315" text-anchor="middle" fill="#484f58" font-size="9">Workstation &middot; Docker</text>
+    <text x="126" y="329" text-anchor="middle" fill="#484f58" font-size="9">Plex :32400 &middot; syslog-ng</text>
+    <text x="126" y="343" text-anchor="middle" fill="#484f58" font-size="9">CoolerControl &middot; stow dotfiles</text>
+    <text x="126" y="357" text-anchor="middle" fill="#484f58" font-size="8">SSH: local only</text>
 
     <!-- Lorien -->
-    <rect x="246" y="242" width="190" height="122" rx="10" fill="#21262d" stroke="#bc8cff" stroke-width="2"/>
-    <text x="341" y="265" text-anchor="middle" fill="#d2a8ff" font-size="13" font-weight="700">lorien</text>
-    <text x="341" y="282" text-anchor="middle" fill="#8b949e" font-size="10">Fedora 43 &middot; ThinkCentre &middot; 24/7</text>
-    <text x="341" y="299" text-anchor="middle" fill="#d2a8ff" font-size="12" font-family="monospace" font-weight="600">10.66.66.10</text>
-    <text x="341" y="315" text-anchor="middle" fill="#484f58" font-size="9">rsyslog server :514 &middot; Podman</text>
-    <text x="341" y="329" text-anchor="middle" fill="#484f58" font-size="9">VintageStory :42420</text>
-    <text x="341" y="343" text-anchor="middle" fill="#484f58" font-size="9">HA &amp; Paperless backups</text>
-    <text x="341" y="357" text-anchor="middle" fill="#484f58" font-size="8">SSH: lorien (via VPN)</text>
+    <rect x="239" y="242" width="196" height="122" rx="10" fill="#21262d" stroke="#bc8cff" stroke-width="2"/>
+    <text x="337" y="265" text-anchor="middle" fill="#d2a8ff" font-size="13" font-weight="700">lorien</text>
+    <text x="337" y="282" text-anchor="middle" fill="#8b949e" font-size="10">Fedora 43 &middot; ThinkCentre &middot; 24/7</text>
+    <text x="337" y="299" text-anchor="middle" fill="#d2a8ff" font-size="12" font-family="monospace" font-weight="600">10.66.66.10</text>
+    <text x="337" y="315" text-anchor="middle" fill="#484f58" font-size="9">rsyslog server :514 &middot; Podman</text>
+    <text x="337" y="329" text-anchor="middle" fill="#484f58" font-size="9">VintageStory :42420</text>
+    <text x="337" y="343" text-anchor="middle" fill="#484f58" font-size="9">HA &amp; Paperless backups</text>
+    <text x="337" y="357" text-anchor="middle" fill="#484f58" font-size="8">SSH: lorien (via VPN)</text>
 
     <!-- Shire -->
-    <rect x="464" y="242" width="190" height="122" rx="10" fill="#21262d" stroke="#3fb950" stroke-width="2"/>
-    <text x="559" y="265" text-anchor="middle" fill="#56d364" font-size="13" font-weight="700">shire</text>
-    <text x="559" y="282" text-anchor="middle" fill="#8b949e" font-size="10">Debian 12 &middot; Raspberry Pi</text>
-    <text x="559" y="299" text-anchor="middle" fill="#56d364" font-size="12" font-family="monospace" font-weight="600">10.66.66.3</text>
-    <text x="559" y="315" text-anchor="middle" fill="#484f58" font-size="9">Vaultwarden :892 &middot; Docker</text>
-    <text x="559" y="329" text-anchor="middle" fill="#484f58" font-size="9">Paperless-NGX :8000</text>
-    <text x="559" y="343" text-anchor="middle" fill="#484f58" font-size="9">Rickroll :8180 &middot; nginx :8081</text>
-    <text x="559" y="357" text-anchor="middle" fill="#484f58" font-size="8">SSH: shire (via VPN)</text>
+    <rect x="450" y="242" width="196" height="122" rx="10" fill="#21262d" stroke="#3fb950" stroke-width="2"/>
+    <text x="548" y="265" text-anchor="middle" fill="#56d364" font-size="13" font-weight="700">shire</text>
+    <text x="548" y="282" text-anchor="middle" fill="#8b949e" font-size="10">Debian 12 &middot; Raspberry Pi</text>
+    <text x="548" y="299" text-anchor="middle" fill="#56d364" font-size="12" font-family="monospace" font-weight="600">10.66.66.3</text>
+    <text x="548" y="315" text-anchor="middle" fill="#484f58" font-size="9">Vaultwarden :892 &middot; Docker</text>
+    <text x="548" y="329" text-anchor="middle" fill="#484f58" font-size="9">Paperless-NGX :8000</text>
+    <text x="548" y="343" text-anchor="middle" fill="#484f58" font-size="9">Rickroll :8180 &middot; nginx :8081</text>
+    <text x="548" y="357" text-anchor="middle" fill="#484f58" font-size="8">SSH: shire (via VPN)</text>
 
     <!-- Hassio -->
-    <rect x="682" y="242" width="186" height="122" rx="10" fill="#21262d" stroke="#d29922" stroke-width="1.8"/>
-    <text x="775" y="265" text-anchor="middle" fill="#d29922" font-size="13" font-weight="700">hassio</text>
-    <text x="775" y="282" text-anchor="middle" fill="#8b949e" font-size="10">Home Assistant OS</text>
-    <text x="775" y="299" text-anchor="middle" fill="#d29922" font-size="12" font-family="monospace" font-weight="600">10.66.66.7</text>
-    <text x="775" y="315" text-anchor="middle" fill="#484f58" font-size="9">Home automation</text>
-    <text x="775" y="329" text-anchor="middle" fill="#484f58" font-size="9">backup &rarr; lorien (daily)</text>
-    <text x="775" y="343" text-anchor="middle" fill="#484f58" font-size="9">no syslog client</text>
-    <text x="775" y="357" text-anchor="middle" fill="#484f58" font-size="8">SSH: hassio (via VPN)</text>
+    <rect x="661" y="242" width="196" height="122" rx="10" fill="#21262d" stroke="#d29922" stroke-width="1.8"/>
+    <text x="759" y="265" text-anchor="middle" fill="#d29922" font-size="13" font-weight="700">hassio</text>
+    <text x="759" y="282" text-anchor="middle" fill="#8b949e" font-size="10">Home Assistant OS</text>
+    <text x="759" y="299" text-anchor="middle" fill="#d29922" font-size="12" font-family="monospace" font-weight="600">10.66.66.7</text>
+    <text x="759" y="315" text-anchor="middle" fill="#484f58" font-size="9">Home automation</text>
+    <text x="759" y="329" text-anchor="middle" fill="#484f58" font-size="9">backup &rarr; lorien (daily)</text>
+    <text x="759" y="343" text-anchor="middle" fill="#484f58" font-size="9">no syslog client</text>
+    <text x="759" y="357" text-anchor="middle" fill="#484f58" font-size="8">SSH: hassio (via VPN)</text>
 
-    <!-- Rivendell (outside VPN box) -->
-    <rect x="348" y="402" width="204" height="72" rx="10" fill="#161b22" stroke="#484f58" stroke-width="1.5" stroke-dasharray="5 3"/>
-    <text x="450" y="424" text-anchor="middle" fill="#484f58" font-size="12" font-weight="600">rivendell</text>
-    <text x="450" y="442" text-anchor="middle" fill="#484f58" font-size="10">Arch Linux &middot; Laptop &middot; Omarchy</text>
-    <text x="450" y="458" text-anchor="middle" fill="#484f58" font-size="9">reconfiguring &middot; not on VPN yet</text>
+    <!-- Rivendell -->
+    <rect x="872" y="242" width="196" height="122" rx="10" fill="#21262d" stroke="#79c0ff" stroke-width="1.8" stroke-dasharray="6 3"/>
+    <text x="970" y="265" text-anchor="middle" fill="#79c0ff" font-size="13" font-weight="700">rivendell</text>
+    <text x="970" y="282" text-anchor="middle" fill="#8b949e" font-size="10">Arch Linux &middot; Omarchy &middot; Laptop</text>
+    <text x="970" y="299" text-anchor="middle" fill="#79c0ff" font-size="12" font-family="monospace" font-weight="600">10.66.66.9</text>
+    <text x="970" y="315" text-anchor="middle" fill="#484f58" font-size="9">Laptop &middot; syslog-ng</text>
+    <text x="970" y="329" text-anchor="middle" fill="#484f58" font-size="9">DisplayLink dock</text>
+    <text x="970" y="343" text-anchor="middle" fill="#484f58" font-size="9">not always online</text>
+    <text x="970" y="357" text-anchor="middle" fill="#484f58" font-size="8">SSH: rivendell (via VPN)</text>
 
-    <text x="450" y="483" text-anchor="middle" fill="#30363d" font-size="9">see Syslog and Backup tabs for data-flow details</text>
+    <text x="550" y="388" text-anchor="middle" fill="#30363d" font-size="9">see Syslog and Backup tabs for data-flow details</text>
   </svg>
   </div>
 
@@ -313,17 +318,19 @@
 
     <div class="card rivendell">
       <div class="card-header">
-        <div class="card-name">rivendell <span class="offline-tag">reconfiguring</span></div>
-        <div class="card-ip">&mdash;</div>
+        <div class="card-name">rivendell <span class="offline-tag">intermittent</span></div>
+        <div class="card-ip">10.66.66.9</div>
       </div>
       <div class="card-os">Arch Linux &middot; Omarchy &middot; Hyprland &middot; Laptop</div>
       <div class="services">
-        <span class="badge badge-gray">Not on VPN yet</span>
+        <span class="badge badge-orange">WireGuard client</span>
+        <span class="badge badge-yellow">syslog-ng client</span>
         <span class="badge badge-gray">DisplayLink dock</span>
       </div>
       <div class="card-connections">
+        <span>&rarr; Lorien</span> syslog TCP:514<br>
         <span>Dotfiles</span> ~/repos/przydasie (stow-laptop.sh)<br>
-        <span>Will join</span> VPN as 10.66.66.x
+        <span>Note</span> laptop, not always powered on
       </div>
     </div>
 
@@ -336,12 +343,12 @@
 
   <div class="legend">
     <div class="legend-item"><div class="legend-line l-syslog"></div><span>Syslog &rarr; Lorien TCP:514</span></div>
-    <div class="legend-item" style="color:#8b949e"><span style="font-family:monospace;font-size:11px;color:#e3b341;min-width:56px">syslog-ng</span><span>Arch Linux (gondor)</span></div>
+    <div class="legend-item" style="color:#8b949e"><span style="font-family:monospace;font-size:11px;color:#e3b341;min-width:56px">syslog-ng</span><span>Arch Linux (gondor, rivendell)</span></div>
     <div class="legend-item" style="color:#8b949e"><span style="font-family:monospace;font-size:11px;color:#e3b341;min-width:56px">rsyslog</span><span>Debian / Rocky Linux (shire, VPS)</span></div>
   </div>
 
   <div class="diagram-wrap">
-  <svg viewBox="0 0 940 340" width="100%" style="min-width:620px">
+  <svg viewBox="0 0 940 460" width="100%" style="min-width:620px">
     <defs>
       <marker id="s-arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
         <path d="M0,0 L0,6 L8,3 z" fill="#e3b341"/>
@@ -359,56 +366,70 @@
     <text x="101" y="98" text-anchor="middle" fill="#484f58" font-size="8">all logs (messages, secure, cron)</text>
 
     <!-- ── SHIRE CLIENT ── -->
-    <rect x="14" y="130" width="174" height="88" rx="8" fill="#111a13" stroke="#3fb950" stroke-width="1.5"/>
-    <rect x="14" y="130" width="174" height="26" rx="8" fill="#1a3a26"/>
-    <rect x="14" y="146" width="174" height="10" fill="#1a3a26"/>
-    <text x="101" y="146" text-anchor="middle" fill="#56d364" font-size="12" font-weight="700">shire</text>
-    <text x="101" y="168" text-anchor="middle" fill="#8b949e" font-size="10">Debian 12 &middot; Raspberry Pi</text>
-    <text x="101" y="183" text-anchor="middle" fill="#e3b341" font-size="10" font-weight="600">rsyslog</text>
-    <text x="101" y="197" text-anchor="middle" fill="#6e7681" font-size="9" font-family="monospace">10.66.66.3 → :514</text>
-    <text x="101" y="210" text-anchor="middle" fill="#484f58" font-size="8">*.* @@10.66.66.10:514</text>
+    <rect x="14" y="118" width="174" height="88" rx="8" fill="#111a13" stroke="#3fb950" stroke-width="1.5"/>
+    <rect x="14" y="118" width="174" height="26" rx="8" fill="#1a3a26"/>
+    <rect x="14" y="134" width="174" height="10" fill="#1a3a26"/>
+    <text x="101" y="134" text-anchor="middle" fill="#56d364" font-size="12" font-weight="700">shire</text>
+    <text x="101" y="156" text-anchor="middle" fill="#8b949e" font-size="10">Debian 12 &middot; Raspberry Pi</text>
+    <text x="101" y="171" text-anchor="middle" fill="#e3b341" font-size="10" font-weight="600">rsyslog</text>
+    <text x="101" y="185" text-anchor="middle" fill="#6e7681" font-size="9" font-family="monospace">10.66.66.3 → :514</text>
+    <text x="101" y="198" text-anchor="middle" fill="#484f58" font-size="8">*.* @@10.66.66.10:514</text>
+
+    <!-- ── RIVENDELL CLIENT ── -->
+    <rect x="14" y="218" width="174" height="88" rx="8" fill="#121820" stroke="#79c0ff" stroke-width="1.5" stroke-dasharray="6 3"/>
+    <rect x="14" y="218" width="174" height="26" rx="8" fill="#1f3c5e"/>
+    <rect x="14" y="234" width="174" height="10" fill="#1f3c5e"/>
+    <text x="101" y="234" text-anchor="middle" fill="#79c0ff" font-size="12" font-weight="700">rivendell</text>
+    <text x="101" y="256" text-anchor="middle" fill="#8b949e" font-size="10">Arch Linux &middot; Laptop</text>
+    <text x="101" y="271" text-anchor="middle" fill="#e3b341" font-size="10" font-weight="600">syslog-ng</text>
+    <text x="101" y="285" text-anchor="middle" fill="#6e7681" font-size="9" font-family="monospace">→ 10.66.66.10:514</text>
+    <text x="101" y="298" text-anchor="middle" fill="#484f58" font-size="8">intermittent &middot; laptop not always on</text>
 
     <!-- ── VPS CLIENT ── -->
-    <rect x="14" y="242" width="174" height="88" rx="8" fill="#1a1215" stroke="#f85149" stroke-width="1.5"/>
-    <rect x="14" y="242" width="174" height="26" rx="8" fill="#3d1a1a"/>
-    <rect x="14" y="258" width="174" height="10" fill="#3d1a1a"/>
-    <text x="101" y="258" text-anchor="middle" fill="#ff7b72" font-size="12" font-weight="700">VPS</text>
-    <text x="101" y="280" text-anchor="middle" fill="#8b949e" font-size="10">Rocky Linux 9 &middot; Korbank</text>
-    <text x="101" y="295" text-anchor="middle" fill="#e3b341" font-size="10" font-weight="600">rsyslog</text>
-    <text x="101" y="309" text-anchor="middle" fill="#6e7681" font-size="9" font-family="monospace">10.66.66.1 → :514</text>
-    <text x="101" y="322" text-anchor="middle" fill="#484f58" font-size="8">*.* @@10.66.66.10:514</text>
+    <rect x="14" y="318" width="174" height="88" rx="8" fill="#1a1215" stroke="#f85149" stroke-width="1.5"/>
+    <rect x="14" y="318" width="174" height="26" rx="8" fill="#3d1a1a"/>
+    <rect x="14" y="334" width="174" height="10" fill="#3d1a1a"/>
+    <text x="101" y="334" text-anchor="middle" fill="#ff7b72" font-size="12" font-weight="700">VPS</text>
+    <text x="101" y="356" text-anchor="middle" fill="#8b949e" font-size="10">Rocky Linux 9 &middot; Korbank</text>
+    <text x="101" y="371" text-anchor="middle" fill="#e3b341" font-size="10" font-weight="600">rsyslog</text>
+    <text x="101" y="385" text-anchor="middle" fill="#6e7681" font-size="9" font-family="monospace">10.66.66.1 → :514</text>
+    <text x="101" y="398" text-anchor="middle" fill="#484f58" font-size="8">*.* @@10.66.66.10:514</text>
 
     <!-- ── ARROWS (clients → lorien) ── -->
     <!-- gondor → lorien -->
-    <path d="M188,62 Q310,62 440,158" fill="none" stroke="#e3b341" stroke-width="1.5" marker-end="url(#s-arr)"/>
-    <text x="298" y="100" fill="#e3b341" font-size="9" text-anchor="middle" opacity="0.9">TCP:514</text>
+    <path d="M188,62 Q310,62 440,160" fill="none" stroke="#e3b341" stroke-width="1.5" marker-end="url(#s-arr)"/>
+    <text x="298" y="101" fill="#e3b341" font-size="9" text-anchor="middle" opacity="0.9">TCP:514</text>
 
     <!-- shire → lorien -->
-    <line x1="188" y1="174" x2="440" y2="174" stroke="#e3b341" stroke-width="1.5" marker-end="url(#s-arr)"/>
-    <text x="310" y="168" fill="#e3b341" font-size="9" text-anchor="middle" opacity="0.9">TCP:514</text>
+    <path d="M188,162 Q310,162 440,200" fill="none" stroke="#e3b341" stroke-width="1.5" marker-end="url(#s-arr)"/>
+    <text x="298" y="171" fill="#e3b341" font-size="9" text-anchor="middle" opacity="0.9">TCP:514</text>
+
+    <!-- rivendell → lorien -->
+    <path d="M188,262 Q310,262 440,240" fill="none" stroke="#e3b341" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#s-arr)"/>
+    <text x="298" y="241" fill="#e3b341" font-size="9" text-anchor="middle" opacity="0.9">TCP:514</text>
 
     <!-- VPS → lorien -->
-    <path d="M188,286 Q310,286 440,190" fill="none" stroke="#e3b341" stroke-width="1.5" marker-end="url(#s-arr)"/>
-    <text x="298" y="260" fill="#e3b341" font-size="9" text-anchor="middle" opacity="0.9">TCP:514</text>
+    <path d="M188,362 Q310,362 440,280" fill="none" stroke="#e3b341" stroke-width="1.5" marker-end="url(#s-arr)"/>
+    <text x="298" y="311" fill="#e3b341" font-size="9" text-anchor="middle" opacity="0.9">TCP:514</text>
 
     <!-- ── LORIEN SERVER ── -->
-    <rect x="440" y="100" width="194" height="148" rx="10" fill="#160f2a" stroke="#bc8cff" stroke-width="2"/>
-    <rect x="440" y="100" width="194" height="30" rx="10" fill="#2d1e47"/>
-    <rect x="440" y="118" width="194" height="12" fill="#2d1e47"/>
-    <text x="537" y="120" text-anchor="middle" fill="#d2a8ff" font-size="13" font-weight="700">lorien</text>
-    <text x="537" y="144" text-anchor="middle" fill="#8b949e" font-size="10">Fedora 43 &middot; 10.66.66.10</text>
-    <text x="537" y="161" text-anchor="middle" fill="#d2a8ff" font-size="11" font-weight="600">rsyslog server</text>
-    <text x="537" y="177" text-anchor="middle" fill="#6e7681" font-size="10" font-family="monospace">0.0.0.0:514 TCP</text>
-    <text x="537" y="192" text-anchor="middle" fill="#6e7681" font-size="10">14-day retention</text>
-    <text x="537" y="207" text-anchor="middle" fill="#6e7681" font-size="10">logrotate: daily compress</text>
-    <text x="537" y="225" text-anchor="middle" fill="#484f58" font-size="9">/etc/rsyslog.d/server.conf</text>
-    <text x="537" y="238" text-anchor="middle" fill="#484f58" font-size="9">/etc/logrotate.d/remote</text>
+    <rect x="440" y="132" width="194" height="176" rx="10" fill="#160f2a" stroke="#bc8cff" stroke-width="2"/>
+    <rect x="440" y="132" width="194" height="30" rx="10" fill="#2d1e47"/>
+    <rect x="440" y="150" width="194" height="12" fill="#2d1e47"/>
+    <text x="537" y="152" text-anchor="middle" fill="#d2a8ff" font-size="13" font-weight="700">lorien</text>
+    <text x="537" y="176" text-anchor="middle" fill="#8b949e" font-size="10">Fedora 43 &middot; 10.66.66.10</text>
+    <text x="537" y="193" text-anchor="middle" fill="#d2a8ff" font-size="11" font-weight="600">rsyslog server</text>
+    <text x="537" y="209" text-anchor="middle" fill="#6e7681" font-size="10" font-family="monospace">0.0.0.0:514 TCP</text>
+    <text x="537" y="224" text-anchor="middle" fill="#6e7681" font-size="10">14-day retention</text>
+    <text x="537" y="239" text-anchor="middle" fill="#6e7681" font-size="10">logrotate: daily compress</text>
+    <text x="537" y="257" text-anchor="middle" fill="#484f58" font-size="9">/etc/rsyslog.d/server.conf</text>
+    <text x="537" y="270" text-anchor="middle" fill="#484f58" font-size="9">/etc/logrotate.d/remote</text>
 
     <!-- lorien → files arrow -->
-    <line x1="634" y1="174" x2="686" y2="174" stroke="#e3b341" stroke-width="1.5" marker-end="url(#s-arr)"/>
+    <line x1="634" y1="220" x2="686" y2="220" stroke="#e3b341" stroke-width="1.5" marker-end="url(#s-arr)"/>
 
     <!-- ── LOG FILES ── -->
-    <rect x="686" y="46" width="240" height="298" rx="10" fill="#0d1117" stroke="#30363d" stroke-width="1"/>
+    <rect x="686" y="46" width="240" height="376" rx="10" fill="#0d1117" stroke="#30363d" stroke-width="1"/>
     <text x="806" y="68" text-anchor="middle" fill="#8b949e" font-size="10" font-weight="700">/var/log/remote/</text>
     <line x1="696" y1="76" x2="916" y2="76" stroke="#30363d" stroke-width="1"/>
 
@@ -427,18 +448,26 @@
     <text x="700" y="207" fill="#6e7681" font-size="9" font-family="monospace"> shire.secure.log</text>
     <line x1="696" y1="214" x2="916" y2="214" stroke="#21262d" stroke-width="1"/>
 
+    <!-- rivendell files -->
+    <text x="700" y="228" fill="#79c0ff" font-size="9" font-weight="600" font-family="monospace">rivendell.*</text>
+    <text x="700" y="242" fill="#6e7681" font-size="9" font-family="monospace"> rivendell.log</text>
+    <text x="700" y="255" fill="#6e7681" font-size="9" font-family="monospace"> rivendell.messages.log</text>
+    <text x="700" y="268" fill="#6e7681" font-size="9" font-family="monospace"> rivendell.secure.log</text>
+    <text x="700" y="281" fill="#6e7681" font-size="9" font-family="monospace"> rivendell.cron.log</text>
+    <line x1="696" y1="288" x2="916" y2="288" stroke="#21262d" stroke-width="1"/>
+
     <!-- VPS files -->
-    <text x="700" y="228" fill="#ff7b72" font-size="9" font-weight="600" font-family="monospace">VPS.*</text>
-    <text x="700" y="242" fill="#6e7681" font-size="9" font-family="monospace"> jawor.log</text>
-    <text x="700" y="255" fill="#6e7681" font-size="9" font-family="monospace"> nginx.jawor.org.log</text>
-    <line x1="696" y1="263" x2="916" y2="263" stroke="#21262d" stroke-width="1"/>
+    <text x="700" y="302" fill="#ff7b72" font-size="9" font-weight="600" font-family="monospace">VPS.*</text>
+    <text x="700" y="316" fill="#6e7681" font-size="9" font-family="monospace"> jawor.log</text>
+    <text x="700" y="329" fill="#6e7681" font-size="9" font-family="monospace"> nginx.jawor.org.log</text>
+    <line x1="696" y1="336" x2="916" y2="336" stroke="#21262d" stroke-width="1"/>
 
     <!-- hassio note -->
-    <text x="700" y="277" fill="#484f58" font-size="9" font-family="monospace">hassio.log</text>
-    <text x="700" y="290" fill="#484f58" font-size="8"> (local Lorien processes)</text>
-    <line x1="696" y1="298" x2="916" y2="298" stroke="#30363d" stroke-width="1"/>
-    <text x="806" y="314" text-anchor="middle" fill="#484f58" font-size="8">14-day rotation &middot; gzip compress</text>
-    <text x="806" y="326" text-anchor="middle" fill="#484f58" font-size="8">logrotate.d/remote</text>
+    <text x="700" y="350" fill="#484f58" font-size="9" font-family="monospace">hassio.log</text>
+    <text x="700" y="363" fill="#484f58" font-size="8"> (local Lorien processes)</text>
+    <line x1="696" y1="371" x2="916" y2="371" stroke="#30363d" stroke-width="1"/>
+    <text x="806" y="387" text-anchor="middle" fill="#484f58" font-size="8">14-day rotation &middot; gzip compress</text>
+    <text x="806" y="399" text-anchor="middle" fill="#484f58" font-size="8">logrotate.d/remote</text>
   </svg>
   </div>
 </div>
