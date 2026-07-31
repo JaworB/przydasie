@@ -38,3 +38,4 @@ System services (native, not containers):
 ## See Also
 
 - [[Syslog-Server-Configuration/]] — Syslog client/server config details
+- [[Shire-Infrastructure/03-Uptime-Kuma]] — Lorien is monitored (ping, rsyslog :514, VintageStory :42420) by Uptime Kuma running on shire

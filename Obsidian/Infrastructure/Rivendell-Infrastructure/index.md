@@ -27,10 +27,11 @@ System services (native):
 
 ## Topics
 
-- [[01-Overview]] — System, hardware, services, dotfiles, post-install recovery
+- [[01-Overview]] — System, hardware, services, dotfiles, post-install recovery, monitoring exclusion
 
 ## See Also
 
 - [[Lorien-Infrastructure/04-Syslog-Server]] — Centralized logging
 - [[Syslog-Server-Configuration/]] — syslog-ng client config
 - [[Gondor-Infrastructure/]] — sibling Arch/Omarchy host, same syslog-ng setup
+- [[Shire-Infrastructure/03-Uptime-Kuma]] — monitoring dashboard (rivendell intentionally not covered — not always on)

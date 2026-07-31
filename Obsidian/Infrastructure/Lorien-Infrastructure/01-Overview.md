@@ -84,3 +84,4 @@ The following hostnames appear in `/var/log/remote/` but originate from local pr
 - [[02-Backup-HomeAssistant]] — HA backup details
 - [[03-Backup-Paperless]] — Paperless backup details
 - [[04-Syslog-Server]] — Syslog server configuration
+- [[Shire-Infrastructure/03-Uptime-Kuma]] — Lorien is monitored (ping, rsyslog :514, VintageStory :42420) by Uptime Kuma running on shire

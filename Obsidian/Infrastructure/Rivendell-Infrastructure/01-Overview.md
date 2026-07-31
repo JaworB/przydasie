@@ -66,7 +66,12 @@ automatically.
 
 See: `AI/jawor-conf/SKILL.md`
 
+## Monitoring
+
+Intentionally **not** covered by Uptime Kuma (runs on shire) — same reasoning as gondor: a laptop that isn't always on would just generate constant false "down" alerts.
+
 ## See Also
 
 - [[Lorien-Infrastructure/04-Syslog-Server]] — Syslog server config on Lorien
 - [[Gondor-Infrastructure/01-Overview]] — sibling Arch/Omarchy host
+- [[Shire-Infrastructure/03-Uptime-Kuma]] — monitoring setup, and why rivendell is excluded

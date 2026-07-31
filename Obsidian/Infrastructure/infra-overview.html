@@ -72,6 +72,7 @@
   .vpn-line    { stroke: #1f6feb; stroke-width: 1.5; stroke-dasharray: 6 3; fill: none; }
   .syslog-line { stroke: #e3b341; stroke-width: 1.5; fill: none; }
   .backup-line { stroke: #3fb950; stroke-width: 2; fill: none; }
+  .monitor-line { stroke: #39d0d8; stroke-width: 1.5; fill: none; }
   .internet-line { stroke: #8b949e; stroke-width: 2; fill: none; }
   .vpn-box { fill: #1f6feb11; stroke: #1f6feb; stroke-width: 1; stroke-dasharray: 8 4; }
   .cloud { fill: #21262d; stroke: #8b949e; stroke-width: 1.5; }
@@ -95,6 +96,7 @@
   .l-backup  { background: #3fb950; }
   .l-bkpull  { background: repeating-linear-gradient(90deg,#3fb950 0,#3fb950 7px,transparent 7px,transparent 11px); }
   .l-internet { background: #8b949e; }
+  .l-monitor { background: #39d0d8; }
   .l-docker  { background: #1f6feb; }
   .l-podman  { background: #bc8cff; }
 
@@ -131,12 +133,13 @@
 <body>
 
 <h1>Jawor Home Infrastructure</h1>
-<p class="subtitle">VPN network 10.66.66.0/24 &middot; WireGuard gateway on VPS &middot; updated 2026-07</p>
+<p class="subtitle">VPN network 10.66.66.0/24 &middot; WireGuard gateway on VPS &middot; updated 2026-08</p>
 
 <div class="tabs">
   <button class="tab-btn active"  onclick="showTab('network',    this)">&#9654; Network</button>
   <button class="tab-btn"         onclick="showTab('syslog',     this)">&#128196; Syslog</button>
   <button class="tab-btn"         onclick="showTab('backup',     this)">&#128190; Backup</button>
+  <button class="tab-btn"         onclick="showTab('monitoring', this)">&#128225; Monitoring</button>
   <button class="tab-btn"         onclick="showTab('containers', this)">&#9634; Containers</button>
 </div>
 
@@ -209,7 +212,7 @@
     <text x="548" y="299" text-anchor="middle" fill="#56d364" font-size="12" font-family="monospace" font-weight="600">10.66.66.3</text>
     <text x="548" y="315" text-anchor="middle" fill="#484f58" font-size="9">Vaultwarden :892 &middot; Docker</text>
     <text x="548" y="329" text-anchor="middle" fill="#484f58" font-size="9">Paperless-NGX :8000</text>
-    <text x="548" y="343" text-anchor="middle" fill="#484f58" font-size="9">Rickroll :8180 &middot; nginx :8081</text>
+    <text x="548" y="343" text-anchor="middle" fill="#484f58" font-size="9">Uptime Kuma :3001 (host net)</text>
     <text x="548" y="357" text-anchor="middle" fill="#484f58" font-size="8">SSH: shire (via VPN)</text>
 
     <!-- Hassio -->
@@ -217,9 +220,9 @@
     <text x="759" y="265" text-anchor="middle" fill="#d29922" font-size="13" font-weight="700">hassio</text>
     <text x="759" y="282" text-anchor="middle" fill="#8b949e" font-size="10">Home Assistant OS</text>
     <text x="759" y="299" text-anchor="middle" fill="#d29922" font-size="12" font-family="monospace" font-weight="600">10.66.66.7</text>
-    <text x="759" y="315" text-anchor="middle" fill="#484f58" font-size="9">Home automation</text>
+    <text x="759" y="315" text-anchor="middle" fill="#484f58" font-size="9">Home automation &middot; :8123</text>
     <text x="759" y="329" text-anchor="middle" fill="#484f58" font-size="9">backup &rarr; lorien (daily)</text>
-    <text x="759" y="343" text-anchor="middle" fill="#484f58" font-size="9">no syslog client</text>
+    <text x="759" y="343" text-anchor="middle" fill="#484f58" font-size="9">monitored by Kuma &middot; no syslog</text>
     <text x="759" y="357" text-anchor="middle" fill="#484f58" font-size="8">SSH: hassio (via VPN)</text>
 
     <!-- Rivendell -->
@@ -287,11 +290,13 @@
         <span class="badge badge-blue">Paperless-NGX :8000</span>
         <span class="badge badge-gray">Rickroll :8180</span>
         <span class="badge badge-gray">nginx test :8081</span>
+        <span class="badge badge-yellow">Uptime Kuma :3001</span>
       </div>
       <div class="card-connections">
         <span>&rarr; Lorien</span> syslog TCP:514<br>
         <span>&rarr; Lorien</span> paperless backup (weekly, 90d)<br>
-        <span>Paperless stack</span> postgres &middot; redis &middot; gotenberg &middot; tika
+        <span>Paperless stack</span> postgres &middot; redis &middot; gotenberg &middot; tika<br>
+        <span>Uptime Kuma</span> network_mode: host (VPN firewall requires host-sourced traffic)
       </div>
     </div>
 
@@ -570,6 +575,89 @@
 </div>
 
 
+<!-- ═══════════════════════════════════════════════ TAB: MONITORING ══ -->
+<div id="tab-monitoring" class="diagram-section">
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-line l-monitor"></div><span>Health check (ping / HTTP / TCP port)</span></div>
+    <div class="legend-item"><div class="legend-line l-backup"></div><span>Alert e-mail (SMTP)</span></div>
+  </div>
+
+  <div class="diagram-wrap">
+  <svg viewBox="0 0 900 460" width="100%" style="min-width:620px">
+    <defs>
+      <marker id="m-arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+        <path d="M0,0 L0,6 L8,3 z" fill="#39d0d8"/>
+      </marker>
+      <marker id="m-arr-mail" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+        <path d="M0,0 L0,6 L8,3 z" fill="#3fb950"/>
+      </marker>
+    </defs>
+
+    <!-- ── UPTIME KUMA source (runs on shire) ── -->
+    <rect x="20" y="40" width="240" height="360" rx="12" fill="#0a1a1b" stroke="#39d0d8" stroke-width="2"/>
+    <rect x="20" y="40" width="240" height="32" rx="12" fill="#123437"/>
+    <rect x="20" y="60" width="240" height="12" fill="#123437"/>
+    <text x="140" y="62" text-anchor="middle" fill="#39d0d8" font-size="13" font-weight="700">uptime-kuma</text>
+    <text x="140" y="90" text-anchor="middle" fill="#8b949e" font-size="10">runs on shire &middot; 10.66.66.3:3001</text>
+    <text x="140" y="106" text-anchor="middle" fill="#6e7681" font-size="9">network_mode: host</text>
+    <text x="140" y="126" text-anchor="middle" fill="#484f58" font-size="9">(shire's DOCKER-USER firewall only</text>
+    <text x="140" y="139" text-anchor="middle" fill="#484f58" font-size="9">forwards traffic sourced from the VPN/LAN,</text>
+    <text x="140" y="152" text-anchor="middle" fill="#484f58" font-size="9">so Kuma must egress as the host itself)</text>
+    <line x1="40" y1="166" x2="240" y2="166" stroke="#1c3f42" stroke-width="1"/>
+    <text x="140" y="184" text-anchor="middle" fill="#8b949e" font-size="9" font-weight="600">Interval 60s &middot; retries 2</text>
+    <text x="140" y="198" text-anchor="middle" fill="#484f58" font-size="9">(one dropped packet &ne; alert)</text>
+    <line x1="40" y1="212" x2="240" y2="212" stroke="#1c3f42" stroke-width="1"/>
+    <text x="140" y="230" text-anchor="middle" fill="#8b949e" font-size="9" font-weight="600">Excluded on purpose</text>
+    <text x="140" y="244" text-anchor="middle" fill="#484f58" font-size="9">gondor, rivendell</text>
+    <text x="140" y="257" text-anchor="middle" fill="#484f58" font-size="9">(desktop/laptop, not always on &rarr;</text>
+    <text x="140" y="270" text-anchor="middle" fill="#484f58" font-size="9">would just generate false alerts)</text>
+    <line x1="40" y1="284" x2="240" y2="284" stroke="#1c3f42" stroke-width="1"/>
+    <text x="140" y="302" text-anchor="middle" fill="#8b949e" font-size="9" font-weight="600">Tested 2026-08-01</text>
+    <text x="140" y="316" text-anchor="middle" fill="#484f58" font-size="9">throwaway closed-port monitor</text>
+    <text x="140" y="329" text-anchor="middle" fill="#484f58" font-size="9">&rarr; alert delivered &rarr; monitor deleted</text>
+
+    <!-- ── TARGETS ── -->
+    <rect x="560" y="20" width="220" height="78" rx="8" fill="#160f2a" stroke="#bc8cff" stroke-width="1.5"/>
+    <text x="670" y="40" text-anchor="middle" fill="#d2a8ff" font-size="12" font-weight="700">lorien &middot; 10.66.66.10</text>
+    <text x="670" y="58" text-anchor="middle" fill="#8b949e" font-size="9">Ping</text>
+    <text x="670" y="72" text-anchor="middle" fill="#8b949e" font-size="9">TCP :514 (rsyslog) &middot; TCP :42420 (VintageStory)</text>
+    <text x="670" y="86" text-anchor="middle" fill="#484f58" font-size="8">also monitors itself as the host running Kuma</text>
+
+    <rect x="560" y="112" width="220" height="66" rx="8" fill="#111a13" stroke="#3fb950" stroke-width="1.5"/>
+    <text x="670" y="132" text-anchor="middle" fill="#56d364" font-size="12" font-weight="700">shire (self) &middot; 10.66.66.3</text>
+    <text x="670" y="150" text-anchor="middle" fill="#8b949e" font-size="9">Ping &middot; HTTP :8000 (Paperless)</text>
+    <text x="670" y="164" text-anchor="middle" fill="#484f58" font-size="8">Vaultwarden intentionally not monitored</text>
+
+    <rect x="560" y="204" width="220" height="66" rx="8" fill="#1a1215" stroke="#f85149" stroke-width="1.5"/>
+    <text x="670" y="224" text-anchor="middle" fill="#ff7b72" font-size="12" font-weight="700">VPS &middot; 10.66.66.1</text>
+    <text x="670" y="242" text-anchor="middle" fill="#8b949e" font-size="9">Ping &middot; HTTP :85/admin/ (Pi-hole)</text>
+    <text x="670" y="256" text-anchor="middle" fill="#484f58" font-size="8">HTTP :81 (nginx-proxy-manager)</text>
+
+    <rect x="560" y="296" width="220" height="66" rx="8" fill="#1a1600" stroke="#d29922" stroke-width="1.5"/>
+    <text x="670" y="316" text-anchor="middle" fill="#d29922" font-size="12" font-weight="700">hassio &middot; 10.66.66.7</text>
+    <text x="670" y="334" text-anchor="middle" fill="#8b949e" font-size="9">HTTP :8123 (Home Assistant)</text>
+    <text x="670" y="348" text-anchor="middle" fill="#484f58" font-size="8">added 2026-08-01 &mdash; was a monitoring gap</text>
+
+    <!-- arrows: kuma → targets -->
+    <path d="M260,110 Q400,60 560,59"  class="monitor-line" marker-end="url(#m-arr)"/>
+    <path d="M260,160 Q400,150 560,145" class="monitor-line" marker-end="url(#m-arr)"/>
+    <path d="M260,230 Q400,240 560,237" class="monitor-line" marker-end="url(#m-arr)"/>
+    <path d="M260,300 Q400,320 560,329" class="monitor-line" marker-end="url(#m-arr)"/>
+
+    <!-- ── NOTIFICATION ── -->
+    <rect x="560" y="392" width="220" height="56" rx="8" fill="#0d1117" stroke="#3fb950" stroke-width="1.5"/>
+    <text x="670" y="411" text-anchor="middle" fill="#56d364" font-size="11" font-weight="700">Email (SMTP) notification</text>
+    <text x="670" y="426" text-anchor="middle" fill="#8b949e" font-size="9">smtp.gmail.com:587 &middot; dedicated App Password</text>
+    <text x="670" y="440" text-anchor="middle" fill="#484f58" font-size="8">&rarr; bjawornicki@gmail.com</text>
+
+    <path d="M140,400 Q350,440 560,420" fill="none" stroke="#3fb950" stroke-width="2" stroke-dasharray="6 3" marker-end="url(#m-arr-mail)"/>
+    <text x="350" y="452" text-anchor="middle" fill="#3fb950" font-size="9">on down / recovery</text>
+  </svg>
+  </div>
+</div>
+
+
 <!-- ═══════════════════════════════════════════════ TAB: CONTAINERS ══ -->
 <div id="tab-containers" class="diagram-section">
 
@@ -587,7 +675,7 @@
   </div>
 
   <div class="diagram-wrap">
-  <svg viewBox="0 0 1060 470" width="100%" style="min-width:820px">
+  <svg viewBox="0 0 1060 526" width="100%" style="min-width:820px">
 
     <!-- ═══ VPS ═══ -->
     <rect x="14"  y="14" width="236" height="276" rx="12" fill="#1a1215" stroke="#f85149" stroke-width="1.5"/>
@@ -645,7 +733,7 @@
     <text x="382" y="246" text-anchor="middle" fill="#484f58" font-size="8">dotfiles via stow-desktop.sh</text>
 
     <!-- ═══ SHIRE ═══ -->
-    <rect x="514" y="14" width="256" height="446" rx="12" fill="#111a13" stroke="#3fb950" stroke-width="1.5"/>
+    <rect x="514" y="14" width="256" height="502" rx="12" fill="#111a13" stroke="#3fb950" stroke-width="1.5"/>
     <rect x="514" y="14" width="256" height="32"  rx="12" fill="#1a3a26"/>
     <rect x="514" y="34" width="256" height="12"  fill="#1a3a26"/>
     <text x="642" y="34" text-anchor="middle" fill="#56d364" font-size="13" font-weight="700">shire</text>
@@ -669,39 +757,45 @@
     <text x="538" y="204" fill="#8b949e" font-size="9">nginx (test page)</text>
     <text x="538" y="216" fill="#e3b341" font-size="9" font-family="monospace">:8081</text>
 
+    <!-- uptime-kuma -->
+    <rect x="526" y="230" width="230" height="48" rx="6" fill="#0d1117" stroke="#1f6feb" stroke-width="1.2"/>
+    <text x="538" y="246" fill="#79c0ff" font-size="10" font-weight="700">uptime-kuma</text>
+    <text x="538" y="260" fill="#8b949e" font-size="9">louislam/uptime-kuma:1</text>
+    <text x="538" y="272" fill="#e3b341" font-size="9" font-family="monospace">:3001 &middot; network_mode: host</text>
+
     <!-- paperless stack wrapper -->
-    <rect x="526" y="232" width="230" height="218" rx="8" fill="#0a130d" stroke="#2a5c3c" stroke-width="1" stroke-dasharray="5 2"/>
-    <text x="641" y="250" text-anchor="middle" fill="#3fb950" font-size="10" font-weight="700">Paperless-NGX stack</text>
+    <rect x="526" y="288" width="230" height="218" rx="8" fill="#0a130d" stroke="#2a5c3c" stroke-width="1" stroke-dasharray="5 2"/>
+    <text x="641" y="306" text-anchor="middle" fill="#3fb950" font-size="10" font-weight="700">Paperless-NGX stack</text>
 
     <!-- paperless-webserver -->
-    <rect x="534" y="258" width="214" height="42" rx="5" fill="#0d1117" stroke="#1f6feb" stroke-width="1.2"/>
-    <text x="546" y="274" fill="#79c0ff" font-size="10" font-weight="700">paperless-webserver</text>
-    <text x="546" y="288" fill="#e3b341" font-size="9" font-family="monospace">:8000 (healthy)</text>
-    <text x="546" y="297" fill="#484f58" font-size="8">paperless-ngx:latest</text>
+    <rect x="534" y="314" width="214" height="42" rx="5" fill="#0d1117" stroke="#1f6feb" stroke-width="1.2"/>
+    <text x="546" y="330" fill="#79c0ff" font-size="10" font-weight="700">paperless-webserver</text>
+    <text x="546" y="344" fill="#e3b341" font-size="9" font-family="monospace">:8000 (healthy)</text>
+    <text x="546" y="353" fill="#484f58" font-size="8">paperless-ngx:latest</text>
 
     <!-- paperless-db / paperless-broker row -->
-    <rect x="534" y="308" width="100" height="44" rx="5" fill="#0d1117" stroke="#21262d" stroke-width="1"/>
-    <text x="584" y="325" text-anchor="middle" fill="#8b949e" font-size="9" font-weight="600">paperless-db</text>
-    <text x="584" y="339" text-anchor="middle" fill="#484f58" font-size="8">postgres 17</text>
-    <text x="584" y="350" text-anchor="middle" fill="#484f58" font-size="7" font-family="monospace">:5432 (internal)</text>
+    <rect x="534" y="364" width="100" height="44" rx="5" fill="#0d1117" stroke="#21262d" stroke-width="1"/>
+    <text x="584" y="381" text-anchor="middle" fill="#8b949e" font-size="9" font-weight="600">paperless-db</text>
+    <text x="584" y="395" text-anchor="middle" fill="#484f58" font-size="8">postgres 17</text>
+    <text x="584" y="406" text-anchor="middle" fill="#484f58" font-size="7" font-family="monospace">:5432 (internal)</text>
 
-    <rect x="644" y="308" width="100" height="44" rx="5" fill="#0d1117" stroke="#21262d" stroke-width="1"/>
-    <text x="694" y="325" text-anchor="middle" fill="#8b949e" font-size="9" font-weight="600">paperless-broker</text>
-    <text x="694" y="339" text-anchor="middle" fill="#484f58" font-size="8">redis 8</text>
-    <text x="694" y="350" text-anchor="middle" fill="#484f58" font-size="7" font-family="monospace">:6379 (internal)</text>
+    <rect x="644" y="364" width="100" height="44" rx="5" fill="#0d1117" stroke="#21262d" stroke-width="1"/>
+    <text x="694" y="381" text-anchor="middle" fill="#8b949e" font-size="9" font-weight="600">paperless-broker</text>
+    <text x="694" y="395" text-anchor="middle" fill="#484f58" font-size="8">redis 8</text>
+    <text x="694" y="406" text-anchor="middle" fill="#484f58" font-size="7" font-family="monospace">:6379 (internal)</text>
 
     <!-- gotenberg / tika row -->
-    <rect x="534" y="360" width="100" height="44" rx="5" fill="#0d1117" stroke="#21262d" stroke-width="1"/>
-    <text x="584" y="377" text-anchor="middle" fill="#8b949e" font-size="9" font-weight="600">gotenberg</text>
-    <text x="584" y="391" text-anchor="middle" fill="#484f58" font-size="8">v8.22</text>
-    <text x="584" y="402" text-anchor="middle" fill="#484f58" font-size="7" font-family="monospace">:3000 (internal)</text>
+    <rect x="534" y="416" width="100" height="44" rx="5" fill="#0d1117" stroke="#21262d" stroke-width="1"/>
+    <text x="584" y="433" text-anchor="middle" fill="#8b949e" font-size="9" font-weight="600">gotenberg</text>
+    <text x="584" y="447" text-anchor="middle" fill="#484f58" font-size="8">v8.22</text>
+    <text x="584" y="458" text-anchor="middle" fill="#484f58" font-size="7" font-family="monospace">:3000 (internal)</text>
 
-    <rect x="644" y="360" width="100" height="44" rx="5" fill="#0d1117" stroke="#21262d" stroke-width="1"/>
-    <text x="694" y="377" text-anchor="middle" fill="#8b949e" font-size="9" font-weight="600">tika</text>
-    <text x="694" y="391" text-anchor="middle" fill="#484f58" font-size="8">apache/tika</text>
-    <text x="694" y="402" text-anchor="middle" fill="#484f58" font-size="7" font-family="monospace">:9998 (internal)</text>
+    <rect x="644" y="416" width="100" height="44" rx="5" fill="#0d1117" stroke="#21262d" stroke-width="1"/>
+    <text x="694" y="433" text-anchor="middle" fill="#8b949e" font-size="9" font-weight="600">tika</text>
+    <text x="694" y="447" text-anchor="middle" fill="#484f58" font-size="8">apache/tika</text>
+    <text x="694" y="458" text-anchor="middle" fill="#484f58" font-size="7" font-family="monospace">:9998 (internal)</text>
 
-    <text x="641" y="440" text-anchor="middle" fill="#484f58" font-size="8">all up &middot; 2 weeks</text>
+    <text x="641" y="496" text-anchor="middle" fill="#484f58" font-size="8">all up &middot; 2 weeks</text>
 
     <!-- ═══ LORIEN ═══ -->
     <rect x="784" y="14" width="260" height="306" rx="12" fill="#160f2a" stroke="#bc8cff" stroke-width="1.5"/>

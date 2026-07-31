@@ -31,7 +31,13 @@
 ├── nginx/
 │   ├── data/                # nginx-proxy-manager config (not running)
 │   └── letsencrypt/         # TLS certificates
-├── uptime_kuma/             # Uptime Kuma data (not running)
+├── uptime_kuma/             # Uptime Kuma — ACTIVE, see below
+│   ├── docker-compose.yaml
+│   ├── kuma.db
+│   ├── upload/
+│   ├── screenshots/
+│   ├── docker-tls/
+│   └── old-data-backup-20260801/  # pre-existing DB, superseded 2026-08-01
 └── webhost/
     └── site-content/        # Static site content (not running)
 ```
@@ -48,10 +54,17 @@ Requires VPN connection (WireGuard).
 
 See [[index]] for current container status.
 
+Uptime Kuma (`/root/kontenery/uptime_kuma/`) moved from inactive to running 2026-08-01 — see [[03-Uptime-Kuma]] for deployment details, notifications, and monitor list.
+
 ## Inactive Services (data preserved)
 
 | Service | Data location | Notes |
 |---------|--------------|-------|
 | nginx-proxy-manager | /root/kontenery/nginx/ | Not running, config preserved |
-| Uptime Kuma | /root/kontenery/uptime_kuma/ | Not running, DB preserved |
 | Static webhost | /root/kontenery/webhost/ | Not running |
+
+## See Also
+
+- [[index]] — Shire service overview
+- [[02-Paperless]] — Paperless-NGX setup and backup
+- [[03-Uptime-Kuma]] — Monitoring dashboard, notifications, monitor list

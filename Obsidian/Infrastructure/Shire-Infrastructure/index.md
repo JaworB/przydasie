@@ -26,13 +26,16 @@ Shire (10.66.66.3) is a Raspberry Pi running containerized services on Docker.
 | paperless-broker | redis:8 | internal | Up |
 | paperless-gotenberg | gotenberg:8.22 | internal | Up |
 | paperless-tika | apache/tika | internal | Up |
+| uptime-kuma | louislam/uptime-kuma:1 | :3001 (host network) | Up |
 
 ## Topics
 
 - [[01-Overview]] — System, directory structure, SSH access, inactive services
 - [[02-Paperless]] — Paperless-NGX setup and backup
+- [[03-Uptime-Kuma]] — Monitoring dashboard, notifications, monitor list
 
 ## See Also
 
 - [[Lorien-Infrastructure/03-Backup-Paperless]] — Backup flow from shire to Lorien
 - [[Lorien-Infrastructure/04-Syslog-Server]] — Centralized logging
+- [[Manuals/Logging/01-Lorien-Log-Report]] — Daily log digest (complements Uptime Kuma's live monitoring)

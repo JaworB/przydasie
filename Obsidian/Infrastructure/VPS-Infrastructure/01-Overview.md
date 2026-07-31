@@ -49,10 +49,14 @@ Managed via Ansible (`VPS_ansible_setup/`):
 ## Pi-hole
 
 DNS server for the VPN network (`10.66.66.1:53`).
-Web UI accessible at `http://10.66.66.1:85` from within VPN.
+Web UI accessible at `http://10.66.66.1:85/admin/` from within VPN (root path `/` returns 403 on Pi-hole v6's webserver).
 Password stored in `.env` (not tracked in git).
 
 ## nginx-proxy-manager
 
 Reverse proxy for services exposed publicly.
 Admin UI at `http://10.66.66.1:81` (VPN only).
+
+## See Also
+
+- [[Shire-Infrastructure/03-Uptime-Kuma]] — VPS is monitored (ping, Pi-hole :85/admin/, nginx-proxy-manager :81) by Uptime Kuma running on shire

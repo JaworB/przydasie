@@ -32,3 +32,4 @@ WireGuard is native (not a container): interface `palantir`, network `10.66.66.0
 
 - [[Lorien-Infrastructure/04-Syslog-Server]] — Centralized logging
 - [[Syslog-Server-Configuration/]] — Rsyslog client setup
+- [[Shire-Infrastructure/03-Uptime-Kuma]] — VPS is monitored (ping, Pi-hole :85/admin/, nginx-proxy-manager :81) by Uptime Kuma running on shire

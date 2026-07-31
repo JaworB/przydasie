@@ -65,6 +65,11 @@ CoolerControl automatically.
 
 See: `AI/jawor-conf/SKILL.md`
 
+## Monitoring
+
+Intentionally **not** covered by Uptime Kuma (runs on shire) — gondor is a desktop, not always powered on, so uptime checks against it would just generate constant false "down" alerts.
+
 ## See Also
 
 - [[Lorien-Infrastructure/04-Syslog-Server]] — Syslog server config on Lorien
+- [[Shire-Infrastructure/03-Uptime-Kuma]] — monitoring setup, and why gondor is excluded
