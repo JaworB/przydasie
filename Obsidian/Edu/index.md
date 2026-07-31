@@ -115,6 +115,15 @@
 - [[AI-Concepts/08-Opencode]] - Extending Opencode CLI
 - [[AI-Concepts/09-Best-Practices]] - Safety, efficiency
 
+### PHP & Laravel
+- [[PHP-Concepts/index]] - PHP fundamentals (start here)
+- [[PHP-Concepts/01-Syntax-Variables-Types]] - Tags, variables, data types
+- [[PHP-Concepts/02-Control-Structures]] - if/elseif/else, switch/match, loops
+- [[PHP-Concepts/03-Functions]] - Declarations, return values, type hinting, closures
+- [[PHP-Concepts/04-Arrays]] - Indexed/associative arrays, array_map/array_filter
+- [[PHP-Concepts/05-OOP-Classes-Objects]] - Classes, objects, constructors, property promotion
+- [[PHP-Concepts/06-OOP-Inheritance-Interfaces]] - extends, parent::, interfaces
+
 ### SQL (PostgreSQL)
 - [[SQL-Concepts/index]] - SQL fundamentals (start here)
 - [[SQL-Concepts/01-Select-Where]] - SELECT, FROM, WHERE, comparison operators
@@ -213,6 +222,14 @@
 - Model comparison (GPT, Claude, Llama)
 - Opencode extension (skills, agents, commands)
 - Safety, ethics, and best practices
+
+### PHP & Laravel
+- Syntax, variables, data types, string concatenation
+- Control structures (if/elseif/else, switch/match, loops)
+- Functions (return values, type hinting, named args, closures)
+- Arrays (indexed/associative, foreach, array_map/array_filter)
+- OOP: classes, objects, constructors, property promotion, access modifiers
+- OOP: inheritance (extends, parent::), interfaces (implements)
 
 ### SQL (PostgreSQL)
 - SELECT, FROM, WHERE, comparison operators
