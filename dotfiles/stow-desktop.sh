@@ -9,7 +9,7 @@ echo "==> Stowing desktop dotfiles..."
 # coolercontrol is intentionally excluded here: its config lives at
 # /etc/coolercontrol/config.toml (not under $HOME), so the jawor-conf skill
 # copies it directly instead of stowing it.
-PACKAGES="hypr uwsm waybar opencode scripts"
+PACKAGES="hypr uwsm waybar opencode scripts chromium"
 
 # Stow refuses to touch a target that already exists and isn't a symlink it
 # created itself (e.g. Omarchy's default configs, or a leftover file from a

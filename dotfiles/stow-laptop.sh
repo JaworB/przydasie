@@ -6,7 +6,7 @@ cd "$DOTFILES_DIR/laptop"
 
 echo "==> Stowing laptop dotfiles..."
 
-PACKAGES="hypr uwsm opencode scripts"
+PACKAGES="hypr uwsm opencode scripts chromium"
 
 # Stow refuses to touch a target that already exists and isn't a symlink it
 # created itself (e.g. Omarchy's default configs, or a leftover file from a
