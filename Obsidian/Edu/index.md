@@ -115,6 +115,17 @@
 - [[AI-Concepts/08-Opencode]] - Extending Opencode CLI
 - [[AI-Concepts/09-Best-Practices]] - Safety, efficiency
 
+### SQL (PostgreSQL)
+- [[SQL-Concepts/index]] - SQL fundamentals (start here)
+- [[SQL-Concepts/01-Select-Where]] - SELECT, FROM, WHERE, comparison operators
+- [[SQL-Concepts/02-Order-By-Limit]] - Sorting and limiting results
+- [[SQL-Concepts/03-Pattern-Matching]] - IN, BETWEEN, LIKE
+- [[SQL-Concepts/04-Aggregation]] - COUNT, SUM, AVG, GROUP BY, HAVING
+- [[SQL-Concepts/05-Joins]] - INNER JOIN, LEFT JOIN
+- [[SQL-Concepts/06-Aliases-Subqueries]] - Table/column aliases, subqueries
+- [[SQL-Concepts/07-Update-Delete-Transactions]] - UPDATE, DELETE, transactions
+- [[SQL-Concepts/08-Views-Indexes]] - VIEW, CREATE INDEX, EXPLAIN
+
 ## Topics Covered
 
 ### Bash Scripting
@@ -202,6 +213,19 @@
 - Model comparison (GPT, Claude, Llama)
 - Opencode extension (skills, agents, commands)
 - Safety, ethics, and best practices
+
+### SQL (PostgreSQL)
+- SELECT, FROM, WHERE, comparison operators
+- ORDER BY and LIMIT
+- IN, BETWEEN, LIKE pattern matching
+- Aggregate functions (COUNT, SUM, AVG, MIN, MAX)
+- GROUP BY and HAVING
+- INNER JOIN and LEFT JOIN
+- Table/column aliases (AS)
+- Subqueries (scalar and IN-based)
+- UPDATE, DELETE, transactions (BEGIN/COMMIT/ROLLBACK)
+- Views (CREATE VIEW) and indexes (CREATE INDEX)
+- Reading query plans with EXPLAIN
 
 ## Related
 
