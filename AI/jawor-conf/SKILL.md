@@ -97,6 +97,27 @@ sudo systemctl enable --now syslog-ng@default
 
 ---
 
+## Step 7 — Chromium restore-on-startup policy
+
+`omarchy-install-browser` leaves `/etc/chromium/policies/managed/` world-writable,
+so no sudo is needed. This is separate from the `--restore-last-session` flag in
+the `chromium` stow package (Step 4): after an unclean shutdown (Hyprland kills
+Chromium on reboot before it can exit cleanly), Chromium shows a "Restore
+pages?" bubble regardless of flags or the on-startup preference — only a
+*managed* policy suppresses it and restores silently.
+
+**Gondor:**
+```bash
+cp ~/repos/przydasie/dotfiles/desktop/chromium-policy/restore-session.json /etc/chromium/policies/managed/restore-session.json
+```
+
+**Rivendell:**
+```bash
+cp ~/repos/przydasie/dotfiles/laptop/chromium-policy/restore-session.json /etc/chromium/policies/managed/restore-session.json
+```
+
+---
+
 ## Gondor-only steps
 
 ### CoolerControl (fan control)
