@@ -1,0 +1,158 @@
+if params.len != 1 or params[0] == "-h" or params[0] == "--help" then exit("Usage: scanner <targetIP>")
+if not is_valid_ip(params[0]) then exit("Provided IP invalid")
+if not get_shell.host_computer.is_network_active then exit("No internet access")
+
+targetIP = params[0]
+if targetIP == "127.0.0.1" then targetIP = get_shell.host_computer.local_ip
+isLanIP = is_lan_ip(targetIP)
+
+assertRouter = function()
+   if isLanIP then
+      router = get_router
+   else
+      router = get_router(targetIP)
+   end if
+   if router == null then exit("Failed to get router")
+   return router
+end function
+
+checkDbFile = function()
+   computer = get_shell.host_computer
+   rootDir = "/root"
+   fileName = "vuln.db"
+   filePath = rootDir + "/" + fileName
+   dbFile = computer.File(filePath)
+   if dbFile == null then
+      createResult = computer.touch(rootDir, fileName)
+      dbFile = computer.File(filePath)
+      if typeof(createResult) == "string" then
+         print("There was an error when creating the file: " + createResult)
+      else
+         print("New db file created " + filePath)
+      end if
+   else
+      print("Using existing database " + filePath)
+   end if
+   return dbFile
+end function
+
+loadDbContent = function(vulnScanInput)
+   scannedLibs = []
+   if vulnScanInput == null or vulnScanInput == "" then return scannedLibs
+   dbInputLine = vulnScanInput.split(char(10))
+   for line in dbInputLine
+      if line == "" then continue
+      lineSplit = line.split(" ")
+      libKey = lineSplit[0] + " " + lineSplit[1]
+      if scannedLibs.indexOf(libKey) == null then scannedLibs.push(libKey)
+   end for
+   return scannedLibs
+end function
+
+getOpenPorts = function(router)
+   ports = null
+   if isLanIP then
+      ports = router.device_ports(targetIP)
+   else
+      ports = router.used_ports
+   end if
+   if ports == null then exit("Failed to get port list")
+   if typeof(ports) == "string" then exit(ports)
+   return ports
+end function
+
+printPortReport = function(ports, router)
+   info = "PORT STATUS SERVICE VERSION LAN"
+   if ports.len == 0 then exit("No ports to report")
+   for port in ports
+      service = router.port_info(port).upper
+      if port.is_closed then
+         status = "CLOSED"
+      else
+         status = "OPEN"
+      end if
+      lan = port.get_lan_ip
+      info = info + "\n" +port.port_number + " " + status + " " + service + " " + lan
+   end for
+   print ("\n" + format_columns(info) + "\n")
+end function
+
+scanLibVuln = function(metax, metaLib)
+   output = ""
+   memoryAddresses = metax.scan(metaLib)
+   for address in memoryAddresses
+      scanResult = metax.scan_address(metaLib, address)
+      exploitList = scanResult.split("Unsafe check: ")[1:]
+         for exploit in exploitList
+            hasRequirement = exploit.indexOf("*") != null
+            if hasRequirement then continue
+
+            startLabel = exploit.indexOf("<b>")
+            endLabel = exploit.indexOf("</b>")
+            exploitName = exploit[startLabel + 3 : endLabel]
+            dbEntry = metaLib.lib_name + " " + metaLib.version + " " + address + " " + exploitName + char(10)
+            output = output + dbEntry
+         end for
+   end for
+   return output
+end function
+
+vulnScan = function(router, dbFile)
+   ports = getOpenPorts(router)
+   printPortReport(ports, router)
+   metax = include_lib("/lib/metaxploit.so")
+   if not metax then exit("metaxploit lib not found")
+   dbContent = dbFile.get_content
+   if dbContent == null then dbContent = ""
+   scannedLibs = loadDbContent(dbContent)
+   for port in ports
+      if port.is_closed then continue
+      netSession = metax.net_use(targetIP, port.port_number)
+      metaLib = netSession.dump_lib
+      libKey  = metaLib.lib_name + " " + metaLib.version
+      if scannedLibs.indexOf(libKey) != null then
+         print("Library " + libKey + " already in DB - omitting.")
+         continue
+      end if
+      scannedLibs.push(libKey)
+      print("Scanning " + metaLib.lib_name + " on Port " + port.port_number)
+      dbContent = dbContent + scanLibVuln(metax, metaLib)
+   end for
+   dbFile.set_content(dbContent)
+end function
+
+libCrack = function(router, dbFile)
+   dbContentLine = dbFile.get_content.split(char(10))
+   ports = getOpenPorts(router)
+   metax = include_lib("/lib/metaxploit.so")
+   if not metax then exit("metaxploit lib not found")
+   targetPort = user_input("Podaj port do przetestowania podatnosci: ").to_int
+   print(" === " + targetIP + " === " + targetPort)
+   targetPortObject = null
+      for port in ports
+         if port.port_number == targetPort then
+            targetPortObject = port.port_number
+            netSession = metax.net_use(targetIP, port.port_number)
+            metaLib = netSession.dump_lib
+            targetLibKey  = metaLib.lib_name + " " + metaLib.version
+         end if
+      end for
+   if targetLibKey == null or targetLibKey == "" then exit("targetLibKey undefinded")
+   print("Target lib key: " + targetLibKey + "\n")
+   vulnToCheck = []
+   for line in dbContentLine
+      if line == null or line == "" then continue
+      dbLibKey = line.split(" ")[0] + " " + line.split(" ")[1]
+      if dbLibKey == targetLibKey then vulnToCheck.push(line)
+   end for
+   print("Vulnerabilites to check on: \n" + vulnToCheck + "\n")
+   for entry in vulnToCheck
+      memAddress = entry.split(" ")[2]
+      unsafeValue = entry.split(" ")[3]
+      print("=== Debug: " + memAddress + " " + unsafeValue + " ===")
+      result = metaLib.overflow(memAddress, unsafeValue)
+   end for
+end function
+
+vulnScan(assertRouter,checkDbFile)
+libCrack(assertRouter,checkDbFile)

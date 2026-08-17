@@ -1,0 +1,88 @@
+if params.len == 0 or params[0] == "-h" then exit("script usage")
+if not get_shell.host_computer.is_network_active then exit("No network connection")
+ipAddress = params[0]
+
+if ipAddress == "127.0.0.1" then ipAddress = get_shell.host_computer.local_ip
+isLanIP = is_lan_ip(ipAddress)
+
+assetRouter = function()
+    if isLanIP then
+        router = get_router
+    else
+        router = get_router(ipAddress)
+    end if
+    if router == null then exit("Problem z pobraniem routera")
+    return router
+end function
+
+portList = function(router)
+    rKernel = router.kernel_version
+    rFirewall = router.firewall_rules
+        if typeof(rFirewall) == "string" then exit(rFirewall)
+        if rFirewall.len == 0 then 
+            print("\n No firewall rules found")
+        else
+            fwInfo = "Action Port Source_IP Destination_IP"
+            for rules in rFirewall
+                fwInfo = fwInfo + "\n" + rules
+            end for
+        print ("\n === Firewall rules ===")
+        print(format_columns(fwInfo) )
+        end if
+    print("\n=== Router kernel version: " + rKernel + " ===\n")
+    info = ("Port " + "stan " + "serwis " + "LAN IP")
+    if isLanIP then ports = router.device_ports(ipAddress) else ports = router.used_ports
+    if ports == null or typeof(ports) == "string" then exit(ports)
+    for port in ports
+        if port.is_closed then state = "CLOSED" else state = "OPEN"
+        serwis = router.port_info(port)
+        portIP = port.get_lan_ip
+        info = info + "\n" + port.port_number + " " + state + " " + serwis + " " + portIP
+    end for
+    print("Scanning ports of: " + ipAddress + " at " + current_date)
+    print(format_columns(info))
+    return ports
+
+end function
+
+createDb = function()
+    hostComputer = get_shell.host_computer
+    fileName = "vuln.db"
+    userPath = "/" + active_user 
+    filePath = userPath + "/" + fileName
+    dbFile = hostComputer.File(filePath)
+    print("DEBUG filePath " + filePath )
+    if dbFile == null then
+        print("Creating DB file")
+        createResult = hostComputer.touch(userPath, fileName)
+        if typeof(createResult) == "string" then
+           print("There was an error when creating the file: " + createResult)
+        else
+           print("DB file got created at given path " + path)
+        end if
+    else
+        print("DB file present")
+    end if
+end function
+
+scanLibraries = function(router)
+    metax = include_lib("/lib/metaxploit.so")
+    if metax == null then exit("Metaxploit library could not be loaded!")
+    ports = portList(router)
+    libKeys = []
+    for port in ports
+        dumpLib = metax.net_use(ipAddress, port.port_number).dump_lib
+        libName = dumpLib.lib_name
+        libVersion = dumpLib.version
+        libKey = libName + " " + libVersion
+        if libKeys.indexOf(libKey) == null then libKeys.push(libKey)
+    end for
+    print(libKeys)
+    for lib in libKeys
+        
+end function
+
+portList(assetRouter)
+createDb
+scanLibraries(assetRouter)
+    
