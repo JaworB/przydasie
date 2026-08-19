@@ -11,7 +11,7 @@
 | Desktop | Omarchy — Hyprland + Waybar + uwsm |
 | VPN IP | 10.66.66.8 (wg0) |
 | SSH | local access only — no SSH server |
-| Container runtime | Docker |
+| Container runtime | Docker (autostart enabled 2026-08-20) |
 
 > Hardware specs (CPU / RAM / storage) — update with actual values.
 
@@ -25,6 +25,7 @@ Fan control: CoolerControl (`nct6775` kernel module). BIOS: disable Smart Fan Mo
 | WireGuard | VPN client — wg0, 10.66.66.8 | polkit rule: `/etc/polkit-1/rules.d/50-wireguard.rules` |
 | coolercontrold | Fan speed / PWM control | `/etc/coolercontrol/config.toml` |
 | plex | Plex Media Server (Docker) | port :32400, `plexinc/pms-docker` |
+| node1 / node2 | Ansible learning sandbox (Docker, Fedora + Debian 12, systemd+sshd) | ports :2201/:2202, `restart=unless-stopped`, repo: `edu/ansible_edu/edu/ansible-sandbox/` (branch `ansible_edu`) |
 
 ## Dotfiles
 
