@@ -1,0 +1,4 @@
+Witaj na {{ inventory_hostname }} ({{ ansible_facts['distribution'] }}) - {{ motd_message }}
+{% if ansible_facts['distribution'] == "Fedora" %}
+Dodatkowa linia
+{% endif %}

@@ -1,0 +1,28 @@
+---
+- name: Zadanie2
+  hosts: sandbox
+  become: true
+  vars:
+    target_file: /etc/motd
+  tasks:
+    - name: Zaplikuj template
+      ansible.builtin.template:
+        src: motd.j2
+        dest: "{{ target_file }}"
+        owner: root
+        group: root
+        mode: "0644"
+      notify: Restart sshd
+
+    - name: Edit motd on Fedora
+      ansible.builtin.lineinfile:
+        path: "{{ target_file }}"
+        line: Dodatkowa linia
+        insertafter: EOF
+      when: ansible_facts['distribution'] == "Fedora"
+
+  handlers:
+    - name: Restart sshd
+      ansible.builtin.service:
+        name: sshd
+        state: restarted

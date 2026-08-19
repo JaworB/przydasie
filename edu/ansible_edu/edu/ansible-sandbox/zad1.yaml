@@ -1,0 +1,31 @@
+---
+- name: Zadanie1
+  hosts: sandbox
+  become: true
+  vars:
+    target_file: /tmp/hello.txt
+  tasks:
+    - name: Zaintaluj pakiet tree
+      ansible.builtin.package:
+        name: tree
+        state: present
+
+    - name: Utwórz plik
+      ansible.builtin.file:
+        path: "{{ target_file }}"
+        owner: ansible
+        group: ansible
+        mode: '0644'
+        state: touch
+        modification_time: preserve
+        access_time: preserve
+
+    - name: Tekst w pliku
+      ansible.builtin.lineinfile:
+        path: "{{ target_file }}"
+        line: Hello from {{ inventory_hostname }}
+        state: present
+
+    - name: Debug
+      ansible.builtin.debug:
+        msg: System {{ ansible_facts["hostname"] }} is {{ ansible_facts["distribution"] }}
