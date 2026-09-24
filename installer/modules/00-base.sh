@@ -4,6 +4,7 @@ BASE_PACKAGES=(
     base-devel git stow
     wireguard-tools nftables syslog-ng
     hyprland uwsm xdg-desktop-portal-hyprland waybar
+    sddm
     networkmanager
     bluez bluez-utils
     btop nvtop
@@ -15,6 +16,13 @@ run "Odświeżenie baz pakietów" sudo pacman -Sy --noconfirm
 run "Instalacja pakietów bazowych" sudo pacman -S --needed --noconfirm "${BASE_PACKAGES[@]}"
 run "Włączenie NetworkManager" sudo systemctl enable --now NetworkManager
 run "Włączenie Bluetooth" sudo systemctl enable --now bluetooth
+
+# Bez menedżera logowania system po boocie wraca do zwykłego TTY —
+# uwsm/Hyprland same z siebie się nie uruchamiają. sddm pokazuje sesję
+# "Hyprland (uwsm)" z /usr/share/wayland-sessions/hyprland-uwsm.desktop
+# (dostarcza ją pakiet uwsm).
+run "Włączenie sddm" sudo systemctl enable sddm
+run "Ustawienie graphical.target jako domyślnego" sudo systemctl set-default graphical.target
 
 if ! grep -q '^\[multilib\]' /etc/pacman.conf; then
     step "Włączanie repo [multilib] (wymagane dla Steam)"

@@ -18,7 +18,10 @@ stow_dotfiles() {
         while IFS= read -r line; do
             conflict="${line#*: }"
             conflict="${conflict% since*}"
-            if [ -n "$conflict" ] && [ -e "$HOME/$conflict" ] && [ ! -L "$HOME/$conflict" ]; then
+            # -e i -L razem łapią zwykły plik, poprawny symlink ORAZ obcy/
+            # nieaktualny symlink (np. z innej kopii repo) — stow traktuje
+            # każdy z nich jako "nie należący do stow" i przerywa całość.
+            if [ -n "$conflict" ] && { [ -e "$HOME/$conflict" ] || [ -L "$HOME/$conflict" ]; }; then
                 mv "$HOME/$conflict" "$HOME/$conflict.bak-$(date +%s)"
                 echo "[$(date -Iseconds)] backup: $HOME/$conflict" >> "$JAWOR_LOG_FILE"
             fi
