@@ -1,6 +1,6 @@
 # 90-hardware-gondor.sh — CoolerControl (fan PWM), 1:1 z jawor-conf.
 
-if [ "$(hostname)" != "gondor" ]; then
+if [ "$HOSTNAME" != "gondor" ]; then
     step "Pomijam (host != gondor)"
     return 0 2>/dev/null || exit 0
 fi

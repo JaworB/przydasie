@@ -19,6 +19,12 @@ table inet filter {
         ip protocol icmp accept
         ip6 nexthdr icmpv6 accept
 
+        # Klient DHCP/DHCPv6 — bez tego conntrack nie zawsze łapie
+        # DISCOVER/REQUEST (wysyłane z 0.0.0.0), odnowienie dzierżawy
+        # się psuje i klient dostaje losowy nowy adres z puli routera.
+        udp dport 68 accept
+        udp dport 546 accept
+
         # Stan przejściowy — zawężone do 10.66.66.0/24 przez join-host.sh
         tcp dport 22 ip saddr $LAN_CIDR accept
     }

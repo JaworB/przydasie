@@ -15,7 +15,7 @@ source "$INSTALLER_DIR/lib/dotfiles.sh"
 
 log_init
 export JAWOR_ROLE="${JAWOR_ROLE:-$(detect_role)}"
-step "Rola hosta: $JAWOR_ROLE ($(hostname))"
+step "Rola hosta: $JAWOR_ROLE ($HOSTNAME)"
 
 step "Uwierzytelnianie sudo (potrzebne przez całą instalację)"
 sudo -v
@@ -33,7 +33,7 @@ cat <<EOF
 
 Kolejny krok wykonaj OSOBNO, z sesji mającej dostęp do VPS i gondor:
 
-  vps-join/join-host.sh $(hostname) <lan-ip-tego-hosta> <przydzielony-vpn-ip>
+  vps-join/join-host.sh $HOSTNAME <lan-ip-tego-hosta> <przydzielony-vpn-ip>
 
 Dopiero to dołączy maszynę do WireGuard i zawęzi firewall do VPN-only SSH.
 EOF

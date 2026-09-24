@@ -1,6 +1,6 @@
 # 90-hardware-rivendell.sh — DisplayLink (dock/monitor zewnętrzny), 1:1 z jawor-conf.
 
-if [ "$(hostname)" != "rivendell" ]; then
+if [ "$HOSTNAME" != "rivendell" ]; then
     step "Pomijam (host != rivendell)"
     return 0 2>/dev/null || exit 0
 fi

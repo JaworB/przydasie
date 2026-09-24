@@ -13,7 +13,7 @@ log_init() {
         sudo touch "$JAWOR_LOG_FILE"
         sudo chmod 666 "$JAWOR_LOG_FILE"
     fi
-    echo "=== jawor-install $(date -Iseconds) na $(hostname) ===" >> "$JAWOR_LOG_FILE"
+    echo "=== jawor-install $(date -Iseconds) na $HOSTNAME ===" >> "$JAWOR_LOG_FILE"
 }
 
 step() {
