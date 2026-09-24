@@ -32,6 +32,26 @@ Instalator:
 
 Status na bieżąco na ekranie, pełny log debugowy w `/var/log/jawor-install.log`.
 
+## Krok 1.5 — domyślne configi Omarchy + motyw, z gondor
+
+Osobiste dotfiles (`~/.config/hypr/hyprland.conf`) zakładają istnienie
+domyślnych configów Omarchy w `~/.local/share/omarchy/default/` i aktywnego
+motywu w `~/.config/omarchy/current/theme` — bez tego Hyprland startuje z
+błędem `source= globbing error: found no match` i pustymi defaultami.
+
+Repo `omarchyconf` jest **prywatne** (osobisty fork), więc nowy host nie ma
+do niego dostępu z GitHuba — dane są dostarczane peer-to-peer z gondor
+(który ma lokalny klon), tym samym mechanizmem zaufania SSH co
+`vps-join/join-host.sh`. Z gondor:
+
+```bash
+./gondor-provision/push-omarchy-defaults.sh <lan-ip-nowego-hosta>
+```
+
+Domyślnie instaluje motyw „Miasma". Uruchom po Kroku 1, przed pierwszym
+logowaniem do sesji graficznej (albo `hyprctl reload`, jeśli sesja już
+działa).
+
 ## Krok 2 — dołączenie do VPN, z VPS
 
 WireGuard **nie** jest częścią `boot.sh`, bo VPS nie ma bezpośredniej

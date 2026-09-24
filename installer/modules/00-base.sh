@@ -16,7 +16,7 @@ BASE_PACKAGES=(
     # dysków, akcje NetworkManagera itd.) po cichu nie działają
     polkit polkit-gnome
     # sesja Hyprland: idle/lock, tło, notyfikacje, OSD głośności/jasności
-    hypridle hyprlock swaybg mako swayosd
+    hypridle hyprlock swaybg mako swayosd libnotify
     # clipboard, screenshoty, jasność ekranu (kluczowe na laptopie), media keys
     wl-clipboard grim slurp brightnessctl playerctl
     # QT na Waylandzie + keyring (SSH/przeglądarka po cichu tego oczekują)
