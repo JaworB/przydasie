@@ -10,7 +10,7 @@
 | Hardware | Lenovo ThinkCentre |
 | VPN IP | 10.66.66.10 |
 | RAM | 16 GB |
-| Disk | 15 GB root (4.8 GB used) |
+| Disk | 15 GB root (~8.2 GB free as of 2026-09-24) + 100 GB `/home` (~82 GB free) |
 | SSH | `ssh lorien` — port 22, user root |
 | Container runtime | Podman |
 
@@ -36,8 +36,13 @@ Lorien initiates outbound SSH connections (pull model):
 │   ├── homeassistant/          # HA config backups (30-day retention)
 │   │   ├── ha-backup-*.tar.gz
 │   │   └── backup.log
-│   └── paperless/              # Paperless document exports (90-day retention)
+│   └── paperless/              # Paperless document exports (90-day retention, pre-migration)
 │       └── export_*.zip
+│
+├── home/kontenery/              # Containerized services, migrated from shire 2026-09-24
+│   ├── paperless/               # Paperless-NGX stack — see 05-Paperless
+│   ├── uptime_kuma/             # Uptime Kuma — see 06-Uptime-Kuma
+│   └── rickroll/                # Rickroll — see 07-Rickroll
 │
 ├── var/log/remote/             # Syslog storage (14-day retention)
 │   ├── gondor.log              # Full logs from gondor
@@ -82,6 +87,8 @@ The following hostnames appear in `/var/log/remote/` but originate from local pr
 ## See Also
 
 - [[02-Backup-HomeAssistant]] — HA backup details
-- [[03-Backup-Paperless]] — Paperless backup details
+- [[03-Backup-Paperless]] — Paperless backup details (historical — flow needs redesign post-migration)
 - [[04-Syslog-Server]] — Syslog server configuration
-- [[Shire-Infrastructure/03-Uptime-Kuma]] — Lorien is monitored (ping, rsyslog :514, VintageStory :42420) by Uptime Kuma running on shire
+- [[05-Paperless]] — Paperless-NGX, migrated from shire 2026-09-24
+- [[06-Uptime-Kuma]] — Uptime Kuma, migrated from shire 2026-09-24 (now monitors lorien itself, self-hosted)
+- [[07-Rickroll]] — Rickroll, migrated from shire 2026-09-24

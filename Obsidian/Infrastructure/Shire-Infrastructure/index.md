@@ -1,6 +1,6 @@
 # Shire Infrastructure
 
-Shire (10.66.66.3) is a Raspberry Pi running containerized services on Docker.
+Shire (10.66.66.3) is a Raspberry Pi running containerized services on Docker. As of 2026-09-24, Paperless-NGX, Uptime Kuma and Rickroll have been **migrated to [[Lorien-Infrastructure/index|Lorien]]** — see that page for the current containerized-services setup. Their containers are stopped on shire (data preserved as rollback fallback); webtest-gritter is the only container still running here.
 
 ## System
 
@@ -18,23 +18,24 @@ Shire (10.66.66.3) is a Raspberry Pi running containerized services on Docker.
 
 | Container | Image | Port | Status |
 |-----------|-------|------|--------|
-| Rickroll | custom | :8180 | Up (healthy) |
 | webtest-gritter | nginx | :8081 | Up |
-| paperless-webserver | paperless-ngx:latest | :8000 | Up (healthy) |
-| paperless-db | postgres:17 | internal | Up |
-| paperless-broker | redis:8 | internal | Up |
-| paperless-gotenberg | gotenberg:8.22 | internal | Up |
-| paperless-tika | apache/tika | internal | Up |
-| uptime-kuma | louislam/uptime-kuma:1 | :3001 (host network) | Up |
+
+## Stopped (migrated to Lorien 2026-09-24, data preserved)
+
+| Container | Image | Former port | Now at |
+|-----------|-------|------|--------|
+| Rickroll | custom | :8180 | [[Lorien-Infrastructure/07-Rickroll]] |
+| paperless-webserver + stack | paperless-ngx:latest | :8000 | [[Lorien-Infrastructure/05-Paperless]] |
+| uptime-kuma | louislam/uptime-kuma:1 | :3001 (host network) | [[Lorien-Infrastructure/06-Uptime-Kuma]] |
 
 ## Topics
 
 - [[01-Overview]] — System, directory structure, SSH access, inactive services
-- [[02-Paperless]] — Paperless-NGX setup and backup
-- [[03-Uptime-Kuma]] — Monitoring dashboard, notifications, monitor list
+- [[02-Paperless]] — Paperless-NGX setup and backup (historical — migrated)
+- [[03-Uptime-Kuma]] — Monitoring dashboard, notifications, monitor list (historical — migrated)
 
 ## See Also
 
-- [[Lorien-Infrastructure/03-Backup-Paperless]] — Backup flow from shire to Lorien
+- [[Lorien-Infrastructure/index]] — where these services live now
 - [[Lorien-Infrastructure/04-Syslog-Server]] — Centralized logging
 - [[Manuals/Logging/01-Lorien-Log-Report]] — Daily log digest (complements Uptime Kuma's live monitoring)

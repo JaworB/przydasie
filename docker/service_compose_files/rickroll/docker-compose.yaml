@@ -1,0 +1,11 @@
+services:
+  rickroll:
+    # Pinned to the digest actually deployed on lorien — the "latest" tag has
+    # since dropped this image version from the registry.
+    image: docker.io/modem7/docker-rickroll@sha256:cf1515b10f698b9f207dee2c1e8904efc0737b7fc282119d1d5a989b5f35e1bd
+    restart: unless-stopped
+    container_name: Rickroll
+    ports:
+      - 8180:8080
+    environment:
+      - TITLE="Rickroll"

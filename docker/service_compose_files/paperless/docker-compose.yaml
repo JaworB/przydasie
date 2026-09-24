@@ -1,0 +1,53 @@
+services:
+  broker:
+    image: docker.io/library/redis:8
+    restart: unless-stopped
+    volumes:
+      - ./redisdata:/data
+  db:
+    image: docker.io/library/postgres:17
+    restart: unless-stopped
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    env_file: docker-compose.env
+  webserver:
+    # Pinned to the digest actually deployed on lorien — check running version
+    # before bumping (paperless-ngx DB migrations are one-way).
+    image: ghcr.io/paperless-ngx/paperless-ngx@sha256:6dbe57d8198fa117158ba9e867e2d45280b65e9c37ea54c1df7b34c4085a564c
+    restart: unless-stopped
+    depends_on:
+      - db
+      - broker
+      - gotenberg
+      - tika
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/usr/src/paperless/data
+      - ./media:/usr/src/paperless/media
+      - ./export:/usr/src/paperless/export
+      - ./consume:/usr/src/paperless/consume
+    env_file: docker-compose.env
+    environment:
+      PAPERLESS_REDIS: redis://broker:6379
+      PAPERLESS_DBHOST: db
+      PAPERLESS_TIKA_ENABLED: 1
+      PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://gotenberg:3000
+      PAPERLESS_TIKA_ENDPOINT: http://tika:9998
+  gotenberg:
+    image: docker.io/gotenberg/gotenberg:8.22
+    restart: unless-stopped
+    # The gotenberg chromium route is used to convert .eml files. We do not
+    # want to allow external content like tracking pixels or even javascript.
+    command:
+      - "gotenberg"
+      - "--chromium-disable-javascript=true"
+      - "--chromium-allow-list=file:///tmp/.*"
+  tika:
+    image: docker.io/apache/tika@sha256:031530a4b81f37454631ce9352b07cedfd03d83c875b05677d80bff6958d11ff
+    restart: unless-stopped
+volumes:
+  data:
+  media:
+  pgdata:
+  redisdata:

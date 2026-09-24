@@ -12,8 +12,8 @@ VPN network: `10.66.66.0/24` (WireGuard, gateway on VPS)
 |------|----|----|------|
 | gondor | local | Arch Linux + Omarchy | Workstation (current machine) |
 | vps | 10.66.66.1, port 2229 | Rocky Linux | VPN gateway, public IP, hosted at Korbank |
-| shire | 10.66.66.3 | Debian (Raspberry Pi) | Containerized services |
-| lorien | 10.66.66.10 | Fedora | 24/7 server — container backups, central rsyslog, game servers |
+| shire | 10.66.66.3 | Debian (Raspberry Pi) | webtest-gritter (Paperless/Uptime Kuma/Rickroll migrated to lorien 2026-09-24, stopped here as fallback) |
+| lorien | 10.66.66.10 | Fedora | 24/7 server — containerized services (Paperless, Uptime Kuma, Rickroll; podman-compose), container backups, central rsyslog, game servers |
 | rivendell | 10.66.66.9 | Arch Linux + Omarchy | Laptop, not always available |
 
 SSH connections via aliases defined in `~/.ssh/config`. All hosts reachable only through VPN.
@@ -64,4 +64,5 @@ SSH connections via aliases defined in `~/.ssh/config`. All hosts reachable only
 | `dotfiles/system/rsyslog/debian/client.conf` | Shire rsyslog client → Lorien TCP 514 |
 | `dotfiles/system/rsyslog/fedora/server.conf` | Lorien rsyslog server config |
 | `VPS_ansible_setup/group_vars/all.yml` | Ansible vars (incl. `rsyslog_server: 10.66.66.10`) |
-| `scripts/bash/paperless_backup.sh` | Paperless backup: shire → lorien (weekly, 90d retention) |
+| `scripts/bash/paperless_backup.sh` | Paperless backup: lorien → VPS, GPG-encrypted (weekly, 90d retention) — redesigned 2026-09-25 after Paperless moved to lorien, see `Obsidian/Infrastructure/Lorien-Infrastructure/03-Backup-Paperless.md` |
+| `scripts/bash/paperless_backup_prune_vps.sh` | Retention cleanup on the VPS side (runs on VPS itself, weekly) — split from the main script since lorien's SSH key to VPS is write-only rsync, no shell |

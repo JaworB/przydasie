@@ -1,15 +1,17 @@
 # Uptime Kuma (Monitoring)
 
-Centralized uptime/status monitoring for VPN hosts and key services. Deployed 2026-08-01.
+**Migrated to [[Lorien-Infrastructure/06-Uptime-Kuma]] on 2026-09-24.** This page is kept for history — see the Lorien page for the live setup, current monitor list, and notifications config.
 
-## Deployment
+Centralized uptime/status monitoring for VPN hosts and key services. Originally deployed on shire 2026-08-01.
+
+## Former deployment (shire, stopped)
 
 | Property | Value |
 |----------|-------|
-| Location | `/root/kontenery/uptime_kuma/` on shire |
+| Location | `/root/kontenery/uptime_kuma/` on shire (data preserved, container stopped) |
 | Image | `louislam/uptime-kuma:1` |
 | Compose file | `/root/kontenery/uptime_kuma/docker-compose.yaml` |
-| Access | http://10.66.66.3:3001 (VPN only) |
+| Former access | http://10.66.66.3:3001 (VPN only) |
 
 A data directory (`kuma.db`, `upload/`, `screenshots/`, `docker-tls/`) already existed from an earlier, undocumented setup with no compose file. That old database was moved aside to `old-data-backup-20260801/` and a fresh instance was created from scratch (old account/monitors weren't relevant anymore).
 
@@ -60,5 +62,6 @@ Retries: 2, check interval: 60s (avoids single dropped-packet false positives).
 
 ## See Also
 
+- [[Lorien-Infrastructure/06-Uptime-Kuma]] — current live setup
 - [[index]] — Shire service overview
 - [[Manuals/Logging/01-Lorien-Log-Report]] — the other half of the observability stack (passive daily log digest vs. active uptime monitoring)

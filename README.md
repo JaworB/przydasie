@@ -32,8 +32,8 @@ Personal infrastructure and dotfiles repository — home network of 5 hosts conn
 |------|----|----|------|
 | gondor | local | Arch Linux + Omarchy | Workstation |
 | vps | 10.66.66.1, port 2229 | Rocky Linux | VPN gateway, public IP, hosted at Korbank |
-| shire | 10.66.66.3 | Debian (Raspberry Pi) | Containerized services |
-| lorien | 10.66.66.10 | Fedora | 24/7 server — container backups, central rsyslog, game servers |
+| shire | 10.66.66.3 | Debian (Raspberry Pi) | webtest-gritter (Paperless/Uptime Kuma/Rickroll migrated to lorien 2026-09-24, stopped here as fallback) |
+| lorien | 10.66.66.10 | Fedora | 24/7 server — containerized services (Paperless, Uptime Kuma, Rickroll), container backups, central rsyslog, game servers |
 | rivendell | 10.66.66.9 | Arch Linux + Omarchy | Laptop, not always available |
 
 All hosts reachable only through the WireGuard VPN; SSH via aliases defined in `~/.ssh/config`.
@@ -72,7 +72,9 @@ cd docker/service_compose_files/{service}
 docker-compose up -d
 ```
 
-Available services: `jellyfin`, `pihole`, `plex`, `valheim`.
+Available services: `jellyfin`, `pihole`, `plex`, `valheim`, `paperless`, `uptime-kuma`, `rickroll`.
+
+`paperless`, `uptime-kuma` and `rickroll` run on lorien via `podman-compose` (no Docker there) — substitute `podman-compose` for `docker-compose` when deploying those.
 
 ### Game servers (lorien)
 

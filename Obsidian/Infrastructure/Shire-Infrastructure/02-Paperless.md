@@ -1,8 +1,10 @@
-# Paperless-NGX
+# Paperless-NGX (migrated to Lorien)
 
-Shire runs the full Paperless-NGX stack for document management.
+**Migrated to [[Lorien-Infrastructure/05-Paperless]] on 2026-09-24.** This page is kept for history — see the Lorien page for the live setup.
 
-## Stack
+Shire used to run the full Paperless-NGX stack for document management. The stack (`docker compose down`) is stopped on shire but its bind-mounted data under `/root/kontenery/paperless/` is left in place, untouched, as a rollback fallback.
+
+## Former stack (shire, stopped)
 
 | Container | Image | Role |
 |-----------|-------|------|
@@ -12,44 +14,13 @@ Shire runs the full Paperless-NGX stack for document management.
 | paperless-gotenberg-1 | gotenberg:8.22 | Document conversion |
 | paperless-tika-1 | apache/tika:latest | Content extraction |
 
-## Compose file
+**Former compose location on shire**: `/root/kontenery/paperless/docker-compose.yaml` (data still present, containers stopped).
 
-**Location on shire**: `/root/kontenery/paperless/docker-compose.yaml`
+## Backup (pre-migration flow, now disabled)
 
-**Repo reference**: `docker/service_compose_files/` does not contain a Paperless compose — the live file is the source of truth on shire.
-
-## Access
-
-```
-http://shire:8000    # or http://10.66.66.3:8000
-```
-
-## Backup
-
-Documents are exported weekly and synced to Lorien:
-
-- **Script**: `scripts/bash/paperless_backup.sh` (runs on shire)
-- **Destination**: `lorien:/backup/paperless/export_YYYY-MM-DD.zip`
-- **Retention**: 90 days (with freshness safety check — won't delete if newest backup is older than 14 days)
-
-### Manual backup run
-
-```bash
-ssh shire
-/path/to/paperless_backup.sh
-```
-
-### Manual export
-
-```bash
-docker exec paperless-webserver-1 document_exporter /usr/src/paperless/export
-```
-
-## Consume directory
-
-Drop files into `/root/kontenery/paperless/consume/` — Paperless picks them up automatically.
+Documents used to be exported weekly on shire and synced to Lorien via `scripts/bash/paperless_backup.sh`. Since Paperless now runs *on* Lorien, this shire→lorien flow no longer makes sense — the cron entry on shire (`/root/kontenery/paperless/export/backup.sh`, weekly) has been commented out. A new backup destination/flow for the Lorien-hosted instance is a separate, not-yet-designed task.
 
 ## See Also
 
-- [[Lorien-Infrastructure/03-Backup-Paperless]] - Backup flow details
+- [[Lorien-Infrastructure/05-Paperless]] — current live setup
 - [[index]] - Shire service overview

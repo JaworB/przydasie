@@ -52,7 +52,7 @@ Requires VPN connection (WireGuard).
 
 See [[index]] for current container status.
 
-Uptime Kuma (`/root/kontenery/uptime_kuma/`) moved from inactive to running 2026-08-01 — see [[03-Uptime-Kuma]] for deployment details, notifications, and monitor list.
+Uptime Kuma (`/root/kontenery/uptime_kuma/`) moved from inactive to running 2026-08-01, then **migrated to Lorien on 2026-09-24** — see [[03-Uptime-Kuma]].
 
 ## Inactive Services (data preserved)
 
@@ -60,6 +60,9 @@ Uptime Kuma (`/root/kontenery/uptime_kuma/`) moved from inactive to running 2026
 |---------|--------------|-------|
 | nginx-proxy-manager | /root/kontenery/nginx/ | Not running, config preserved |
 | Static webhost | /root/kontenery/webhost/ | Not running |
+| Uptime Kuma | /root/kontenery/uptime_kuma/ | Migrated to Lorien 2026-09-24, container stopped, data kept as rollback fallback — see [[Lorien-Infrastructure/06-Uptime-Kuma]] |
+| Paperless-NGX (full stack) | /root/kontenery/paperless/ | Migrated to Lorien 2026-09-24, `docker compose down`, data kept as rollback fallback — see [[Lorien-Infrastructure/05-Paperless]] |
+| Rickroll | (no persistent data) | Migrated to Lorien 2026-09-24, container stopped — see [[Lorien-Infrastructure/07-Rickroll]] |
 
 ## See Also
 

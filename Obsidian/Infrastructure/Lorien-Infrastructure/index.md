@@ -1,6 +1,6 @@
 # Lorien Infrastructure
 
-Lorien (10.66.66.10) is the central backup and logging server, running 24/7.
+Lorien (10.66.66.10) is the central backup, logging, and (as of 2026-09-24) containerized-services server, running 24/7.
 
 ## System
 
@@ -20,6 +20,9 @@ Lorien (10.66.66.10) is the central backup and logging server, running 24/7.
 |-----------|-------|------|--------|
 | VintageStory | ralnoc/vintagestory:latest | :42420 | Up |
 | Stationeers | — | :27015 | Not running |
+| paperless_webserver_1 + stack | paperless-ngx (pinned digest) | :8000 | Up — migrated from shire 2026-09-24 |
+| uptime-kuma | louislam/uptime-kuma:1 | :3001 (host network) | Stopped (manually, password lockout) — migrated from shire 2026-09-24 |
+| Rickroll | modem7/docker-rickroll (pinned digest) | :8180 | Up — migrated from shire 2026-09-24 |
 
 System services (native, not containers):
 
@@ -32,10 +35,13 @@ System services (native, not containers):
 
 - [[01-Overview]] — System, directory structure, SSH access, connected hosts
 - [[02-Backup-HomeAssistant]] — HA backup script, cron, retention
-- [[03-Backup-Paperless]] — Paperless backup from shire
+- [[03-Backup-Paperless]] — Paperless backup from shire (historical — flow needs redesign, see [[05-Paperless]])
 - [[04-Syslog-Server]] — rsyslog server configuration
+- [[05-Paperless]] — Paperless-NGX, migrated from shire 2026-09-24
+- [[06-Uptime-Kuma]] — Uptime Kuma, migrated from shire 2026-09-24
+- [[07-Rickroll]] — Rickroll, migrated from shire 2026-09-24
 
 ## See Also
 
 - [[Syslog-Server-Configuration/]] — Syslog client/server config details
-- [[Shire-Infrastructure/03-Uptime-Kuma]] — Lorien is monitored (ping, rsyslog :514, VintageStory :42420) by Uptime Kuma running on shire
+- [[Shire-Infrastructure/index]] — former home of these services, now stopped/fallback
